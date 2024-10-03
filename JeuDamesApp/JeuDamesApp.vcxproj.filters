@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Camera">
+      <UniqueIdentifier>{dd8b9176-e1a1-44a6-a0f1-70b2b0fa469f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Camera">
+      <UniqueIdentifier>{23b2386e-1671-471d-a54b-33b0ae1008bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\MinMax">
+      <UniqueIdentifier>{9312fee6-d577-4c54-8bd4-5032643ca725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\RobotControl">
+      <UniqueIdentifier>{b1f1f2a1-0365-4cbf-b294-0f1f84c68951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\UserInterface">
+      <UniqueIdentifier>{4086ae04-4b58-46a1-bf86-df4397562157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\MinMax">
+      <UniqueIdentifier>{bc8829e1-82ab-4a7f-a32a-b0ca16d7188c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\RobotControl">
+      <UniqueIdentifier>{1944cfb8-8c92-4ef9-965a-eb5098dfffd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\UserInterface">
+      <UniqueIdentifier>{1858b82f-92d4-4653-a610-b2c7fa61b173}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Fichiers sources\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Fichiers sources\MinMax</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardDetector.cpp">
+      <Filter>Fichiers sources\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Fichiers sources\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI.cpp">
+      <Filter>Fichiers sources\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Fichiers sources\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Negamax.cpp">
+      <Filter>Fichiers sources\MinMax</Filter>
+    </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>Fichiers sources\RobotControl</Filter>
+    </ClCompile>
+    <ClCompile Include="TranspositionTable.cpp">
+      <Filter>Fichiers sources\MinMax</Filter>
+    </ClCompile>
+    <ClCompile Include="uiController.cpp">
+      <Filter>Fichiers sources\UserInterface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>Fichiers d%27en-tête\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Fichiers d%27en-tête\MinMax</Filter>
+    </ClInclude>
+    <ClInclude Include="TranspositionTable.h">
+      <Filter>Fichiers d%27en-tête\MinMax</Filter>
+    </ClInclude>
+    <ClInclude Include="Negamax.h">
+      <Filter>Fichiers d%27en-tête\MinMax</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardDetector.h">
+      <Filter>Fichiers d%27en-tête\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Robot.h">
+      <Filter>Fichiers d%27en-tête\RobotControl</Filter>
+    </ClInclude>
+    <ClInclude Include="uiController.h">
+      <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
