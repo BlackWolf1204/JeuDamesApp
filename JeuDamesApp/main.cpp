@@ -20,6 +20,7 @@ int main()
 	int moveNumber = -1;
 	bool isConnected = false;
 
+	
 	while (uiController.getWindow().isOpen())
 	{
 		if (!isConnected)
@@ -62,7 +63,7 @@ int main()
 		Board board = BoardDetector::detectBoard(frame, BoardDetector::Color::RED);
 		uiController.getGameUI()->getCameraFrame(frame);
 
-		if (!board.isEmpty() && board.isValid())
+		if (!board.isInit() && board.isValid())
 		{
 			if (board.playerWins())
 			{
@@ -78,6 +79,7 @@ int main()
 				moveNumber = -1;
 				continue;
 			}
+			/*
 			if (moveNumber == -1)
 			{
 				if (board.getMoveNumber() % 2 == 1)
@@ -89,10 +91,10 @@ int main()
 					moveNumber = board.getMoveNumber();
 				}
 			}
-
+			*/
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
-
+			/*
 			if (board.getMoveNumber() == moveNumber + 1 && board.getMoveNumber() % 2 == 1)
 			{
 				moveNumber += 2;
@@ -100,11 +102,11 @@ int main()
 				board.Play(bestMove);
 				board.printBoard();
 				robot->Play(bestMove);
-			}
+			}*/
 		}
 
 	}
 	uiController.stop(stateMachine.getState());
-	
+
 	return 0;
 }

@@ -12,7 +12,6 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 
 	//Detect the squares in the image
 	std::vector<std::vector<cv::Point>> contours = getShapeContours(copy);
-	cv::imshow("Modified frame", copy);
 	std::vector<cv::Vec3f> squares = detectSquares(image, contours);
 	std::vector<cv::Vec3f> sortedSquares = sortSquares(squares);
 	if (squares.size() == 0)
@@ -109,8 +108,6 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	// Running dilation on canny output to improve edge thickness
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
-
-	cv::imshow("Test", frame);
 }
 
 std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& frame)
@@ -161,7 +158,6 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 			bound_rect[i] = cv::boundingRect(contourPoly[i]);
 
 			int obj_corners = (int)contourPoly[i].size();
-			cv::rectangle(frame, cv::Point(bound_rect[i].x, bound_rect[i].y), cv::Point(bound_rect[i].x + bound_rect[i].width, bound_rect[i].y + bound_rect[i].height), cv::Scalar(0, 0, 255), 1);
 			// number of corners
 			if (obj_corners == 4)
 			{

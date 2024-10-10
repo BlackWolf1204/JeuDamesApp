@@ -50,6 +50,8 @@ unsigned int TranspositionTable::index(uint64_t key)
 
 uint64_t TranspositionTable::getKey(Board board)
 {
+	return board.getPlayerBitboard();
+	/*
 	if (board.getMoveNumber() % 2 == 0)
 	{
 		return board.getRobotBitboard();
@@ -58,6 +60,7 @@ uint64_t TranspositionTable::getKey(Board board)
 	{
 		return board.getPlayerBitboard();
 	}
+	*/
 }
 
 

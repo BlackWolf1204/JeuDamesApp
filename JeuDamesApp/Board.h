@@ -19,8 +19,8 @@ public:
 	/// <returns>The new board object</returns>
 	Board copy();
 
-	/// <summary> ###########################################################################
-	/// Play a move in the corresponding to the given positions
+	/// <summary>
+	/// Play a move corresponding to the given positions
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
@@ -52,8 +52,23 @@ public:
 	/// <returns>True if the game is a draw, false otherwise</returns>
 	bool draw();
 
-	// ###########################################################################
-	void mustEat();
+	/// <summary>
+	/// Return the position of the piece that can be eaten by the given piece (positions)
+	/// </summary>
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <returns>Position of the piece to eat, -1 otherwise</returns>
+	int canEat(int column, int row);
+
+	/// <summary>
+	/// Check if a move eat a piece
+	/// </summary>
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="newColumn">Column of the new position</param>
+	/// <param name="newRow">Row of the new position</param>
+	/// <returns>True if the move is eat a piece, false otherwise</returns>
+	bool isMoveEat(int column, int row, int neWColumn, int newRow);
 
 	/// <summary>
 	/// Check if a move is valid
@@ -66,10 +81,24 @@ public:
 	bool isValidMove(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
-	/// Get the number of moves played on the board
+	/// Check if a move forward (or backward for kings) is valid
 	/// </summary>
-	/// <returns>The number of moves played</returns>
-	int getMoveNumber();
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="newColumn">Column of the new position</param>
+	/// <param name="newRow">Row of the new position</param>
+	/// <returns>True if the move is valid, false otherwise</returns>
+	bool isValidMoveForward(int column, int row, int newColumn, int newRow);
+
+	/// <summary>
+	/// Check if a move in diagonal is valid
+	/// </summary>
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="newColumn">Column of the new position</param>
+	/// <param name="newRow">Row of the new position</param>
+	/// <returns>True if the move is valid, false otherwise</returns>
+	bool isValidMoveDiagonal(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
 	/// Print the board in the console
@@ -77,22 +106,37 @@ public:
 	void printBoard();
 
 	/// <summary>
-	/// Move the player piece at the givenposition (empty the position if value is false)
+	/// Verify if a piece (given by its position) is at the opposite border of the board
+	/// </summary>
+	/// <param name="column">Column of the position</param>
+	/// <param name="row">Row of the position</param>
+	/// <return>True if the piece is at the opposite border, false otherwise</return>
+	bool isNewKing(int column, int row);
+
+	/// <summary>
+	/// Upgrade a piece (given by its position) into a king
+	/// </summary>
+	/// <param name="column">Column of the position</param>
+	/// <param name="row">Row of the position</param>
+	void upgradePiece(int column, int row);
+
+	/// <summary>
+	/// Move the player piece at the given position (empty the position if value is false)
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	/// <param name="king">If the piece is a king or not (0 for piece and 1 for king)</param>
-	void setPlayerPiece(int column, int row, bool value, bool king=0);
+	/// <param name="value">If add or empty the position
+	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
+	void setPlayerPiece(int column, int row, bool value, bool king=false);
 
 	/// <summary>
 	/// Move the robot piece at the given position (empty the position if value is false)
 	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="king">If the piece is a king or not (0 for piece and 1 for king)</param>
-	void setRobotPiece(int column, int row, bool value, bool king=0);
+	/// <param name="column">Column of the position</param>
+	/// <param name="row">Row of the position</param>
+	/// <param name="value">If add or empty the position
+	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
+	void setRobotPiece(int column, int row, bool value, bool king=false);
 
 	/// <summary>
 	/// Check if the board is at the initial position :
@@ -111,16 +155,33 @@ public:
 	bool isInit();
 
 	/// <summary>
+	/// Initialize the board in the initial position
+	/// </summary>
+	void initBoard();
+
+	/// <summary>
 	/// Get the player bitboard as an unsigned __int64
 	/// </summary>
-	/// <returns>The player bitboard</returns>
+	/// <returns>The player king bitboard</returns>
 	unsigned __int64 getPlayerBitboard();
+
+	/// <summary>
+	/// Get the player king bitboard as an unsigned __int64
+	/// </summary>
+	/// <returns>The player bitboard</returns>
+	unsigned __int64 getPlayerKingBitboard();
 
 	/// <summary>
 	/// Get the robot bitboard as an unsigned __int64
 	/// </summary>
 	/// <returns>The robot bitboard</returns>
 	unsigned __int64 getRobotBitboard();
+
+	/// <summary>
+	/// Get the robot king bitboard as an unsigned __int64
+	/// </summary>
+	/// <returns>The robot king bitboard</returns>
+	unsigned __int64 getRobotKingBitboard();
 
 	/// <summary> ############################################################################################
 	/// Check if the board is valid
@@ -131,7 +192,7 @@ public:
 	/// <summary>
 	/// Get the piece at the given position
 	/// </summary>
-	/// <returns>1 if the player has a piece, 3 if the player has a king, 2 if the robot has a piece, 4 if the robot has a king 0 otherwise</returns>
+	/// <returns>1 if the player has a piece, 3 if the player has a king, 2 if the robot has a piece, 4 if the robot has a king, 0 otherwise</returns>
 	int getPiece(int column, int row);
 
 private:
@@ -139,7 +200,6 @@ private:
 	unsigned __int64 playerKingBoard;
 	unsigned __int64 robotBoard;
 	unsigned __int64 robotKingBoard;
-	unsigned int moveNumber;
 
 	/// <summary>
 	/// Check if a piece is present at the given position
@@ -172,10 +232,10 @@ private:
 	/// Check if the opponent has no more pieces or can't move anymore
 	/// </summary>
 	/// <param name="winBoard">Bitboard to check if is winning</param>
-	/// <param name="board">Opponent bitboard</param>
-	/// <param name="kingBoard">Opponent king bitboard to check</param>
-	/// <returns>True if 4 pieces are aligned, false otherwise</returns>
-	bool checkWin(unsigned __int64 winBoard, unsigned __int64 board, unsigned __int64 kingBoard);
+	/// <param name="loseBoard">Opponent bitboard</param>
+	/// <param name="loseKingBoard">Opponent king bitboard to check</param>
+	/// <returns>True if the opponent has no more piece or can't move, false otherwise</returns>
+	bool checkWin(unsigned __int64 winBoard, unsigned __int64 loseBoard, unsigned __int64 loseKingBoard);
 
 public:
 
@@ -184,10 +244,10 @@ public:
 	/// Keep it to improve the speed of the game in the future
 	/// </summary>
 	/// <param name="winBoard">Bitboard to check if is winning</param>
-	/// <param name="board">Opponent bitboard</param>
-	/// <param name="kingBoard">Opponent king bitboard to check</param>
+	/// <param name="loseBoard">Opponent bitboard</param>
+	/// <param name="loseKingBoard">Opponent king bitboard to check</param>
 	/// <returns>True if 4 pieces are aligned, false otherwise</returns>
-	bool checkWinFast(unsigned __int64 winBoard, unsigned __int64 board, unsigned __int64 kingBoard);
+	bool checkWinFast(unsigned __int64 winBoard, unsigned __int64 loseBoard, unsigned __int64 loseKingBoard);
 	
 	bool moveIsWinning(int column, int row, int newColumn, int newRow);
 };
