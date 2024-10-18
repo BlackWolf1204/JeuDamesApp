@@ -14,6 +14,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	std::vector<std::vector<cv::Point>> contours = getShapeContours(copy);
 	std::vector<cv::Vec3f> squares = detectSquares(image, contours);
 	std::vector<cv::Vec3f> sortedSquares = sortSquares(squares);
+
 	if (squares.size() == 0)
 	{
 		std::cout << "No squares detected" << std::endl;
@@ -28,9 +29,9 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 		std::cout << "Not sorted" << std::endl;
 		return Board();
 	}
+	/* ##########################################################################################################
 	for (int i = 0; i < sortedSquares.size(); i++)
 	{
-		// draw squares in the image
 		cv::Point text_point = cv::Point(sortedSquares[i][0], sortedSquares[i][1] - 10);
 		cv:putText(image, std::to_string(i),            // shape type
 			text_point,         // x,y co-ordinate 
@@ -38,10 +39,11 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 			2,                   // Font scale
 			cv::Scalar(0, 0, 255),   // Font color in BGR (Red)
 			2);                  // Thickness
-	}
+	}*/
 	
 	//Detect the circles in the image
-	std::vector<cv::Vec3f> circles = detectCircles(copy);
+	std::vector<cv::Vec3f> circles = detectCircles(copy, contours);
+	std::vector<int> containedCircles = containCircles(circles, sortedSquares);
 	if (circles.size() == 0)
 	{
 		std::cout << "No circles detected" << std::endl;
@@ -51,6 +53,21 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	{
 		// draw circles in the image (showed by the application ?)
 		cv::circle(image, cv::Point(circles[i][0], circles[i][1]), circles[i][2], cv::Scalar(0, 0, 255), 2);
+	}
+	if (containedCircles.size() == 0)
+	{
+		std::cout << "Not contained" << std::endl;
+		return Board();
+	}
+	for (int i = 0; i < containedCircles.size(); i++)
+	{
+		cv::Point text_point = cv::Point(circles[i][0], circles[i][1] - 10);
+		cv:putText(image, std::to_string(containedCircles[i]),            // shape type
+			text_point,         // x,y co-ordinate 
+			cv::FONT_HERSHEY_PLAIN,  // Font name
+			2,                   // Font scale
+			cv::Scalar(0, 0, 255),   // Font color in BGR (Red)
+			2);                  // Thickness
 	}
 	
 	return Board();
@@ -96,18 +113,18 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	// Convert img color to gray. Output image is second arg
 	cv::cvtColor(frame, img_gray, cv::COLOR_BGR2GRAY);
 
-	// Threshold the image (resistant to the change of luminosity)
-	//cv::adaptiveThreshold(img_gray, img_threshold, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 3, 5);
-	//cv::imshow("Threshold", img_threshold);
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
 	cv::GaussianBlur(img_gray, img_blur, cv::Size(3, 3), 3, 0);
 
 	// Edge detection using canny algo
-	cv::Canny(img_blur, img_canny, 25, 75);
+	cv::Canny(img_blur, img_canny, 25, 110);
 	
 	// Running dilation on canny output to improve edge thickness
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
+
+	//cv::imshow("Test", frame);
+	cv::waitKey(0);
 }
 
 std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& frame)
@@ -125,12 +142,52 @@ std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& fra
 	return contours;
 }
 
-std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat& frame)
+std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<std::vector<cv::Point>> contours)
 {
+	/*
 	//Search for circles in the frame
 	std::vector<cv::Vec3f> circles;
-	cv::HoughCircles(frame, circles, cv::HOUGH_GRADIENT, 0.5, frame.rows / 12, 200, 30, frame.rows / 24, frame.rows / 9);
+	cv::HoughCircles(frame, circles, cv::HOUGH_GRADIENT, 0.5, frame.rows / 12, 200, 30, frame.rows / 30, frame.rows / 10);
+	*/
+	std::vector<std::vector<cv::Point>> contourPoly(contours.size());
 
+	// bounding box/rect around shape
+	std::vector<cv::Rect> bound_rect(contours.size());
+	std::vector<cv::Vec3f> circles;
+
+	// loop through all contours detected
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		int c_area = cv::contourArea(contours[i]);   // area of each object contour
+
+		if (c_area > 500) // Area based threshold for emoving noise 
+		{
+			float peri = arcLength(contours[i], true);
+
+			// Approximate poly curve with stated accurracy
+			approxPolyDP(contours[i], contourPoly[i], 0.02 * peri, true);
+
+			bound_rect[i] = cv::boundingRect(contourPoly[i]);
+
+			int obj_corners = (int)contourPoly[i].size();
+			// number of corners
+			if (obj_corners > 6)
+			{
+				float aspect_ratio = (float)bound_rect[i].width /
+					(float)bound_rect[i].height;
+
+				// tolerance for l/w ratio and size of the object
+				if (bound_rect[i].width <= frame.rows / 12 && bound_rect[i].width > frame.rows/30)
+				{
+					// center and width of the circle
+					cv::Point center(bound_rect[i].x + bound_rect[i].width / 2, bound_rect[i].y + bound_rect[i].height / 2);
+					float radius = bound_rect[i].width / 2;
+
+					circles.push_back(cv::Vec3f(center.x, center.y, radius));
+				}
+			}
+		}
+	}
 
 	return circles;
 }
@@ -143,12 +200,14 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 	std::vector<cv::Rect> bound_rect(contours.size());
 	std::vector<cv::Vec3f> squares;
 
+	cv::Mat fill = frame.clone();
+
 	// loop through all contours detected
 	for (int i = 0; i < contours.size(); ++i)
 	{
 		int c_area = cv::contourArea(contours[i]);   // area of each object contour
 
-		if (c_area > 1000) // Area based threshold for emoving noise 
+		if (c_area > 500) // Area based threshold for emoving noise 
 		{
 			float peri = arcLength(contours[i], true);
 
@@ -156,6 +215,9 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 			approxPolyDP(contours[i], contourPoly[i], 0.02 * peri, true);
 
 			bound_rect[i] = cv::boundingRect(contourPoly[i]);
+			
+			cv::drawContours(fill, contourPoly, i, cv::Scalar(0, 255, 0), 1);
+
 
 			int obj_corners = (int)contourPoly[i].size();
 			// number of corners
@@ -171,13 +233,13 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 					cv::Point center(bound_rect[i].x + bound_rect[i].width / 2, bound_rect[i].y + bound_rect[i].height / 2);
 					float radius = bound_rect[i].width/2;
 
-					// Ajouter le centre et la largeur au vecteur
 					squares.push_back(cv::Vec3f(center.x, center.y, radius));
 				}
 			}
 		}
 	}
-
+	//cv::imshow("Fill", fill);
+	//cv::waitKey(0);
 	return squares;
 }
 
@@ -272,61 +334,28 @@ std::vector<cv::Vec3f> BoardDetector::filterCircles(cv::Mat image, std::vector<c
 	*/
 }
 
-std::vector<int> BoardDetector::sortCircles(std::vector<cv::Vec3f> boardCircles)
+std::vector<int> BoardDetector::containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares)
 {
-	std::cout << "BoardDetector::sortedCircles" << std::endl;
-	std::vector<int> circles;
-	return circles;
-
-	/*
-	if (boardCircles.size() != 42)
+	if (boardCircles.size() > 24)
 	{
-		return std::vector<cv::Vec3f>();
+		return std::vector<int>();
 	}
 
-	std::vector<cv::Vec3f> sortedCircles;
+	std::vector<int> containCircles;
 
-	//For all the columns
-	for (uint i = 0; i < 7; i++)
+	//For all the circles
+	for (uint i = 0; i < boardCircles.size(); i++)
 	{
-		uint min = 1000000;
-		uint minIndex = 0;
-
-		//Search the first circle at minimum x and y
-		for (int j = 0; j < boardCircles.size(); j++)
+		for (int j = 0; j < boardSquares.size(); j++)
 		{
-			if (boardCircles[j][0] + boardCircles[j][1] < min)
-			{
-				min = boardCircles[j][0] + boardCircles[j][1];
-				minIndex = j;
-			}
-		}
-
-		//Add the first circle to the sortedCircles vector
-		sortedCircles.push_back(boardCircles[minIndex]);
-		//Remove the first circle from the boardCircles vector
-		boardCircles.erase(boardCircles.begin() + minIndex);
-
-		//Search the next 5 circles in the same line
-		for (int j = 0; j < 5; j++)
-		{
-			min = 1000000;
-			minIndex = 0;
-			for (int j = 0; j < boardCircles.size(); j++)
-			{
-				if (abs(boardCircles[j][0] - sortedCircles[i * 6][0]) < sortedCircles[i*6][2] && boardCircles[j][1] < min)
-				{
-					min = boardCircles[j][1];
-					minIndex = j;
-				}
-			}
-			sortedCircles.push_back(boardCircles[minIndex]);
-			boardCircles.erase(boardCircles.begin() + minIndex);
+			// If the circle is inside the square
+			float dist = sqrt(pow(boardCircles[i][0] - boardSquares[j][0], 2) + pow(boardCircles[i][1] - boardSquares[j][1], 2));
+			if (dist + boardCircles[i][2] <= boardSquares[j][2])
+				containCircles.push_back(j);
 		}
 	}
 
-	return sortedCircles;
-	*/
+	return containCircles;
 }
 
 std::vector<cv::Vec3f> BoardDetector::sortSquares(std::vector<cv::Vec3f> boardSquares)

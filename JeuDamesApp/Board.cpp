@@ -78,126 +78,86 @@ bool Board::draw()
 	return false;
 }
 
-int Board::canEat(int column, int row)
+std::vector<int> Board::canEat(int column, int row)
 {
-	// piece
-	if (getPiece(column, row, playerBoard))
-	{
-		if (!getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
-			return ((column - 1) * BOARDSIZE + (row - 1));
-		if (!getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
-			return ((column - 1) * BOARDSIZE + (row + 1));
-	}
-	if (getPiece(column, row, robotBoard))
-	{
-		if (!getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
-			return ((column - 1) * BOARDSIZE + (row - 1));
-		if (!getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
-			return ((column - 1) * BOARDSIZE + (row + 1));
-	}
-
+	std::vector<int> positions;
 	// king
 	if (getPiece(column, row, playerKingBoard) || getPiece(column, row, robotKingBoard))
 	{
 		int col = 0;
-		if (column > 1 && row > 1)
+		while (column - (col + 2) >= 0 && row - (col + 2) >= 0)
 		{
-			while (column - col >= 0 && row - col >= 0)
+			if (!getPiece(column - (col + 2), row - (col + 2)))
 			{
-				if (!getPiece(column - (col + 2), row - (col + 2)))
-				{
-					// eat opponent piece
-					if (getPiece(column, row, playerBoard) && getPiece(column - (col + 1), row - (col + 1), robotBoard))
-						return ((column - (col + 1)) * BOARDSIZE + (row - (col + 1)));
-					if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						return ((column - (col + 1)) * BOARDSIZE + (row - (col + 1)));
-				}
-				col++;
+				// eat opponent piece
+				if (getPiece(column, row, playerBoard) && getPiece(column - (col + 1), row - (col + 1), robotBoard))
+					positions.push_back((column - (col + 1)) + (row - (col + 1) * BOARDSIZE));
+				if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row - (col + 1), playerBoard))
+					positions.push_back((column - (col + 1)) + (row - (col + 1) * BOARDSIZE));
 			}
+			col++;
 		}
 		col = 0;
-		if (column > 1 && row < 6)
+		while (column - (col + 2) >= 0 && row + (col + 2) < BOARDSIZE)
 		{
-			while (column - col >= 0 && row + col < BOARDSIZE)
+			if (!getPiece(column - (col + 2), row + (col + 2)))
 			{
-				if (!getPiece(column - (col + 2), row + (col + 2)))
-				{
-					// eat opponent piece
-					if (getPiece(column, row, playerBoard) && getPiece(column - (col + 1), row + (col + 1), robotBoard))
-						return ((column - (col + 1)) * BOARDSIZE + (row + (col + 1)));
-					if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row + (col + 1), playerBoard))
-						return ((column - (col + 1)) * BOARDSIZE + (row + (col + 1)));
-				}
-				col++;
+				// eat opponent piece
+				if (getPiece(column, row, playerBoard) && getPiece(column - (col + 1), row + (col + 1), robotBoard))
+					positions.push_back((column - (col + 1)) + (row + (col + 1) * BOARDSIZE));
+				if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row + (col + 1), playerBoard))
+					positions.push_back((column - (col + 1)) + (row + (col + 1) * BOARDSIZE));
 			}
+			col++;
 		}
 		col = 0;
-		if (column < 6 && row > 1)
+		while (column + (col + 2) < BOARDSIZE && row - (col + 2) >= 0)
 		{
-			while (column + col < BOARDSIZE && row - col >= 0)
+			if (!getPiece(column + (col + 2), row - (col + 2)))
 			{
-				if (!getPiece(column + (col + 2), row - (col + 2)))
-				{
-					// eat opponent piece
-					if (getPiece(column, row, playerBoard) && getPiece(column + (col + 1), row - (col + 1), robotBoard))
-						return ((column + (col + 1)) * BOARDSIZE + (row - (col + 1)));
-					if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						return ((column + (col + 1)) * BOARDSIZE + (row - (col + 1)));
-				}
-				col++;
+				// eat opponent piece
+				if (getPiece(column, row, playerBoard) && getPiece(column + (col + 1), row - (col + 1), robotBoard))
+					positions.push_back((column + (col + 1)) + (row - (col + 1) * BOARDSIZE));
+				if (getPiece(column, row, robotBoard) && getPiece(column - (col + 1), row - (col + 1), playerBoard))
+					positions.push_back((column + (col + 1)) + (row - (col + 1) * BOARDSIZE));
 			}
+			col++;
 		}
-		col = 0;
-		if (column < 6 && row < 6)
+		while (column + col < BOARDSIZE && row + col < BOARDSIZE)
 		{
-			while (column + col < BOARDSIZE && row + col < BOARDSIZE)
+			if (!getPiece(column + (col + 2), row + (col + 2)))
 			{
-				if (!getPiece(column + (col + 2), row + (col + 2)))
-				{
-					// eat opponent piece
-					if (getPiece(column, row, playerBoard) && getPiece(column + (col + 1), row + (col + 1), robotBoard))
-						return ((column + (col + 1)) * BOARDSIZE + (row + (col + 1)));
-					if (getPiece(column, row, robotBoard) && getPiece(column + (col + 1), row + (col + 1), playerBoard))
-						return ((column + (col + 1)) * BOARDSIZE + (row + (col + 1)));
-				}
-				col++;
+				// eat opponent piece
+				if (getPiece(column, row, playerBoard) && getPiece(column + (col + 1), row + (col + 1), robotBoard))
+					positions.push_back((column + (col + 1)) + (row + (col + 1) * BOARDSIZE));
+				if (getPiece(column, row, robotBoard) && getPiece(column + (col + 1), row + (col + 1), playerBoard))
+					positions.push_back((column + (col + 1)) + (row + (col + 1) * BOARDSIZE));
 			}
+			col++;
 		}
 	}
-	return -1;
-}
-
-bool Board::isMoveEat(int column, int row, int newColumn, int newRow)
-{
-	if (isValidMove(column, row, newColumn, newRow))
-		return false;
-
-	// direction (signe)
-	int diffC = newColumn - column;
-	int diffR = newRow - row;
-	int dirCol = (diffC > 0) - (diffC < 0);
-	int dirRow = (diffR > 0) - (diffR < 0);
-
-	// there is an opponent piece in the trajectory and position behind is empty
-	if (getPiece(column, row, playerBoard))
-	{
-		for (int col = 1; col < diffC * dirCol; col++)
+	else {
+		// piece
+		if (getPiece(column, row, playerBoard) && column > 1)
 		{
-			if (getPiece(column + col * dirCol, row + col * dirCol, robotBoard) && !getPiece(column + (col + 1) * dirCol, row + (col + 1) * dirCol))
-				return true;
-			
+			if (row > 1)
+				if (!getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
+					positions.push_back((column - 1) + (row - 1) * BOARDSIZE);
+			if (row < 6)
+				if (!getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
+					positions.push_back((column - 1) + (row + 1) * BOARDSIZE);
 		}
-	}
-	if (getPiece(column, row, robotBoard))
-	{
-		for (int col = 1; col < diffC * dirCol; col++)
+		if (getPiece(column, row, robotBoard) && column < 6)
 		{
-			if (getPiece(column + col * dirCol, row + col * dirCol, playerBoard) && !getPiece(column + (col + 1) * dirCol, row + (col + 1) * dirCol))
-				return true;
-
+			if (row > 1)
+				if (!getPiece(column + 2, row - 2) && getPiece(column + 1, row - 1, playerBoard))
+					positions.push_back((column + 1) + (row - 1) * BOARDSIZE);
+			if (row < 6)
+				if (!getPiece(column + 2, row + 2) && getPiece(column + 1, row + 1, playerBoard))
+					positions.push_back((column + 1) + (row + 1) * BOARDSIZE);
 		}
 	}
-	return false;
+	return positions;
 }
 
 bool Board::isValidMove(int column, int row, int newColumn, int newRow)
@@ -234,7 +194,7 @@ bool Board::isValidMoveForward(int column, int row, int newColumn, int newRow)
 	int diffC = newColumn - column;
 	int diffR = newRow - row;
 
-	// Don't move foarward (or backward)
+	// Don't move forward (or backward)
 	if (diffR != 0)
 		return false;
 
@@ -244,6 +204,9 @@ bool Board::isValidMoveForward(int column, int row, int newColumn, int newRow)
 	{
 		// Don't move forward of 1 case
 		if (diffC * side != 1)
+			return false;
+		// There is a piece in front
+		if (getPiece(column + 1 * side, row))
 			return false;
 	}
 	// king
@@ -289,14 +252,14 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 	// piece
 	if (piece == 1 || piece == 2)
 	{
-		// Don't move of 2 cases in diagonnal forward or doesn't eat an opponent piece
+		// Don't move of 2 cases in diagonnal forward
 		if (diffC * side != 2)
-		{
-			if (getPiece(column, row, playerBoard) && !getPiece(column + dirCol, row + dirRow, robotBoard))
-				return false;
-			if (getPiece(column, row, robotBoard) && !getPiece(column + dirCol, row + dirRow, playerBoard))
-				return false;
-		}
+			return false;
+		// Don't eat an opponent piece
+		if (getPiece(column, row, playerBoard) && !getPiece(column + side, row + dirRow, robotBoard))
+			return false;
+		if (getPiece(column, row, robotBoard) && !getPiece(column + side, row + dirRow, playerBoard))
+			return false;
 	}
 	// king
 	else
@@ -308,13 +271,13 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 			// Eat a piece of his side
 			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
 				return false;
-			if (getPiece(column, row, robotBoard) && !getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
+			if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
 				return false;
 
 			// Count the number of opponent piece eaten
 			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
 				eatOpponent ++;
-			if (getPiece(column, row, robotBoard) && !getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
+			if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
 				eatOpponent++;
 			// Can't eat more than one opponent piece
 			if (eatOpponent > 1)
@@ -326,9 +289,9 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 
 void Board::printBoard()
 {
-	for (int row = BOARDSIZE-1; row >= 0; row--)
+	for (int column = 0; column < BOARDSIZE; column++)
 	{
-		for (int column = 0; column < BOARDSIZE; column++)
+		for (int row = 0; row < BOARDSIZE; row++)
 		{
 			if (getPiece(column, row, playerBoard))
 			{
@@ -367,11 +330,11 @@ void Board::upgradePiece(int column, int row)
 {
 	if (getPiece(column, row, playerBoard))
 	{
-		setKingPiece(column, row, &playerBoard, true);
+		setKingPiece(column, row, &playerKingBoard, true);
 	}
 	else if (getPiece(column, row, robotBoard))
 	{
-		setKingPiece(column, row, &robotBoard, true);
+		setKingPiece(column, row, &robotKingBoard, true);
 	}
 	return;
 }
@@ -380,12 +343,16 @@ void Board::setPlayerPiece(int column, int row, bool value, bool king)
 {
 	if (king)
 		setKingPiece(column, row, &playerKingBoard, value);
+	else if (getPiece(column, row, playerKingBoard) && !value)
+		setKingPiece(column, row, &playerKingBoard, value);
 	setPiece(column, row, &playerBoard, value);
 }
 
 void Board::setRobotPiece(int column, int row, bool value, bool king)
 {
 	if (king)
+		setKingPiece(column, row, &robotKingBoard, value);
+	else if (getPiece(column, row, robotKingBoard) && !value)
 		setKingPiece(column, row, &robotKingBoard, value);
 	setPiece(column, row, &robotBoard, value);
 }
@@ -509,7 +476,7 @@ bool Board::checkWin(unsigned __int64 winBboard, unsigned __int64 loseBoard, uns
 			if (getPiece(column, row, loseBoard))
 			{
 				// piece/king can move forward (no piece in front of the piece/king)
-				if (isValidMove(column, row, column+1, row) || isValidMove(column, row, column-1, row))
+				if (isValidMove(column, row, column + 1, row) || isValidMove(column, row, column - 1, row))
 				{
 					return false;
 				}
@@ -518,9 +485,10 @@ bool Board::checkWin(unsigned __int64 winBboard, unsigned __int64 loseBoard, uns
 					|| isValidMove(column, row, column - 2, row - 2) || isValidMove(column, row, column - 2, row + 2))
 					return false;
 				// king can move in diagonal
-				if (isValidMove(column, row, column + 1, row - 1) || isValidMove(column, row, column + 1, row + 1)
-					|| isValidMove(column, row, column - 1, row - 1) || isValidMove(column, row, column - 1, row + 1))
-					return false;
+				if (getPiece(column, row, playerKingBoard) || getPiece(column, row, robotKingBoard))
+					if (isValidMove(column, row, column + 1, row - 1) || isValidMove(column, row, column + 1, row + 1)
+						|| isValidMove(column, row, column - 1, row - 1) || isValidMove(column, row, column - 1, row + 1))
+						return false;
 			}
 		}
 	}

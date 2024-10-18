@@ -36,7 +36,7 @@ private:
 	/// </summary>
 	// <param name="frame">Modified image containing the board</param>
 	/// <returns>A vector containing all the circles detected in the image</returns>
-	static std::vector<cv::Vec3f> detectCircles(cv::Mat& frame);
+	static std::vector<cv::Vec3f> detectCircles(cv::Mat frame, std::vector<std::vector<cv::Point>> contours);
 
 	/// <summary>
 	/// Search for squares in a list of contours (shapes)
@@ -69,8 +69,9 @@ private:
 	/// Sort the circles in the correct squares of the board
 	/// </summary>
 	/// <param name="boardCircles">Vector containing the circles from the board</param>
+	/// <param name="boardSquares">Vector containing the squares from the board</param>
 	/// <returns>A vector containing the squares id which contain the circles </returns>
-	static std::vector<int> sortCircles(std::vector<cv::Vec3f> boardCircles);
+	static std::vector<int> containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares);
 
 	/// <summary>
 	/// Create squares and sort from the corners board in the correct order :

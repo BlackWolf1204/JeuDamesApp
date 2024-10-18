@@ -1,8 +1,2 @@
-﻿  pch.cpp
-  Board-Test.cpp
-  JeuDamesApp-Test.cpp
-  Génération de code en cours...
-     Création de la bibliothèque D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.lib et de l'objet D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.exp
-Board-Test.obj : error LNK2019: symbole externe non résolu "public: __thiscall Board::Board(void)" (??0Board@@QAE@XZ) référencé dans la fonction "public: void __thiscall BoardTest::BoardTest::TestInitialize(void)" (?TestInitialize@BoardTest@1@QAEXXZ)
-Board-Test.obj : error LNK2019: symbole externe non résolu "public: void __thiscall Board::printBoard(void)" (?printBoard@Board@@QAEXXZ) référencé dans la fonction "public: void __thiscall BoardTest::BoardTest::TestPrintBoard(void)" (?TestPrintBoard@BoardTest@1@QAEXXZ)
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll : fatal error LNK1120: 2 externes non résolus
+﻿  Board-Test.cpp
+  JeuDamesApp-Test.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll

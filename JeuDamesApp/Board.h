@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <exception>
 #include <iostream>
 
@@ -57,8 +58,8 @@ public:
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
-	/// <returns>Position of the piece to eat, -1 otherwise</returns>
-	int canEat(int column, int row);
+	/// <returns>Vector of position of the pieces to eat, empty if can't eat</returns>
+	std::vector<int> canEat(int column, int row);
 
 	/// <summary>
 	/// Check if a move eat a piece
