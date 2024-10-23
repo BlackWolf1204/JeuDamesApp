@@ -2,10 +2,11 @@
 
 int columnOrder[7] = { 2, 3, 4, 1, 5, 0, 6 };
 
-int Negamax::GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth)
+std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth)
 {
 	std::cout << "NegaMax::GetBestMove" << std::endl;
-	return 0;
+	std::vector<int> positions;
+	return positions;
 
 	/*
 	//Avoid instant loose

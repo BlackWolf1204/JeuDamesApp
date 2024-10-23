@@ -8,7 +8,7 @@ class Robot
 {
 public:
 	/// <summary>
-	/// Initializes the coordinates of the columns and pieces (hardcoded)
+	/// Initializes the coordinates of the squares and pieces (hardcoded)
 	/// </summary>
 	Robot();
 
@@ -26,21 +26,28 @@ public:
 	void Home();
 
 	/// <summary>
-	/// Ask the Dobot to grab a piece, move it to the column and drop it
+	/// Ask the Dobot to grab a piece at an initial position and move it to the position
+	/// If the initial position is -1, add a king at the given position
+	/// If the new position is -1, remove the piece at the initial position of the board
 	/// </summary>
-	/// <param name="column">Column number (0-6)</param>
-	void Play(int column);
+	/// <param name="initPos">Initial position</param>
+	/// <param name="newPos">New position</param>
+	void Play(int initPos, int newPos);
 
 	void Refill();
+	void Empty();
 
-	int getRemainingPieces();
+	int getRemainingKing();
+	int getRemovedPieces();
 
 private:
 
 	int dobotId = -1;
-	int remainingPieces = 8;
-	Pose columnCoordinates[7];
-	Pose pieceCoordinates[8];
+	int remainingKing = 8;
+	int removedPieces = 0;
+	Pose squareCoordinates[64];
+	Pose kingCoordinates[8];
+	Pose removedPieceCoordinates[8];
 
 	/// <summary>
 	/// Move the Dobot to a specific position
@@ -56,26 +63,43 @@ private:
 	void goTo(Pose position, float z);
 
 	/// <summary>
-	/// Open the gripper of the Dobot
+	/// Move the Dobot to a specific position to read the state of the board
 	/// </summary>
-	void openGripper();
+	void goReadBoard();
 
 	/// <summary>
-	/// Close the gripper of the Dobot
+	/// Go to the last remaining king, grab it with the suctionCup, move up and put it at the given position in the board
 	/// </summary>
-	void closeGripper();
+	/// <param name="position">Position in the board</param>
+	void addKing(int position);
+
+	/// <summary>
+	/// Grab the piece at the given position with the suctionCup, move up and put it at the last empty position for removed pieces
+	/// </summary>
+	/// <param name="position">Position of the piece in the board</param>
+	void removePiece(int position);
+
+	/// <summary>
+	/// Activate the suctionCup of the Dobot
+	/// </summary>
+	void activSuctionCup();
+
+	/// <summary>
+	/// Desactivate the suctionCup of the Dobot
+	/// </summary>
+	void desactivSuctionCup();
 	
 	/// <summary>
-	/// Open the gripper of the Dobot, go to the last remaining piece, grab it and move up
+	/// Go to the last remaining king, grab it with the suctionCup and move up
 	/// </summary>
-	void grabPiece();
+	void grabKing();
 
 	/// <summary>
-	/// Set the gripper to a specific state, Open or Close, and turn the gripper pump on or off
+	/// Set the suctionCup to a specific state, Open or Close, and turn the suctionCup pump on or off
 	/// </summary>
 	/// <param name="open">True if the gripper should be open, false otherwise</param>
 	/// <param name="on">True if the gripper pump should be on, false otherwise</param>
-	void gripper(bool open, bool on);
+	void suctionCup(bool open, bool on);
 
 	/// <summary>
 	/// Close the gripper of the Dobot, and turn the pump off

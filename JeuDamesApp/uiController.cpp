@@ -5,7 +5,6 @@ uiController::uiController(sf::Vector2u windowSize, Robot* robot)
 {	
 	window.create(sf::VideoMode(windowSize.x, windowSize.y), "Jeu de Dames avec le robot !");
 	window.setFramerateLimit(60);
-
 	font = new sf::Font();
 	if (!font->loadFromFile(fontPath)) {
 		std::cerr << "Add the font file here :" << fontPath << std::endl;

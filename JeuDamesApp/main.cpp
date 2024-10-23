@@ -103,6 +103,25 @@ int main()
 				board.printBoard();
 				robot->Play(bestMove);
 			}*/
+
+			std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
+			for (int i = 0; i < bestPositions.size() - 1; i++)
+			{
+				board.Play(bestPositions[i] % BOARDSIZE, (int)bestPositions[i] / BOARDSIZE, bestPositions[i+1] % BOARDSIZE, (int)bestPositions[i+1] / BOARDSIZE);
+				board.printBoard();
+				robot->Play(bestPositions[i], bestPositions[i+1]);
+			}
+
+			int lastPos = bestPositions.back();
+			if (lastPos % BOARDSIZE == BOARDSIZE - 1 && board.getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
+			{
+				robot->Play(lastPos, -1);
+				robot->Play(-1, lastPos);
+			}
+			/*if (lastPos % BOARDSIZE == 0 && board.getPiece(lastPos % BOARDSIZE, lastPos / BOARDSIZE) == 1)
+			{
+				// show that the piece need to be upgraded
+			}*/
 		}
 
 	}

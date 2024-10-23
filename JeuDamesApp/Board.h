@@ -62,16 +62,6 @@ public:
 	std::vector<int> canEat(int column, int row);
 
 	/// <summary>
-	/// Check if a move eat a piece
-	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	/// <returns>True if the move is eat a piece, false otherwise</returns>
-	bool isMoveEat(int column, int row, int neWColumn, int newRow);
-
-	/// <summary>
 	/// Check if a move is valid
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>

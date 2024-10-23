@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../JeuDamesApp/Board.cpp"
+#include "../JeuDamesApp/Board.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

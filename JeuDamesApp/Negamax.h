@@ -13,8 +13,8 @@ namespace Negamax
 	/// <param name="board">Board to evaluate</param>
 	/// <param name="transpositionTable">Transposition table to use to store already evaluated boards</param>
 	/// <param name="depth">Depth of the search</param>
-	/// <returns>The index of the column to play the best move</returns>
-	int GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth);
+	/// <returns>The positions where to move the piece at the first position of the vector (if the piece can eat multiple time)</returns>
+	std::vector<int> GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth);
 
 
 	int GetBestMove_noThreads(Board board, TranspositionTable* transpositionTable, unsigned int depth);
