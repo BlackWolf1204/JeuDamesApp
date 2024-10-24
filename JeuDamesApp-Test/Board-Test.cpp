@@ -19,7 +19,6 @@ namespace BoardTest
 			board = new Board();
 		}
 
-
 		TEST_METHOD(TestIsValidMoveForward)
 		{
 			// For robot pieces
@@ -203,6 +202,6 @@ namespace BoardTest
 			Assert::AreEqual(board->canEat(7, 0).size(), (size_t)1);
 			Assert::AreEqual(board->canEat(7, 0)[0], 21);
 		}
-
+	
 	};
 }

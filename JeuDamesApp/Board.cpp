@@ -221,7 +221,7 @@ bool Board::isValidMoveForward(int column, int row, int newColumn, int newRow)
 					return false;
 			}
 		}
-		else 
+		else
 		{
 			for (int i = 1; i <= diffC; i++)
 			{
@@ -229,7 +229,7 @@ bool Board::isValidMoveForward(int column, int row, int newColumn, int newRow)
 					return false;
 			}
 		}
-	}	
+	}
 	return true;
 }
 
@@ -248,8 +248,8 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 	if (diffR != diffC && diffR != -diffC)
 		return false;
 
-	int piece = getPiece(column, row);
 	// piece
+	int piece = getPiece(column, row);
 	if (piece == 1 || piece == 2)
 	{
 		// Don't move of 2 cases in diagonnal forward
@@ -276,7 +276,7 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 
 			// Count the number of opponent piece eaten
 			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
-				eatOpponent ++;
+				eatOpponent++;
 			if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
 				eatOpponent++;
 			// Can't eat more than one opponent piece
@@ -285,6 +285,24 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 		}
 	}
 	return true;
+}
+
+int Board::MoveEatPiece(int column, int row, int newColumn, int newRow)
+{
+	int diffC = newColumn - column;
+	int dirCol = (diffC >= 0) - (diffC < 0);
+	int diffR = newRow - row;
+	int dirRow = (diffR >= 0) - (diffR < 0);
+	
+	// Look at all the positions of the trajectory
+	for (int i = 0; i < abs(diffC); i++)
+	{
+		if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
+			return (column + (i * dirCol) + row +(i * dirRow) * BOARDSIZE);
+		if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
+			return (column + (i * dirCol) + row + (i * dirRow) * BOARDSIZE);
+	}
+	return -1;
 }
 
 void Board::printBoard()

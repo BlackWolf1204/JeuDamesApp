@@ -1,4 +1,3 @@
-#include "uiController.h"
 #include <opencv2/opencv.hpp>
 #include "Robot.h"
 #include "Board.h"
@@ -6,6 +5,7 @@
 #include "Camera.h"
 #include "BoardDetector.h"
 #include "TranspositionTable.h"
+#include "uiController.h"
 
 using namespace std;
 
@@ -35,7 +35,6 @@ int main()
 				continue;
 			}
 		}
-
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
 			stateMachine.ChangeState(newState);
@@ -103,21 +102,32 @@ int main()
 				board.printBoard();
 				robot->Play(bestMove);
 			}*/
-
+			/*
 			std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
 			for (int i = 0; i < bestPositions.size() - 1; i++)
 			{
-				board.Play(bestPositions[i] % BOARDSIZE, (int)bestPositions[i] / BOARDSIZE, bestPositions[i+1] % BOARDSIZE, (int)bestPositions[i+1] / BOARDSIZE);
+				int column = bestPositions[i] % BOARDSIZE;
+				int row = (int)bestPositions[i] / BOARDSIZE;
+				int newCol = bestPositions[i + 1] % BOARDSIZE;
+				int newRow = (int)bestPositions[i + 1] / BOARDSIZE;
+				board.Play(column, row, newCol, newRow);
+
+				// remove a player piece if eaten by robot's piece
+				int eatPiece = board.MoveEatPiece(column, row, newCol, newRow);
+				if (eatPiece != -1) {
+					robot->Play(eatPiece, -1);
+				}
 				board.printBoard();
 				robot->Play(bestPositions[i], bestPositions[i+1]);
 			}
-
+			
+			// upgrade a piece into a king if at the opposite of the board (only for robot pieces)
 			int lastPos = bestPositions.back();
 			if (lastPos % BOARDSIZE == BOARDSIZE - 1 && board.getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
 			{
 				robot->Play(lastPos, -1);
 				robot->Play(-1, lastPos);
-			}
+			}*/
 			/*if (lastPos % BOARDSIZE == 0 && board.getPiece(lastPos % BOARDSIZE, lastPos / BOARDSIZE) == 1)
 			{
 				// show that the piece need to be upgraded

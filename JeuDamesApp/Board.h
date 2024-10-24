@@ -92,6 +92,16 @@ public:
 	bool isValidMoveDiagonal(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
+	/// Return the piece eaten by the move, -1 if no piece is eaten
+	/// </summary>
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="newColumn">Column of the new position</param>
+	/// <param name="newRow">Row of the new position</param>
+	/// <returns>Position of the eaten piece, -1 if o piece eaten</returns>
+	int MoveEatPiece(int column, int row, int newColumn, int newRow);
+
+	/// <summary>
 	/// Print the board in the console
 	/// </summary>
 	void printBoard();

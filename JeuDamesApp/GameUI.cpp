@@ -141,7 +141,7 @@ void GameUI::draw(sf::RenderWindow& window)
 	window.draw(left_available_pieces);
 	window.draw(right_available_pieces);
 
-	for (int i = 0; i < robot->getRemainingPieces(); i++)
+	for (int i = 0; i < robot->getRemainingKing(); i++)
 	{
 		window.draw(availablePieces[7 - i]);
 	}

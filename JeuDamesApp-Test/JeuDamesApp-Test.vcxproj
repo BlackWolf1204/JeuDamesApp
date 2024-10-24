@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board-Test.cpp" />
+    <ClCompile Include="BoardDetector-Testcpp.cpp" />
     <ClCompile Include="JeuDamesApp-Test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

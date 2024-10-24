@@ -84,6 +84,7 @@ Robot::Robot()
 	removedPieceCoordinates[5] = { -11, 223, -126, 90 };
 	removedPieceCoordinates[6] = { 33, 223, -126, 90 };
 	removedPieceCoordinates[7] = { 78, 222, -126, 90 };
+	// ###################################################################
 }
 
 Robot::~Robot()
@@ -92,10 +93,6 @@ Robot::~Robot()
 
 bool Robot::connect()
 {
-	std::cout << "Robot::connect" << std::endl;
-	return true;
-
-	/*
 	char dobotPortName[64];
 	int dobotSearchCount = SearchDobot(dobotPortName, 64);
 
@@ -137,15 +134,10 @@ bool Robot::connect()
 	}
 	std::cout << "JOGCoordinateParams: velocityX = " << jogCoordinateParams->velocity[0] << ", velocityY = " << jogCoordinateParams->velocity[1] << ", velocityZ = " << jogCoordinateParams->velocity[2] << ", velocityR = " << jogCoordinateParams->velocity[3] << std::endl;
 	return true;
-	*/
 }
 
 void Robot::Home()
 {
-	std::cout << "Robot::Home" << std::endl;
-	return;
-
-	/*
 	std::cout << "Resetting dobot position" << std::endl;
 	HOMECmd homeCmd;
 	uint64_t queuedCmdIndex;
@@ -156,21 +148,21 @@ void Robot::Home()
 	}
 	std::cout << "Dobot position successfully reset" << std::endl;
 
-	goReadBoard(pieceCoordinates[0], 90);
-	*/
+	goReadBoard();
+	
 }
 
 void Robot::Play(int initPos, int newPos)
 {
-	std::cout << "Robot::Play" << std::endl;
-	return;
-
-	/*
+	if (initPos < 0 && newPos < 0) {
+		std::cerr << "Invalid position" << std::endl;
+		return;
+	}
 	if (initPos == -1) {
 		addKing(newPos);
 		return;
 	}
-	if (newPos == -1) {
+	else if (newPos == -1) {
 		removePiece(initPos);
 		return;
 	}
@@ -178,21 +170,21 @@ void Robot::Play(int initPos, int newPos)
 		std::cerr << "Invalid position" << std::endl;
 		return;
 	}
+	if (initPos != -1 && newPos != -1) {
 
-	std::cout << "Playing in column " << column << std::endl;
-	grabPiece();
-	goTo(columnCoordinates[column], 90);
-	goTo(columnCoordinates[column]);
-	openGripper();
-	wait(0.5);
-	turnOffGripper();
-	if (remainingPieces > 0) {
-		goTo(pieceCoordinates[(8 - remainingPieces)], 90);
+		std::cout << "Move from position " << initPos << " to position " << newPos << std::endl;
+		goTo(squareCoordinates[initPos], HIGHT);
+		goTo(squareCoordinates[initPos]);
+		activeSuctionCup();
+		wait(0.5);
+		goTo(squareCoordinates[newPos], HIGHT);
+		goTo(squareCoordinates[newPos]);
+		desactiveSuctionCup();
+		wait(0.5);
+		turnOffSuctionCup();
 	}
-	else {
-		goTo(pieceCoordinates[0], 90);
-	}
-	*/
+	goReadBoard();
+	
 }
 
 void Robot::Refill()
@@ -241,8 +233,7 @@ void Robot::goTo(Pose position, float z)
 
 void Robot::goReadBoard()
 {
-	// #########################################################################
-	return;
+	goTo({ 217, 62, 160,0 });
 }
 
 void Robot::addKing(int position)
@@ -252,12 +243,17 @@ void Robot::addKing(int position)
 		std::cerr << "No more king" << std::endl;
 		return;
 	}
+	std::cout << "Adding a king in position " << position << std::endl;
 	goTo(kingCoordinates[8 - remainingKing]);
-	activSuctionCup();
-	goTo(kingCoordinates[8 - remainingKing], 90);
+	activeSuctionCup();
+	goTo(kingCoordinates[8 - remainingKing], HIGHT);
 	wait(0.5);
 	remainingKing--;
-	// #########################################################################
+	goTo(squareCoordinates[position], HIGHT);
+	goTo(squareCoordinates[position]);
+	desactiveSuctionCup();
+	wait(0.5);
+	turnOffSuctionCup();
 }
 
 void Robot::removePiece(int position)
@@ -267,52 +263,45 @@ void Robot::removePiece(int position)
 		std::cerr << "No more empty position" << std::endl;
 		return;
 	}
-	// #########################################################################
+	std::cout << "Removing piece in position " << position << std::endl;
+	goTo(squareCoordinates[position], HIGHT);
+	goTo(squareCoordinates[position]);
+	activeSuctionCup();
+	wait(0.5);
+	goTo(removedPieceCoordinates[removedPieces], HIGHT);
+	goTo(removedPieceCoordinates[removedPieces]);
+	desactiveSuctionCup();
+	wait(0.5);
+	turnOffSuctionCup();
+	removedPieces++;
 }
 
-void Robot::activSuctionCup()
+void Robot::activeSuctionCup()
 {
-	return;
 	suctionCup(false, true);
 }
 
-void Robot::desactivSuctionCup()
+void Robot::desactiveSuctionCup()
 {
-	return;
 	suctionCup(true, true);
 }
 
-void Robot::movePiece()
+void Robot::suctionCup(bool close, bool on)
 {
-	return;
-	openGripper();
-	goTo(pieceCoordinates[8 - remainingPieces]);
-	closeGripper();
-	wait(0.5);
-	goTo(pieceCoordinates[8 - remainingPieces], 90);
-	remainingPieces--;
-}
-
-void Robot::gripper(bool close, bool on)
-{ 
-	return;
 	uint64_t queuedCmdIndex;
-	int resultDobotGripper = SetEndEffectorGripper(dobotId, on, close, true, &queuedCmdIndex);
+	int resultDobotGripper = SetEndEffectorSuctionCup(dobotId, on, close, true, &queuedCmdIndex);
 	if (resultDobotGripper != DobotCommunicate_NoError) {
-		std::cerr << "Failed to close gripper" << std::endl;
+		std::cerr << "Failed to suck" << std::endl;
 	}
 }
 
-
-void Robot::turnOffGripper()
+void Robot::turnOffSuctionCup()
 {
-	return;
-	gripper(false, false);
+	suctionCup(false, false);
 }
 
 void Robot::wait(float seconds)
 { 
-	return;
 	WAITCmd waitCmd = { 0 };
 	waitCmd.timeout = seconds * 1000;
 

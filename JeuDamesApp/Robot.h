@@ -2,7 +2,10 @@
 
 #include "DobotDll.h"
 #include "DobotType.h"
+#include "Board.h"
 #include <iostream>
+
+#define HIGHT 50
 
 class Robot
 {
@@ -82,29 +85,24 @@ private:
 	/// <summary>
 	/// Activate the suctionCup of the Dobot
 	/// </summary>
-	void activSuctionCup();
+	void activeSuctionCup();
 
 	/// <summary>
 	/// Desactivate the suctionCup of the Dobot
 	/// </summary>
-	void desactivSuctionCup();
+	void desactiveSuctionCup();
 	
 	/// <summary>
-	/// Go to the last remaining king, grab it with the suctionCup and move up
+	/// Set the suctionCup to a specific state, Sucked or Released, and turn the suctionCup pump on or off
 	/// </summary>
-	void grabKing();
-
-	/// <summary>
-	/// Set the suctionCup to a specific state, Open or Close, and turn the suctionCup pump on or off
-	/// </summary>
-	/// <param name="open">True if the gripper should be open, false otherwise</param>
+	/// <param name="open">True if the suction should be Sucked, false otherwise</param>
 	/// <param name="on">True if the gripper pump should be on, false otherwise</param>
 	void suctionCup(bool open, bool on);
 
 	/// <summary>
-	/// Close the gripper of the Dobot, and turn the pump off
+	/// Release the suctionCup of the Dobot, and turn the pump off
 	/// </summary>
-	void turnOffGripper();
+	void turnOffSuctionCup();
 
 	/// <summary>
 	/// Sleep the program for a specific amount of time to let the Dobot move before sending another command
