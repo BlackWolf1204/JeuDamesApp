@@ -108,22 +108,32 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	}
 
 	// Declaring few Mat object for further operations
-	cv::Mat img_gray, img_blur, img_canny, img_dilate;
+	cv::Mat img_gray, img_dilate, img_med_blur, absdiff, img_norm, img_gaus_blur, img_canny, img_dilate2;
 
 	// Convert img color to gray. Output image is second arg
 	cv::cvtColor(frame, img_gray, cv::COLOR_BGR2GRAY);
 
+	cv::Mat ones = cv::Mat::ones(5, 5, CV_32F);
+
+	cv::dilate(img_gray, img_dilate, ones);
+	cv::medianBlur(img_dilate, img_med_blur, 3);
+	cv::imshow("medianBlur", img_med_blur);
+	cv::absdiff(img_gray, img_dilate, absdiff);
+	cv::normalize(255 - absdiff, img_norm, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+
+	cv::imshow("Without Shadow", img_norm);
+
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
-	cv::GaussianBlur(img_gray, img_blur, cv::Size(3, 3), 3, 0);
+	cv::GaussianBlur(img_norm, img_gaus_blur, cv::Size(3, 3), 3, 0);
 
 	// Edge detection using canny algo
-	cv::Canny(img_blur, img_canny, 25, 110);
+	cv::Canny(img_gaus_blur, img_canny, 25, 110);
 	
 	// Running dilation on canny output to improve edge thickness
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
 
-	//cv::imshow("Test", frame);
+	cv::imshow("Test", frame);
 	cv::waitKey(0);
 }
 

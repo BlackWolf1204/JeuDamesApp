@@ -1,3 +1,129 @@
 ﻿D:\VisualStudio\VisualStudio2022\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (JeuDamesApp-main.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
-  main.cpp
+  BoardDetector.cpp
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(23,20): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,58): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,43): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,74): warning C4244: 'argument' : conversion de '_Tp' en 'int', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,74): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,74): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,74): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(25,74): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(52,20): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,58): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,43): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,74): warning C4244: 'argument' : conversion de '_Tp' en 'int', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,74): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,74): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,74): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(55,74): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(62,20): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,65): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(64,48): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(65,3): warning C4102: 'cv' : étiquette non référencée
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(169,20): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(171,14): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(175,15): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(194,19): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,50): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(196,40): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(216,20): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(218,14): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(222,15): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(244,19): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,50): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244: 'argument' : conversion de '_Tp' en '_Tp', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:             _Tp=int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(246,40): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(359,21): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(362,15): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(387,21): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(391,30): warning C4244: '=' : conversion de '_Tp' en 'uint', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(391,30): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(391,30): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(391,30): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(391,30): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(406,22): warning C4018: '<' : incompatibilité signed/unsigned
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(410,29): warning C4244: '=' : conversion de '_Tp' en 'uint', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(410,29): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(410,29): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(410,29): warning C4244:             _Tp=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\BoardDetector.cpp(410,29): warning C4244:         ]
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe

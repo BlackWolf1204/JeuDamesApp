@@ -23,6 +23,7 @@ int main()
 	
 	while (uiController.getWindow().isOpen())
 	{
+		/*
 		if (!isConnected)
 		{
 			isConnected = robot->connect();
@@ -35,6 +36,7 @@ int main()
 				continue;
 			}
 		}
+		*/
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
 			stateMachine.ChangeState(newState);
