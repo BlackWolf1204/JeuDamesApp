@@ -1,12 +1,10 @@
 #include "BoardDetector.h"
 
-
-std::vector<cv::Vec3f> BoardDetector::workingCircles;
-
 Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 {
 	// copy of the image to draw on the image and keep a clean image for the detection
 	cv::Mat copy = image.clone();
+	cv::Mat copy2 = image.clone();
 	// modify the image to see only the contours
 	modifyFrame(copy);
 
@@ -29,21 +27,9 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 		std::cout << "Not sorted" << std::endl;
 		return Board();
 	}
-	/* ##########################################################################################################
-	for (int i = 0; i < sortedSquares.size(); i++)
-	{
-		cv::Point text_point = cv::Point(sortedSquares[i][0], sortedSquares[i][1] - 10);
-		cv:putText(image, std::to_string(i),            // shape type
-			text_point,         // x,y co-ordinate 
-			cv::FONT_HERSHEY_PLAIN,  // Font name
-			2,                   // Font scale
-			cv::Scalar(0, 0, 255),   // Font color in BGR (Red)
-			2);                  // Thickness
-	}*/
 	
 	//Detect the circles in the image
 	std::vector<cv::Vec3f> circles = detectCircles(copy, contours);
-	std::vector<int> containedCircles = containCircles(circles, sortedSquares);
 	if (circles.size() == 0)
 	{
 		std::cout << "No circles detected" << std::endl;
@@ -54,6 +40,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 		// draw circles in the image (showed by the application ?)
 		cv::circle(image, cv::Point(circles[i][0], circles[i][1]), circles[i][2], cv::Scalar(0, 0, 255), 2);
 	}
+	std::vector<int> containedCircles = containCircles(circles, sortedSquares);
 	if (containedCircles.size() == 0)
 	{
 		std::cout << "Not contained" << std::endl;
@@ -70,34 +57,9 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 			2);                  // Thickness
 	}
 	
-	return Board();
-	/*
-	//Search the first circle played by the player
-	cv::Vec3f firstCircle = searchFirstCircle(image, circles, playerColor);
-	if (firstCircle == cv::Vec3f())
-	{
-		std::cout << "No first circle detected" << std::endl;
-		return Board();
-	}
-	cv::circle(image, cv::Point(firstCircle[0], firstCircle[1]), 5, cv::Scalar(255, 255, 255), -1);
-
-	//Filter the circles to only keep the one from the board
-	std::vector<cv::Vec3f> boardCircles = filterCircles(image, circles, firstCircle);
-	if (boardCircles.size() == 0)
-	{
-		std::cout << "No board circles detected" << std::endl;
-	}
-
-	//Sort the circles in the correct order
-	std::vector<cv::Vec3f> sortedCircles = sortCircles(boardCircles);
-	if (sortedCircles.size() == 0)
-	{
-		std::cout << "No sorted circles detected" << std::endl;
-	}
-
 	//Detect the colors of the circles
-	Board board = detectColors(image, sortedCircles);
-	return board;*/
+	Board board = detectColors(copy2, circles, containedCircles);
+	return board;
 }
 
 void BoardDetector::modifyFrame(cv::Mat& frame)
@@ -115,13 +77,11 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 
 	cv::Mat ones = cv::Mat::ones(5, 5, CV_32F);
 
+	// Remove the shadow on the image
 	cv::dilate(img_gray, img_dilate, ones);
 	cv::medianBlur(img_dilate, img_med_blur, 3);
-	cv::imshow("medianBlur", img_med_blur);
 	cv::absdiff(img_gray, img_dilate, absdiff);
 	cv::normalize(255 - absdiff, img_norm, 0, 255, cv::NORM_MINMAX, CV_8UC1);
-
-	cv::imshow("Without Shadow", img_norm);
 
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
 	cv::GaussianBlur(img_norm, img_gaus_blur, cv::Size(3, 3), 3, 0);
@@ -133,7 +93,7 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
 
-	cv::imshow("Test", frame);
+	//cv::imshow("Test", frame);
 	cv::waitKey(0);
 }
 
@@ -154,11 +114,7 @@ std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& fra
 
 std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<std::vector<cv::Point>> contours)
 {
-	/*
 	//Search for circles in the frame
-	std::vector<cv::Vec3f> circles;
-	cv::HoughCircles(frame, circles, cv::HOUGH_GRADIENT, 0.5, frame.rows / 12, 200, 30, frame.rows / 30, frame.rows / 10);
-	*/
 	std::vector<std::vector<cv::Point>> contourPoly(contours.size());
 
 	// bounding box/rect around shape
@@ -253,97 +209,6 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 	return squares;
 }
 
-cv::Vec3f BoardDetector::searchFirstCircle(cv::Mat image, std::vector<cv::Vec3f> circles, Color playerColor)
-{
-	std::cout << "BoardDetector::searchFirstCircle" << std::endl;
-	cv::Vec3f circle;
-	return circle;
-
-	/*
-	if (circles.size() == 0)
-	{
-		return cv::Vec3f();
-	}
-
-	//Search the first circle with the player color inside
-	uint closestCircleIndex = 0;
-	uint closestCircleValue = 1000000;
-	for (int i = 0; i < circles.size(); i++)
-	{
-		cv::Vec3b detectedColor = getCircleMeanColor(image, circles[i]);
-
-		Color detectedColorType = getColor(detectedColor);
-		if (detectedColorType == Color::EMPTY)
-		{
-			continue;
-		}
-		if (detectedColorType == playerColor)
-		{
-			closestCircleIndex = i;
-			break;
-		}
-	}
-	cv::Vec3f firstCircle = circles[closestCircleIndex];
-
-	//Remove the first circle from the circles vector
-	circles.erase(circles.begin() + closestCircleIndex);
-	return firstCircle;
-	*/
-}
-
-std::vector<cv::Vec3f> BoardDetector::filterCircles(cv::Mat image, std::vector<cv::Vec3f> circles, cv::Vec3f firstCircle)
-{
-	std::cout << "BoardDetector::filterCircles" << std::endl;
-	std::vector<cv::Vec3f> circles2;
-	return circles2;
-
-	/*
-	std::vector<cv::Vec3f> boardCircles;
-	
-	//Search in the same line
-	uint i = 0;
-	while(i < circles.size())
-	{
-		if (circles[i][1] >= firstCircle[1] - 10 && circles[i][1] <= firstCircle[1] + 10) //&& circles[i][2] >= firstCircle[2] - 5 && circles[i][2] <= firstCircle[2] + 5)
-		{
-			boardCircles.push_back(circles[i]);
-			circles.erase(circles.begin() + i);
-		}
-		i++;
-	}
-
-	if (boardCircles.size() != 7)
-	{
-		std::cout << "Not enough circles in the same line" << std::endl;
-		return std::vector<cv::Vec3f>();
-	}
-
-	//Search in the same column
-	for (int i = 0; i < boardCircles.size(); i++)
-	{
-		uint j = 0;
-		while (j < circles.size())
-		{
-			if (circles[j][0] >= boardCircles[i][0] - 10 && circles[j][0] <= boardCircles[i][0] + 10 && circles[j][2] >= boardCircles[i][2] - 5 && circles[j][2] <= boardCircles[i][2] + 5)
-			{
-				boardCircles.push_back(circles[j]);
-				circles.erase(circles.begin() + j);
-			}
-			j++;
-		}
-	}
-
-	//If the board is not complete
-	if (boardCircles.size() != 42)
-	{
-		std::cout << "Not enough circles in the same column" << std::endl;
-		return std::vector<cv::Vec3f>();
-	}
-
-	return boardCircles;
-	*/
-}
-
 std::vector<int> BoardDetector::containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares)
 {
 	if (boardCircles.size() > 24)
@@ -419,31 +284,9 @@ std::vector<cv::Vec3f> BoardDetector::sortSquares(std::vector<cv::Vec3f> boardSq
 	return sortedSquares;
 }
 
-Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles)
+Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles, std::vector<int> containedCircles)
 {
-	std::cout << "BoardDetector::detectColors" << std::endl;
-	return Board();
-
-	/*
-	if (boardCircles.size() != 42)
-	{
-		if (workingCircles.size() == 42)
-		{
-			boardCircles = workingCircles;
-		}
-		else
-		{
-			return Board();
-		}
-	}
-	else
-	{
-		workingCircles = boardCircles;
-	}
-
 	Board board;
-	uint playerThreshold = 200;
-	uint robotThreshold = 150;
 
 	for (int i = 0; i < boardCircles.size(); i++)
 	{
@@ -455,34 +298,25 @@ Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCir
 		//Detect the color of the circle
 		Color color = getColor(pieceColor);
 
-		if (color == Color::EMPTY)
-		{
-			continue;
-		}
-		else if (color == Color::RED)
+		if (color == Color::WHITE)
 		{
 
-			board.setPlayerPiece(i / 6, 5 - i % 6, true);
+			board.setPlayerPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
 		}
 		else
 		{
-			board.setRobotPiece(i / 6, 5 - i % 6, true);
+			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
 		}
 	}
 	//Uncomment to show the debug image with the detected circles
-	//cv::imshow("Debug", image);
+	cv::imshow("Debug", image);
+	cv::waitKey(0);
 
 	return board;
-	*/
 }
 
 cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec3f circle)
 {
-	std::cout << "BoardDetector::getCircleMeanColor" << std::endl;
-	cv::Vec3b mean;
-	return mean;
-
-	/*
 	//Create a mask to get only the circle pixels
 	cv::Mat mask = cv::Mat::zeros(image.size(), CV_8UC1);
 	cv::circle(mask, cv::Point(circle[0], circle[1]), circle[2] - 10, cv::Scalar(255), -1);	
@@ -490,81 +324,18 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec3f circle)
 	//Get the mean color of the circle
 	cv::Scalar mean = cv::mean(image, mask);
 	return cv::Vec3b(mean[0], mean[1], mean[2]);
-	*/
 }
 
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 {
-	std::cout << "BoardDetector::getColor" << std::endl;
-	return Color::EMPTY;
-
-	/*
 	if (abs(color[0] - color[1]) < 60 && abs(color[1] - color[2]) < 60 && abs(color[0] - color[2]) < 60)
 	{
-		return Color::EMPTY;
+		return Color::WHITE;
 	}
 	if (abs(color[2] - color[0]) > 50 && abs(color[2] - color[1]) > 50)
 	{
 		return Color::RED;
 	}
 	return Color::YELLOW;
-	*/
 }
 
-std::vector<cv::Vec3f> BoardDetector::addAndRemoveDuplicatesCircle(std::vector<cv::Vec3f> newCircles, std::vector<cv::Vec3f> oldCircles)
-{
-	std::cout << "BoardDetector::addAndRemoveDuplicatesCircle" << std::endl;
-	std::vector<cv::Vec3f> circles;
-	return circles;
-
-	/*
-	std::vector<cv::Vec3f> result = newCircles;
-
-	for (int i = 0; i < oldCircles.size(); i++)
-	{
-		result.push_back(oldCircles[i]);
-	}
-
-	for (int i = 0; i < result.size(); i++)
-	{
-		for (int j = i + 1; j < result.size(); j++)
-		{
-			if (abs(result[i][0] - result[j][0]) < 10 && abs(result[i][1] - result[j][1]) < 10)
-			{
-				result.erase(result.begin() + j);
-			}
-		}
-	}
-
-	return result;
-	*/
-}
-
-std::vector<cv::Vec3f> BoardDetector::addAndRemoveDuplicatesSquare(std::vector<cv::Vec3f> newsquares, std::vector<cv::Vec3f> oldSquares)
-{
-	std::cout << "BoardDetector::addAndRemoveDuplicatesSquare" << std::endl;
-	std::vector<cv::Vec3f> squares;
-	return squares;
-
-	/*
-	std::vector<cv::Vec3f> result = newCircles;
-
-	for (int i = 0; i < oldCircles.size(); i++)
-	{
-		result.push_back(oldCircles[i]);
-	}
-
-	for (int i = 0; i < result.size(); i++)
-	{
-		for (int j = i + 1; j < result.size(); j++)
-		{
-			if (abs(result[i][0] - result[j][0]) < 10 && abs(result[i][1] - result[j][1]) < 10)
-			{
-				result.erase(result.begin() + j);
-			}
-		}
-	}
-
-	return result;
-	*/
-}

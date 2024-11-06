@@ -11,7 +11,7 @@ public:
 	{
 		RED,
 		YELLOW,
-		EMPTY
+		WHITE
 	};
 
 	static Board detectBoard(cv::Mat image, Color playerColor);
@@ -46,25 +46,6 @@ private:
 	/// <returns>A vector containing all the squares (represented in circles) detected in the image</returns>
 	static std::vector<cv::Vec3f> detectSquares(cv::Mat frame, std::vector<std::vector<cv::Point>> contours);
 
-
-	/// <summary>
-	/// Because the player start, the first played piece is searched
-	/// </summary>
-	/// <param name="image">Source image containing the board</param>
-	/// <param name="circles">Vector containing all the circles detected in the image</param>
-	/// <param name="playerColor">Color of the player</param>
-	/// <returns>A vector containing the coordinate of the circle and its radius</returns>
-	static cv::Vec3f searchFirstCircle(cv::Mat image, std::vector<cv::Vec3f> circles, Color playerColor);
-
-	/// <summary>
-	/// Filter the circles to only keep the one from the real board using their position
-	/// </summary>
-	/// <param name="image">Source image containing the board</param>
-	/// <param name="circles">Vector containing all the circles detected in the image</param>
-	/// <param name="firstCircle">Coordinates of the first circle played by the player</param>
-	/// <returns>A vector containing the 42 coordinate of the circle from the board</returns>
-	static std::vector<cv::Vec3f> filterCircles(cv::Mat image, std::vector<cv::Vec3f> circles, cv::Vec3f firstCircle);
-
 	/// <summary>
 	/// Sort the circles in the correct squares of the board
 	/// </summary>
@@ -95,8 +76,9 @@ private:
 	/// </summary>
 	/// <param name="image">Source image containing the board</param>
 	/// <param name="boardCircles">Vector containing the circles from the board and in a correct order</param>
+	/// <param name="containedCircles">Vector containing the squares id which contain the circles</param>
 	/// <returns>A board object describing the status of the game</returns>
-	static Board detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles);
+	static Board detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles, std::vector<int> containedCircles);
 
 	/// <summary>
 	/// Get the color of the circle
@@ -113,9 +95,4 @@ private:
 	/// <returns>Color enum element</returns>
 	static Color getColor(cv::Vec3b color);
 
-	static std::vector<cv::Vec3f> workingCircles;
-
-	static std::vector<cv::Vec3f> addAndRemoveDuplicatesCircle(std::vector<cv::Vec3f> newCircles, std::vector<cv::Vec3f> previousCircles);
-
-	static std::vector<cv::Vec3f> addAndRemoveDuplicatesSquare(std::vector<cv::Vec3f> newSquares, std::vector<cv::Vec3f> previousSquares);
 };
