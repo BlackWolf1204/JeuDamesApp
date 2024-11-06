@@ -298,14 +298,21 @@ Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCir
 		//Detect the color of the circle
 		Color color = getColor(pieceColor);
 
-		if (color == Color::WHITE)
+		if (color == Color::RED)
 		{
-
 			board.setPlayerPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
+		}
+		else if (color == Color::YELLOW)
+		{
+			board.setPlayerPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true, true);
+		}
+		else if (color == Color::WHITE)
+		{
+			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
 		}
 		else
 		{
-			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
+			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true, true);
 		}
 	}
 	//Uncomment to show the debug image with the detected circles
@@ -326,6 +333,9 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec3f circle)
 	return cv::Vec3b(mean[0], mean[1], mean[2]);
 }
 
+
+
+// ########################################################################
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 {
 	if (abs(color[0] - color[1]) < 60 && abs(color[1] - color[2]) < 60 && abs(color[0] - color[2]) < 60)

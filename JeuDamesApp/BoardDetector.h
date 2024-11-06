@@ -9,9 +9,10 @@ class BoardDetector {
 public:
 	enum class Color
 	{
-		RED,
-		YELLOW,
-		WHITE
+		RED,		// player's piece
+		YELLOW,		// player's king
+		WHITE,		// robot's piece
+		BLACK		// robot's king
 	};
 
 	static Board detectBoard(cv::Mat image, Color playerColor);
