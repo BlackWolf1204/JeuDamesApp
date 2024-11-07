@@ -20,8 +20,13 @@ Board Board::copy()
 	return newBoard;
 }
 
-void Board::Play(int column, int row, int newColumn, int newRow)
+void Board::Play(int initPos, int newPos)
 {
+	int column = initPos % BOARDSIZE;
+	int row = initPos / BOARDSIZE;
+	int newColumn = newPos % BOARDSIZE;
+	int newRow = newPos / BOARDSIZE;
+
 	if (isValidMove(column, row, newColumn, newRow))
 	{
 		// move the piece/king
@@ -140,21 +145,17 @@ std::vector<int> Board::canEat(int column, int row)
 		// piece
 		if (getPiece(column, row, playerBoard) && column > 1)
 		{
-			if (row > 1)
-				if (!getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
-					positions.push_back((column - 1) + (row - 1) * BOARDSIZE);
-			if (row < 6)
-				if (!getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
-					positions.push_back((column - 1) + (row + 1) * BOARDSIZE);
+			if (row > 1 && !getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
+				positions.push_back((column - 1) + (row - 1) * BOARDSIZE);
+			if (row < 6 && !getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
+				positions.push_back((column - 1) + (row + 1) * BOARDSIZE);
 		}
 		if (getPiece(column, row, robotBoard) && column < 6)
 		{
-			if (row > 1)
-				if (!getPiece(column + 2, row - 2) && getPiece(column + 1, row - 1, playerBoard))
-					positions.push_back((column + 1) + (row - 1) * BOARDSIZE);
-			if (row < 6)
-				if (!getPiece(column + 2, row + 2) && getPiece(column + 1, row + 1, playerBoard))
-					positions.push_back((column + 1) + (row + 1) * BOARDSIZE);
+			if (row > 1 && !getPiece(column + 2, row - 2) && getPiece(column + 1, row - 1, playerBoard))
+				positions.push_back((column + 1) + (row - 1) * BOARDSIZE);
+			if (row < 6 && !getPiece(column + 2, row + 2) && getPiece(column + 1, row + 1, playerBoard))
+				positions.push_back((column + 1) + (row + 1) * BOARDSIZE);
 		}
 	}
 	return positions;
@@ -171,70 +172,18 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 	{
 		return false;
 	}
-	// there is a piece in the initial position
-	if (getPiece(column, row, playerBoard) || getPiece(column, row, robotBoard))
+	// there are no pieces in the initial position
+	if (!getPiece(column, row, playerBoard) && !getPiece(column, row, robotBoard))
 	{
 		return false;
 	}
-	// there are no pieces in the new position
-	if (!getPiece(newColumn, newRow, playerBoard) && !getPiece(newColumn, newRow, robotBoard))
+	// there is a pieces in the new position
+	if (getPiece(newColumn, newRow, playerBoard) || getPiece(newColumn, newRow, robotBoard))
 	{
 		return false;
 	}
+
 	// movements allowed
-	return (isValidMoveForward(column, row, newColumn, newRow) || isValidMoveDiagonal(column, row, newColumn, newRow));
-}
-
-bool Board::isValidMoveForward(int column, int row, int newColumn, int newRow)
-{
-	int side = 1;
-	if (getPiece(column, row, playerBoard))
-		side = -1;
-
-	int diffC = newColumn - column;
-	int diffR = newRow - row;
-
-	// Don't move forward (or backward)
-	if (diffR != 0)
-		return false;
-
-	int piece = getPiece(column, row);
-	// piece
-	if (piece == 1 || piece == 2)
-	{
-		// Don't move forward of 1 case
-		if (diffC * side != 1)
-			return false;
-		// There is a piece in front
-		if (getPiece(column + 1 * side, row))
-			return false;
-	}
-	// king
-	else
-	{
-		// There is a piece on the trajectory
-		if (diffC < 0)
-		{
-			for (int i = 1; i <= -diffC; i++)
-			{
-				if (getPiece(column - i, row))
-					return false;
-			}
-		}
-		else
-		{
-			for (int i = 1; i <= diffC; i++)
-			{
-				if (getPiece(column + i, row))
-					return false;
-			}
-		}
-	}
-	return true;
-}
-
-bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
-{
 	int side = 1;
 	if (getPiece(column, row, playerBoard))
 		side = -1;
@@ -247,18 +196,22 @@ bool Board::isValidMoveDiagonal(int column, int row, int newColumn, int newRow)
 	// Don't move in diagonal
 	if (diffR != diffC && diffR != -diffC)
 		return false;
-
+	
 	// piece
 	int piece = getPiece(column, row);
 	if (piece == 1 || piece == 2)
 	{
-		// Don't move of 2 cases in diagonnal forward
-		if (diffC * side != 2)
-			return false;
-		// Don't eat an opponent piece
-		if (getPiece(column, row, playerBoard) && !getPiece(column + side, row + dirRow, robotBoard))
-			return false;
-		if (getPiece(column, row, robotBoard) && !getPiece(column + side, row + dirRow, playerBoard))
+		// Move 2 cases in diagonal forward
+		if (diffC * side == 2)
+		{
+			// Don't eat an opponent piece
+			if (getPiece(column, row, playerBoard) && !getPiece(column + side, row + dirRow, robotBoard))
+				return false;
+			if (getPiece(column, row, robotBoard) && !getPiece(column + side, row + dirRow, playerBoard))
+				return false;
+		}
+		// Don't move 1 case in diagonal forward
+		else if (diffC * side != 1)
 			return false;
 	}
 	// king
@@ -333,15 +286,6 @@ void Board::printBoard()
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-}
-
-bool Board::isNewKing(int column, int row)
-{
-	if (column == 0 && getPiece(column, row, playerBoard))
-		return true;
-	if (column == BOARDSIZE - 1 && getPiece(column, row, robotBoard))
-		return true;
-	return false;
 }
 
 void Board::upgradePiece(int column, int row)
@@ -553,7 +497,7 @@ bool Board::checkWinFast(unsigned __int64 winBoard, unsigned __int64 loseBoard, 
 bool Board::moveIsWinning(int column, int row, int newColumn, int newRow)
 {
 	Board boardCopy = copy();
-	boardCopy.Play(column, row, newColumn, newRow);
+	boardCopy.Play(column + BOARDSIZE * row, newColumn + BOARDSIZE * newRow);
 	if (boardCopy.playerWins())
 	{
 		return true;

@@ -1,2 +1,3 @@
 ﻿D:\VisualStudio\VisualStudio2022\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (JeuDamesApp-main.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
+  Board-Test.cpp
   JeuDamesApp-Test.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll

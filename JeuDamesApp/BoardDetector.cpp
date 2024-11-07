@@ -4,7 +4,6 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 {
 	// copy of the image to draw on the image and keep a clean image for the detection
 	cv::Mat copy = image.clone();
-	cv::Mat copy2 = image.clone();
 	// modify the image to see only the contours
 	modifyFrame(copy);
 
@@ -40,7 +39,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 		// draw circles in the image (showed by the application ?)
 		cv::circle(image, cv::Point(circles[i][0], circles[i][1]), circles[i][2], cv::Scalar(0, 0, 255), 2);
 	}
-	std::vector<int> containedCircles = containCircles(circles, sortedSquares);
+	std::vector<cv::Vec4f> containedCircles = containCircles(circles, sortedSquares);
 	if (containedCircles.size() == 0)
 	{
 		std::cout << "Not contained" << std::endl;
@@ -49,7 +48,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	for (int i = 0; i < containedCircles.size(); i++)
 	{
 		cv::Point text_point = cv::Point(circles[i][0], circles[i][1] - 10);
-		cv:putText(image, std::to_string(containedCircles[i]),            // shape type
+		cv:putText(image, std::to_string((int)containedCircles[i][3]),            // shape type
 			text_point,         // x,y co-ordinate 
 			cv::FONT_HERSHEY_PLAIN,  // Font name
 			2,                   // Font scale
@@ -58,7 +57,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	}
 	
 	//Detect the colors of the circles
-	Board board = detectColors(copy2, circles, containedCircles);
+	Board board = detectColors(image, containedCircles);
 	return board;
 }
 
@@ -70,21 +69,13 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	}
 
 	// Declaring few Mat object for further operations
-	cv::Mat img_gray, img_dilate, img_med_blur, absdiff, img_norm, img_gaus_blur, img_canny, img_dilate2;
+	cv::Mat img_gray, img_gaus_blur, img_canny;
 
 	// Convert img color to gray. Output image is second arg
 	cv::cvtColor(frame, img_gray, cv::COLOR_BGR2GRAY);
 
-	cv::Mat ones = cv::Mat::ones(5, 5, CV_32F);
-
-	// Remove the shadow on the image
-	cv::dilate(img_gray, img_dilate, ones);
-	cv::medianBlur(img_dilate, img_med_blur, 3);
-	cv::absdiff(img_gray, img_dilate, absdiff);
-	cv::normalize(255 - absdiff, img_norm, 0, 255, cv::NORM_MINMAX, CV_8UC1);
-
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
-	cv::GaussianBlur(img_norm, img_gaus_blur, cv::Size(3, 3), 3, 0);
+	cv::GaussianBlur(img_gray, img_gaus_blur, cv::Size(3, 3), 3, 0);
 
 	// Edge detection using canny algo
 	cv::Canny(img_gaus_blur, img_canny, 25, 110);
@@ -93,7 +84,7 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
 
-	//cv::imshow("Test", frame);
+	cv::imshow("Test", frame);
 	cv::waitKey(0);
 }
 
@@ -209,14 +200,14 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 	return squares;
 }
 
-std::vector<int> BoardDetector::containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares)
+std::vector<cv::Vec4f> BoardDetector::containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares)
 {
 	if (boardCircles.size() > 24)
 	{
-		return std::vector<int>();
+		return std::vector<cv::Vec4f>();
 	}
 
-	std::vector<int> containCircles;
+	std::vector<cv::Vec4f> containedCircles;
 
 	//For all the circles
 	for (uint i = 0; i < boardCircles.size(); i++)
@@ -226,11 +217,11 @@ std::vector<int> BoardDetector::containCircles(std::vector<cv::Vec3f> boardCircl
 			// If the circle is inside the square
 			float dist = sqrt(pow(boardCircles[i][0] - boardSquares[j][0], 2) + pow(boardCircles[i][1] - boardSquares[j][1], 2));
 			if (dist + boardCircles[i][2] <= boardSquares[j][2])
-				containCircles.push_back(j);
+				containedCircles.push_back(cv::Vec4f(boardCircles[i][0], boardCircles[i][1], boardCircles[i][2], j));
 		}
 	}
 
-	return containCircles;
+	return containedCircles;
 }
 
 std::vector<cv::Vec3f> BoardDetector::sortSquares(std::vector<cv::Vec3f> boardSquares)
@@ -284,40 +275,40 @@ std::vector<cv::Vec3f> BoardDetector::sortSquares(std::vector<cv::Vec3f> boardSq
 	return sortedSquares;
 }
 
-Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles, std::vector<int> containedCircles)
+Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec4f> containedCircles)
 {
 	Board board;
 
-	for (int i = 0; i < boardCircles.size(); i++)
+	for (int i = 0; i < containedCircles.size(); i++)
 	{
-		cv::Vec3b pieceColor = getCircleMeanColor(image, boardCircles[i]);
+		cv::Vec3b pieceColor = getCircleMeanColor(image, cv::Vec3f(containedCircles[i][0], containedCircles[i][1], containedCircles[i][2]));
 
-		//Draw the circle with the detected color for debug
-		cv::circle(image, cv::Point(boardCircles[i][0], boardCircles[i][1]), boardCircles[i][2] - 10, cv::Scalar(pieceColor[0], pieceColor[1], pieceColor[2]), -1);
+		//Uncomment to draw the circle with the detected color for debug
+		//cv::circle(image, cv::Point(containedCircles[i][0], containedCircles[i][1]), containedCircles[i][2] - 10, cv::Scalar(pieceColor[0], pieceColor[1], pieceColor[2]), -1);
 
 		//Detect the color of the circle
 		Color color = getColor(pieceColor);
 
 		if (color == Color::RED)
 		{
-			board.setPlayerPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
+			board.setPlayerPiece((int)containedCircles[i][3] % BOARDSIZE, (int)containedCircles[i][3] / BOARDSIZE, true);
 		}
 		else if (color == Color::YELLOW)
 		{
-			board.setPlayerPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true, true);
+			board.setPlayerPiece((int)containedCircles[i][3] % BOARDSIZE, (int)containedCircles[i][3] / BOARDSIZE, true, true);
 		}
 		else if (color == Color::WHITE)
 		{
-			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true);
+			board.setRobotPiece((int)containedCircles[i][3] % BOARDSIZE, (int)containedCircles[i][3] / BOARDSIZE, true);
 		}
 		else
 		{
-			board.setRobotPiece(containedCircles[i] % BOARDSIZE, (int)containedCircles[i] / BOARDSIZE, true, true);
+			board.setRobotPiece((int)containedCircles[i][3] % BOARDSIZE, (int)containedCircles[i][3] / BOARDSIZE, true, true);
 		}
 	}
 	//Uncomment to show the debug image with the detected circles
-	cv::imshow("Debug", image);
-	cv::waitKey(0);
+	//cv::imshow("Debug", image);
+	//cv::waitKey(0);
 
 	return board;
 }

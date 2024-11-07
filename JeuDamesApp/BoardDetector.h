@@ -52,8 +52,8 @@ private:
 	/// </summary>
 	/// <param name="boardCircles">Vector containing the circles from the board</param>
 	/// <param name="boardSquares">Vector containing the squares from the board</param>
-	/// <returns>A vector containing the squares id which contain the circles </returns>
-	static std::vector<int> containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares);
+	/// <returns>A vector containing the position of the circles and the square id which contain them</returns>
+	static std::vector<cv::Vec4f> containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares);
 
 	/// <summary>
 	/// Create squares and sort from the corners board in the correct order :
@@ -76,10 +76,9 @@ private:
 	/// Detect the color inside the circle acording to the image
 	/// </summary>
 	/// <param name="image">Source image containing the board</param>
-	/// <param name="boardCircles">Vector containing the circles from the board and in a correct order</param>
-	/// <param name="containedCircles">Vector containing the squares id which contain the circles</param>
+	/// <param name="containedCircles">Vector containing the position of the circles and the squares id which contain them</param>
 	/// <returns>A board object describing the status of the game</returns>
-	static Board detectColors(cv::Mat image, std::vector<cv::Vec3f> boardCircles, std::vector<int> containedCircles);
+	static Board detectColors(cv::Mat image, std::vector<cv::Vec4f> containedCircles);
 
 	/// <summary>
 	/// Get the color of the circle

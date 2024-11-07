@@ -23,11 +23,9 @@ public:
 	/// <summary>
 	/// Play a move corresponding to the given positions
 	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	void Play(int column, int row, int newColumn, int newRow);
+	/// <param name="initPos">Initial position</param>
+	/// <param name="newPos">New position</param>
+	void Play(int initPos, int newPos);
 
 	/// <summary>
 	/// Check if the game is over (Win or Draw)
@@ -72,26 +70,6 @@ public:
 	bool isValidMove(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
-	/// Check if a move forward (or backward for kings) is valid
-	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	/// <returns>True if the move is valid, false otherwise</returns>
-	bool isValidMoveForward(int column, int row, int newColumn, int newRow);
-
-	/// <summary>
-	/// Check if a move in diagonal is valid
-	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	/// <returns>True if the move is valid, false otherwise</returns>
-	bool isValidMoveDiagonal(int column, int row, int newColumn, int newRow);
-
-	/// <summary>
 	/// Return the piece eaten by the move, -1 if no piece is eaten
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
@@ -105,14 +83,6 @@ public:
 	/// Print the board in the console
 	/// </summary>
 	void printBoard();
-
-	/// <summary>
-	/// Verify if a piece (given by its position) is at the opposite border of the board
-	/// </summary>
-	/// <param name="column">Column of the position</param>
-	/// <param name="row">Row of the position</param>
-	/// <return>True if the piece is at the opposite border, false otherwise</return>
-	bool isNewKing(int column, int row);
 
 	/// <summary>
 	/// Upgrade a piece (given by its position) into a king
