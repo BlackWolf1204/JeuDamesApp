@@ -358,7 +358,18 @@ unsigned __int64 Board::getRobotKingBitboard()
 
 bool Board::isValid()
 {
-	// #############################################################################
+	// A piece can't be on a light square
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			if (i % 2 != j % 2 && getPiece(j, i))
+			{
+				std::cout << "Plateau non valide : Une piece est sur une case claire" << std::endl;
+				return false;
+			}
+		}
+	}
 	return true;
 }
 
