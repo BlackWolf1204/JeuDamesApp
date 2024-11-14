@@ -25,7 +25,8 @@ public:
 	/// </summary>
 	/// <param name="initPos">Initial position</param>
 	/// <param name="newPos">New position</param>
-	void Play(int initPos, int newPos);
+	/// <return>Vector of positions where moved piece can move to eat (sweep), empty if the move played din't eat a piece or no more piece to eat</return>
+	std::vector<int> Play(int initPos, int newPos);
 
 	/// <summary>
 	/// Check if the game is over (Win or Draw)
@@ -52,22 +53,20 @@ public:
 	bool draw();
 
 	/// <summary>
-	/// Return the position of the piece that can be eaten by the given piece (positions)
+	/// Return the moves where the piece can eat (positions)
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
-	/// <returns>Vector of position of the pieces to eat, empty if can't eat</returns>
+	/// <returns>Vector of position where the piece can eat, empty if can't eat</returns>
 	std::vector<int> canEat(int column, int row);
 
 	/// <summary>
-	/// Check if a move is valid
+	/// Return the positions where the piece can move or eat
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
-	/// <param name="newColumn">Column of the new position</param>
-	/// <param name="newRow">Row of the new position</param>
-	/// <returns>True if the move is valid, false otherwise</returns>
-	bool isValidMove(int column, int row, int newColumn, int newRow);
+	/// <returns>Vector of list of position where the pieces can move, empty if can't move and list of position where the piece can eat, enmpty if ca't eat</returns>
+	std::vector<std::vector<int>> canMoveEat(int column, int row);
 
 	/// <summary>
 	/// Return the piece eaten by the move, -1 if no piece is eaten
@@ -78,6 +77,16 @@ public:
 	/// <param name="newRow">Row of the new position</param>
 	/// <returns>Position of the eaten piece, -1 if o piece eaten</returns>
 	int MoveEatPiece(int column, int row, int newColumn, int newRow);
+
+	/// <summary>
+	/// Check if a move is valid
+	/// </summary>
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="newColumn">Column of the new position</param>
+	/// <param name="newRow">Row of the new position</param>
+	/// <returns>True if the move is valid, false otherwise</returns>
+	bool isValidMove(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
 	/// Print the board in the console
@@ -154,6 +163,17 @@ public:
 	/// <returns>The robot king bitboard</returns>
 	unsigned __int64 getRobotKingBitboard();
 
+	/// <summary>
+	/// Get if it's the robot turn to play or not as an int
+	/// </summary>
+	/// <returns>If it's the robot turn</returns>
+	int getRobotPlaying();
+
+	/// <summary>
+	/// Set robotPlaying to 1 (robot trun to play)
+	/// </summary>
+	void setRobotPlaying();
+
 	/// <summary> ############################################################################################
 	/// Check if the board is valid
 	/// </summary>
@@ -166,11 +186,64 @@ public:
 	/// <returns>1 if the player has a piece, 3 if the player has a king, 2 if the robot has a piece, 4 if the robot has a king, 0 otherwise</returns>
 	int getPiece(int column, int row);
 
+	// Funciotns to calculate the score of the board
+
+	/// <summary>
+	/// Get the number of opponent piece eaten
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of opponent piece eaten</returns>
+	int numCaptured(int side);
+
+	/// <summary>
+	/// Get the number of ally piece (man)
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of ally piece (man)</returns>
+	int numMen(int side);
+
+	/// <summary>
+	/// Get the number of ally king
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of ally king</returns>
+	int numKings(int side);
+
+	/// <summary>
+	/// Get the number of opponent piece that can be captured (the capturable piece don't have any support in the neighboring squares)
+	/// Don't look if an ally piece block a move that could eat an opponent piece
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of opponent piece that can be captured</returns>
+	int capturables(int side);
+
+	/// <summary>
+	/// Get the number of ally piece that can't be captured (the ally piece is supported by two ally pieces that block the eating movements on the two sides)
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of ally piece that can't be captured</returns>
+	int uncapturables(int side);
+
+	/// <summary>
+	/// Get the number of ally piece in the middle of the board
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of ally piece in the middle of the board</returns>
+	int atMiddle(int side);
+
+	/// <summary>
+	/// Get the number of ally piece in the opponent part of the board
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of ally piece in the opponent part of the board</returns>
+	int atEnemy(int side);
+
 private:
 	unsigned __int64 playerBoard;
 	unsigned __int64 playerKingBoard;
 	unsigned __int64 robotBoard;
 	unsigned __int64 robotKingBoard;
+	int robotPlaying;
 
 	/// <summary>
 	/// Check if a piece is present at the given position

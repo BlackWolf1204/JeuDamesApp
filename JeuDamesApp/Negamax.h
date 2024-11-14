@@ -20,7 +20,7 @@ namespace Negamax
 	int GetBestMove_noThreads(Board board, TranspositionTable* transpositionTable, unsigned int depth);
 
 	/// <summary>
-	/// Evaluate a Terminal board by giving it a score corresponding to the number of pieces needed to win for the current player.
+	/// Evaluate a board by giving it a score corresponding to the state of the board
 	/// </summary>
 	/// <param name="board">Board to evaluate</param>
 	/// <returns>Score of the board</returns>
@@ -32,21 +32,23 @@ namespace Negamax
 	/// <param name="board">Board to evaluate</param>
 	/// <param name="alpha">Alpha-beta pruning parameter</param>
 	/// <param name="beta">Alpha-beta pruning parameter</param>
+	/// <param name="ptr">Next empty position pointer of the array storing the positions sweep of the first move search</param>
+	/// <param name="posSweep">Actual position of the piece doing the sweep, -1 if no current sweep</param>
 	/// <param name="transpositionTable">Transposition table to use to store already evaluated boards</param>
 	/// <param name="depth">Depth of the search</param>
 	/// <returns>The score of the board</returns>
-	int Negamax(Board board, int alpha, int beta, TranspositionTable* transpositionTable, unsigned int depth);
+	int Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, TranspositionTable* transpositionTable, unsigned int depth);
 
 	/// <summary>
 	/// Launche the threads running the negamax function. One thread is created for each column
 	/// </summary>
 	/// <param name="board">Board to evaluate</param>
 	/// <param name="result">Int array to store each column result from each thread</param>
+	/// <param name="ptr">Next empty position pointer of the array storing the positions sweep of the first move search</param>
+	/// <param name="posSweep">Actual position of the piece doing the sweep, -1 if no current sweep</param>
 	/// <param name="transpositionTable"></param>
 	/// <param name="depth"></param>
-	void NegamaxThread(Board board, int* result, TranspositionTable* transpositionTable, unsigned int depth);
-
-	int compareColumnOrder(int a, int b);
+	void NegamaxThread(Board board, int* result, int* ptr, int posSweep, TranspositionTable* transpositionTable, unsigned int depth);
 
 	int GetBestMoveEarlyGame(Board board);
 }
