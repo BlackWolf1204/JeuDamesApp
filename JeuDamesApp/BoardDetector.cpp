@@ -1,5 +1,6 @@
 #include "BoardDetector.h"
 
+
 Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 {
 	// copy of the image to draw on the image and keep a clean image for the detection
@@ -7,6 +8,25 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	// modify the image to see only the contours
 	modifyFrame(copy);
 
+	// Show the squares positions on the camera
+	cv::Point p1(100, 20);
+	cv::Point p2(530, 450);
+	float gap = (p2.x - p1.x) / BOARDSIZE;
+	//cv::rectangle(image, p1, p2, cv::Scalar(0, 255, 0), 2);
+
+	std::vector<cv::Vec3f> sortedSquares;
+
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			cv::Vec3f square(p1.x + gap * i, p1.y + gap * j, gap);
+			sortedSquares.push_back(square);
+			cv::rectangle(image, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 0), 2);
+		}
+	}
+
+	/*
 	//Detect the squares in the image
 	std::vector<std::vector<cv::Point>> contours = getShapeContours(copy);
 	std::vector<cv::Vec3f> squares = detectSquares(image, contours);
@@ -26,17 +46,19 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 		std::cout << "Not sorted" << std::endl;
 		return Board();
 	}
+	*/
 	
 	//Detect the circles in the image
+	std::vector<std::vector<cv::Point>> contours = getShapeContours(copy);
 	std::vector<cv::Vec3f> circles = detectCircles(copy, contours);
 	if (circles.size() == 0)
 	{
 		std::cout << "No circles detected" << std::endl;
 		return Board();
 	}
+	
 	for (int i = 0; i < circles.size(); i++)
 	{
-		// draw circles in the image (showed by the application ?)
 		cv::circle(image, cv::Point(circles[i][0], circles[i][1]), circles[i][2], cv::Scalar(0, 0, 255), 2);
 	}
 	std::vector<cv::Vec4f> containedCircles = containCircles(circles, sortedSquares);
@@ -58,6 +80,7 @@ Board BoardDetector::detectBoard(cv::Mat image, Color playerColor)
 	
 	//Detect the colors of the circles
 	Board board = detectColors(image, containedCircles);
+	
 	return board;
 }
 
@@ -84,8 +107,8 @@ void BoardDetector::modifyFrame(cv::Mat& frame)
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	cv::dilate(img_canny, frame, se1);
 
-	cv::imshow("Test", frame);
-	cv::waitKey(0);
+	//cv::imshow("Test", frame);
+	//cv::waitKey(0);
 }
 
 std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& frame)
@@ -195,8 +218,6 @@ std::vector<cv::Vec3f> BoardDetector::detectSquares(cv::Mat frame, std::vector<s
 			}
 		}
 	}
-	//cv::imshow("Fill", fill);
-	//cv::waitKey(0);
 	return squares;
 }
 
@@ -216,8 +237,15 @@ std::vector<cv::Vec4f> BoardDetector::containCircles(std::vector<cv::Vec3f> boar
 		{
 			// If the circle is inside the square
 			float dist = sqrt(pow(boardCircles[i][0] - boardSquares[j][0], 2) + pow(boardCircles[i][1] - boardSquares[j][1], 2));
+			if (boardSquares[j][0] < boardCircles[i][0] && boardSquares[j][0] + boardSquares[j][2] > boardCircles[i][0]
+				&& boardSquares[j][1] < boardCircles[i][1] && boardSquares[j][1] + boardSquares[j][2] > boardCircles[i][1])
+				containedCircles.push_back(cv::Vec4f(boardCircles[i][0], boardCircles[i][1], boardCircles[i][2], j));
+
+			/*
+			float dist = sqrt(pow(boardCircles[i][0] - boardSquares[j][0], 2) + pow(boardCircles[i][1] - boardSquares[j][1], 2));
 			if (dist + boardCircles[i][2] <= boardSquares[j][2])
 				containedCircles.push_back(cv::Vec4f(boardCircles[i][0], boardCircles[i][1], boardCircles[i][2], j));
+			*/
 		}
 	}
 

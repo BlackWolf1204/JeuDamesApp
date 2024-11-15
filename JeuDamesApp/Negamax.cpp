@@ -132,7 +132,7 @@ std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transposi
 	return bestMove;
 }
 
-int Negamax::GetBestMove_noThreads(Board board, TranspositionTable* transpositionTable, unsigned int depth)
+std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable* transpositionTable, unsigned int depth)
 {
 	std::vector<int> pieces;
 	std::vector<std::vector<int>> allPositionsMove;
@@ -239,58 +239,7 @@ int Negamax::GetBestMove_noThreads(Board board, TranspositionTable* transpositio
 		}
 	}
 
-
-	//Find the best move with the highest value
-	for (int i = 0; i < ind; i++)
-	{
-		if (results[i] > bestValue)
-		{
-			bestValue = results[i];
-			int j = 0;
-			while (movePositions[i][j] != -1)
-			{
-				bestMove.push_back(movePositions[i][j]);
-				j++;
-			}
-		}
-	}
-	/*
-	int bestMove = 0;
-	int bestValue = -1000;
-
-	for (int i = 0; i < 7; i++)
-	{
-		if (board.isValidMove(i))
-		{
-			Board newBoard = board.copy();
-			newBoard.Play(i);
-			int value = Negamax::Negamax(newBoard, -100000, 100000, transpositionTable, depth - 1);
-			std::cout << "Move " << i << " value: " << value << std::endl;
-			if (value > bestValue)
-			{
-				bestValue = value;
-				bestMove = i;
-			}
-		}
-	}
 	return bestMove;
-}
-
-int Negamax::Evaluate(Board terminalBoard)
-{
-	if (terminalBoard.playerWins())
-	{
-		return 43 - terminalBoard.getMoveNumber();
-	}
-	else if (terminalBoard.robotWins())
-	{
-		return 43 - terminalBoard.getMoveNumber();
-	}
-	else
-	{
-		return 0;
-	}
-	*/
 }
 
 int Negamax::Evaluate(Board board)
@@ -425,7 +374,7 @@ void Negamax::NegamaxThread(Board board, int* result, int* ptr, int posSweep, Tr
 	*result = Negamax::Negamax(board, -100000, 100000, ptr, posSweep, transpositionTable, depth);
 }
 
-int Negamax::GetBestMoveEarlyGame(Board board)
+std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
 {
 	std::vector<int> bestMove;
 	if (board.getPiece(3, 4) == 1)
@@ -479,4 +428,6 @@ int Negamax::GetBestMoveEarlyGame(Board board)
 		bestMove.push_back(5 + 2 * BOARDSIZE);
 		bestMove.push_back(4 + 3 * BOARDSIZE);
 	}
+
+	return bestMove;
 }

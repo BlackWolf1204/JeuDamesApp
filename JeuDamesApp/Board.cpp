@@ -258,7 +258,7 @@ std::vector<std::vector<int>> Board::canMoveEat(int column, int row)
 
 	return positions;
 }
-
+/*
 std::vector<int> Board::canMove(int column, int row)
 {
 	if (getPiece(column, row, ))
@@ -319,7 +319,7 @@ std::vector<int> Board::canMove(int column, int row)
 	}
 	return true;
 }
-
+*/
 bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 {
 	// in the board
@@ -699,6 +699,7 @@ int Board::atMiddle(int side)
 				count++;
 		}
 	}
+	return count;
 }
 
 int Board::atEnemy(int side)
@@ -728,6 +729,7 @@ int Board::atEnemy(int side)
 				count++;
 		}
 	}
+	return count;
 }
 
 bool Board::getPiece(int column, int row, unsigned __int64 board)
