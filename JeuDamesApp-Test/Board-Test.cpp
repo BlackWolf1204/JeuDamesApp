@@ -19,6 +19,110 @@ namespace BoardTest
 			board = new Board();
 		}
 
+		TEST_METHOD(TestCanMoveEatPiece)
+		{
+			board->setRobotPiece(4, 3, true);
+			std::vector<std::vector<int>> positions = board->canMoveEat(4, 3);
+			// Can move forward
+			Assert::AreEqual((size_t)2, positions[0].size());
+			bool found1 = false;
+			bool found2 = false;
+			for (int i = 0; i < positions[0].size(); i++)
+			{
+				if (positions[0].at(i) == 5 + 2 * BOARDSIZE)
+					found1 = true;
+				if (positions[0].at(i) == 5 + 4 * BOARDSIZE)
+					found2 = true;
+			}
+			Assert::AreEqual(true, found1);
+			Assert::AreEqual(true, found2);
+			// Can't eat
+			Assert::AreEqual((size_t)0, positions[1].size());
+
+			board->setPlayerPiece(5, 2, true);
+			board->setPlayerPiece(5, 4, true);
+			positions = board->canMoveEat(4, 3);
+			// Can eat
+			Assert::AreEqual((size_t)2, positions[1].size());
+			found1 = false;
+			found2 = false;
+			for (int i = 0; i < positions[1].size(); i++)
+			{
+				if (positions[1].at(i) == 6 + 1 * BOARDSIZE)
+					found1 = true;
+				if (positions[1].at(i) == 6 + 5 * BOARDSIZE)
+					found2 = true;
+			}
+			Assert::AreEqual(true, found1);
+			Assert::AreEqual(true, found2);
+			// Can't move forward
+			Assert::AreEqual((size_t)0, positions[0].size());
+
+			board->setPlayerPiece(6, 1, true);
+			board->setPlayerPiece(6, 5, true);
+			positions = board->canMoveEat(4, 3);
+			//Can't eat
+			Assert::AreEqual((size_t)0, positions[1].size());
+		}
+
+		TEST_METHOD(TestCanMoveEatKing)
+		{
+			board->setRobotPiece(4, 3, true, true);
+			std::vector<std::vector<int>> positions = board->canMoveEat(4, 3);
+			// Can move forward
+			Assert::AreEqual((size_t)13, positions[0].size());
+			bool found1 = false;
+			bool found2 = false;
+			bool found3 = false;
+			bool found4 = false;
+			for (int i = 0; i < positions[0].size(); i++)
+			{
+				if (positions[0].at(i) == 1 + 0 * BOARDSIZE)
+					found1 = true;
+				if (positions[0].at(i) == 0 + 7 * BOARDSIZE)
+					found2 = true;
+				if (positions[0].at(i) == 7 + 0 * BOARDSIZE)
+					found3 = true;
+				if (positions[0].at(i) == 7 + 6 * BOARDSIZE)
+					found4 = true;
+			}
+			Assert::AreEqual(true, found1);
+			Assert::AreEqual(true, found2);
+			Assert::AreEqual(true, found3);
+			Assert::AreEqual(true, found4);
+			// Can't eat
+			Assert::AreEqual((size_t)0, positions[1].size());
+
+			board->setPlayerPiece(6, 1, true);
+			board->setPlayerPiece(6, 5, true);
+			board->setPlayerPiece(2, 1, true);
+			board->setPlayerPiece(2, 5, true);
+			positions = board->canMoveEat(4, 3);
+			// Can eat
+			Assert::AreEqual((size_t)4, positions[1].size());
+			found1 = false;
+			found2 = false;
+			found3 = false;
+			found4 = false;
+			for (int i = 0; i < positions[1].size(); i++)
+			{
+				if (positions[1].at(i) == 7 + 0 * BOARDSIZE)
+					found1 = true;
+				if (positions[1].at(i) == 7 + 6 * BOARDSIZE)
+					found2 = true;
+				if (positions[1].at(i) == 1 + 0 * BOARDSIZE)
+					found3 = true;
+				if (positions[1].at(i) == 1 + 6 * BOARDSIZE)
+					found4 = true;
+			}
+			Assert::AreEqual(true, found1);
+			Assert::AreEqual(true, found2);
+			Assert::AreEqual(true, found3);
+			Assert::AreEqual(true, found4);
+			// Can move forward
+			Assert::AreEqual((size_t)9, positions[0].size());
+		}
+
 		TEST_METHOD(TestIsValidMove)
 		{
 			// For robot pieces
@@ -107,7 +211,7 @@ namespace BoardTest
 			board->setPlayerPiece(5, 5, false);
 			board->setPlayerPiece(7, 7, false);
 		}
-	
+		/*
 		TEST_METHOD(TestCanEat)
 		{
 			// For robot pieces
@@ -152,6 +256,6 @@ namespace BoardTest
 			Assert::AreEqual((size_t)1, board->canEat(7, 0).size());
 			Assert::AreEqual(21, board->canEat(7, 0)[0]);
 		}
-	
+		*/
 	};
 }

@@ -139,6 +139,10 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 	std::vector<std::vector<int>> allPositionsEat;
 	int canEat = 0;
 
+	// If early game
+	if (board.getMoveNumber() == 0)
+		return GetBestMoveEarlyGame(board);
+
 	// Look all possible moves of robot pieces
 	for (int i = 0; i < BOARDSIZE; i++)
 	{
@@ -175,6 +179,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 					*(movePositions + i) = -1;
 				movePositions[0] = pieces[p];
 				canSweep = newBoard.Play(pieces[p], allPositionsEat[p][e]);
+				newBoard.newKing();
 				movePositions[1] = allPositionsEat[p][e];
 				int* ptr = movePositions;
 				ptr += 2;
@@ -210,6 +215,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 			{
 				Board newBoard = board.copy();
 				newBoard.Play(pieces[p], allPositionsMove[p][e]);
+				newBoard.newKing();
 				int movePositions[12];
 				for (int i = 0; i < 12; i++)
 					*(movePositions + i) = -1;
@@ -325,6 +331,7 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, T
 				{
 					Board boardCopy = board.copy();
 					boardCopy.Play(pieces[p], allPositionsEat[p][e]);
+					boardCopy.newKing();
 					// Keep in mind the sweep moves related to the first move of the thread
 					if (ptr != nullptr)
 					{
@@ -377,56 +384,63 @@ void Negamax::NegamaxThread(Board board, int* result, int* ptr, int posSweep, Tr
 std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
 {
 	std::vector<int> bestMove;
-	if (board.getPiece(3, 4) == 1)
+	if (board.getPiece(4, 3) == 1)
 	{
 		// Counter best player move
-		if (board.getPiece(2, 5) == 0)
+		if (board.getPiece(5, 2) == 0)
 		{
-			bestMove.push_back(5 + 2 * BOARDSIZE);
-			bestMove.push_back(6 + 3 * BOARDSIZE);
+			std::cout << "first move" << std::endl;
+			bestMove.push_back(2 + 5 * BOARDSIZE);
+			bestMove.push_back(3 + 6 * BOARDSIZE);
 		}
 		// Counter fourth best player move
-		else if (board.getPiece(4, 5) == 0)
+		else if (board.getPiece(5,4) == 0)
 		{
-			bestMove.push_back(7 + 2 * BOARDSIZE);
-			bestMove.push_back(6 + 3 * BOARDSIZE);
+			std::cout << "fourth move" << std::endl;
+			bestMove.push_back(2 + 7 * BOARDSIZE);
+			bestMove.push_back(3 + 6 * BOARDSIZE);
 		}
 	}
-	else if (board.getPiece(5, 4) == 1)
+	else if (board.getPiece(4, 5) == 1)
 	{
 		// Counter second best player move
-		if (board.getPiece(6, 5) == 0)
+		if (board.getPiece(5, 6) == 0)
 		{
-			bestMove.push_back(5 + 2 * BOARDSIZE);
-			bestMove.push_back(4 + 3 * BOARDSIZE);
+			std::cout << "second move" << std::endl;
+			bestMove.push_back(2 + 5 * BOARDSIZE);
+			bestMove.push_back(3 + 4 * BOARDSIZE);
 		}
 		// Counter fifth best player move
-		else if (board.getPiece(4, 5) == 0)
+		else if (board.getPiece(5, 4) == 0)
 		{
-			bestMove.push_back(1 + 2 * BOARDSIZE);
-			bestMove.push_back(2 + 3 * BOARDSIZE);
+			std::cout << "fifth move" << std::endl;
+			bestMove.push_back(2 + 1 * BOARDSIZE);
+			bestMove.push_back(3 + 2 * BOARDSIZE);
 		}
 	}
-	else if (board.getPiece(1, 4) == 1)
+	else if (board.getPiece(4, 1) == 1)
 	{
 		//Counter third best player move
-		if (board.getPiece(2, 5) == 0)
+		if (board.getPiece(5, 2) == 0)
 		{
-			bestMove.push_back(3 + 2 * BOARDSIZE);
-			bestMove.push_back(4 + 3 * BOARDSIZE);
+			std::cout << "third move" << std::endl;
+			bestMove.push_back(2 + 3 * BOARDSIZE);
+			bestMove.push_back(3 + 4 * BOARDSIZE);
 		}
 		// Counter sixth best player move
-		else if (board.getPiece(0, 0) == 0)
+		else if (board.getPiece(5, 0) == 0)
 		{
-			bestMove.push_back(1 + 2 * BOARDSIZE);
-			bestMove.push_back(0 + 3 * BOARDSIZE);
+			std::cout << "sixth move" << std::endl;
+			bestMove.push_back(2 + 1 * BOARDSIZE);
+			bestMove.push_back(3 + 0 * BOARDSIZE);
 		}
 	}
 	// Counter worst player move
-	else if (board.getPiece(7, 4) == 1 && board.getPiece(6, 5) == 0)
+	else if (board.getPiece(4, 7) == 1 && board.getPiece(5, 6) == 0)
 	{
-		bestMove.push_back(5 + 2 * BOARDSIZE);
-		bestMove.push_back(4 + 3 * BOARDSIZE);
+		std::cout << "worst move" << std::endl;
+		bestMove.push_back(2 + 5 * BOARDSIZE);
+		bestMove.push_back(3 + 4 * BOARDSIZE);
 	}
 
 	return bestMove;

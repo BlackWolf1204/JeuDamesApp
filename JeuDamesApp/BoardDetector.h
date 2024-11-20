@@ -9,10 +9,10 @@ class BoardDetector {
 public:
 	enum class Color
 	{
-		RED,		// player's piece
-		YELLOW,		// player's king
+		GREEN,		// player's piece
+		BLUE,		// player's king
 		WHITE,		// robot's piece
-		BLACK		// robot's king
+		RED			// robot's king
 	};
 
 	static Board detectBoard(cv::Mat image, Color playerColor);
@@ -86,7 +86,7 @@ private:
 	/// <param name="image">Image containing the circle</param>
 	/// <param name="circle">Coordinates of the circle (x, y, radius)</param>
 	/// <returns>RGB color inside the circle</returns>
-	static cv::Vec3b getCircleMeanColor(cv::Mat image, cv::Vec3f circle);
+	static cv::Vec3b getCircleMeanColor(cv::Mat image, cv::Vec4f circle);
 
 	/// <summary>
 	/// Get the color enum element corresponding to the given RGB color

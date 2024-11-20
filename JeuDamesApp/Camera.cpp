@@ -34,7 +34,7 @@ void Camera::getWebcamImage(cv::Mat* frame)
 		return;
 
 	std::cout << "Begin connection camera" << std::endl;
-	cv::VideoCapture cap(0);
+	cv::VideoCapture cap(1);
 	std::cout << "Camera connected !" << std::endl;
 	if (!cap.isOpened())
 		return;

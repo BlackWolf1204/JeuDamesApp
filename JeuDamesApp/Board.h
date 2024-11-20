@@ -65,7 +65,7 @@ public:
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
 	/// <param name="row">Row of the initial position</param>
-	/// <returns>Vector of list of position where the pieces can move, empty if can't move and list of position where the piece can eat, enmpty if ca't eat</returns>
+	/// <returns>Vector of list of position where the pieces can move, empty if can't move and list of position where the piece can eat, empty if can't eat</returns>
 	std::vector<std::vector<int>> canMoveEat(int column, int row);
 
 	/// <summary>
@@ -119,6 +119,11 @@ public:
 	void setRobotPiece(int column, int row, bool value, bool king=false);
 
 	/// <summary>
+	/// Upgrade a piece into a king if is at the end of the board
+	/// </summary>
+	void newKing();
+
+	/// <summary>
 	/// Check if the board is at the initial position :
 	/// 
 	/// . X . X . X . X
@@ -164,15 +169,10 @@ public:
 	unsigned __int64 getRobotKingBitboard();
 
 	/// <summary>
-	/// Get if it's the robot turn to play or not as an int
+	/// Get the number of move done by the robot
 	/// </summary>
-	/// <returns>If it's the robot turn</returns>
-	int getRobotPlaying();
-
-	/// <summary>
-	/// Set robotPlaying to 1 (robot trun to play)
-	/// </summary>
-	void setRobotPlaying();
+	/// <returns>Number of move done</returns>
+	int getMoveNumber();
 
 	/// <summary> ############################################################################################
 	/// Check if the board is valid
@@ -243,7 +243,7 @@ private:
 	unsigned __int64 playerKingBoard;
 	unsigned __int64 robotBoard;
 	unsigned __int64 robotKingBoard;
-	int robotPlaying;
+	int moveNumber;
 
 	/// <summary>
 	/// Check if a piece is present at the given position
