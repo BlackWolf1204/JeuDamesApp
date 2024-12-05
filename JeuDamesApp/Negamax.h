@@ -34,10 +34,11 @@ namespace Negamax
 	/// <param name="beta">Alpha-beta pruning parameter</param>
 	/// <param name="ptr">Next empty position pointer of the array storing the positions sweep of the first move search</param>
 	/// <param name="posSweep">Actual position of the piece doing the sweep, -1 if no current sweep</param>
+	/// <param name="playing">Indicate if it's the robot (0) or the player (1) that will do the move</param>
 	/// <param name="transpositionTable">Transposition table to use to store already evaluated boards</param>
 	/// <param name="depth">Depth of the search</param>
 	/// <returns>The score of the board</returns>
-	int Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, TranspositionTable* transpositionTable, unsigned int depth);
+	int Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, int playing, TranspositionTable* transpositionTable, unsigned int depth);
 
 	/// <summary>
 	/// Launche the threads running the negamax function. One thread is created for each column
@@ -46,9 +47,10 @@ namespace Negamax
 	/// <param name="result">Int array to store each column result from each thread</param>
 	/// <param name="ptr">Next empty position pointer of the array storing the positions sweep of the first move search</param>
 	/// <param name="posSweep">Actual position of the piece doing the sweep, -1 if no current sweep</param>
+	/// <param name="playing">Indicate if it's the robot (0) or the player that will do the mmove</param>
 	/// <param name="transpositionTable"></param>
 	/// <param name="depth"></param>
-	void NegamaxThread(Board board, int* result, int* ptr, int posSweep, TranspositionTable* transpositionTable, unsigned int depth);
+	void NegamaxThread(Board board, int* result, int* ptr, int posSweep, int playing, TranspositionTable* transpositionTable, unsigned int depth);
 
 	std::vector<int> GetBestMoveEarlyGame(Board board);
 }

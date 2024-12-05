@@ -11,7 +11,6 @@ using namespace std;
 
 int main()
 {
-	
 	sf::Vector2u windowSize(1280, 720);
 	Robot* robot = new Robot();
 	uiController uiController(windowSize, robot);
@@ -38,7 +37,6 @@ int main()
 			}
 		}*/
 		
-		/* ###################################*/
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
 			stateMachine.ChangeState(newState);
@@ -57,13 +55,13 @@ int main()
 
 		if (uiController.getGameUI()->restart)
 		{
-			moveNumber = -1;
 			uiController.getGameUI()->restart = false;
-			Board emptyBoard;
-			uiController.getGameUI()->updateBoard(uiController.getWindow(), emptyBoard);
+			Board newBoard;
+			newBoard.initBoard();
+			uiController.getGameUI()->updateBoard(uiController.getWindow(), newBoard);
 		}
 
-		Board board = BoardDetector::detectBoard(frame, BoardDetector::Color::RED);
+		Board board = BoardDetector::detectBoard(frame);
 		uiController.getGameUI()->getCameraFrame(frame);
 
 		if (!board.isInit() && board.isValid())
@@ -82,7 +80,7 @@ int main()
 				moveNumber = -1;
 				continue;
 			}
-			/*
+			
 			if (moveNumber == -1)
 			{
 				if (board.getMoveNumber() % 2 == 1)
@@ -94,20 +92,10 @@ int main()
 					moveNumber = board.getMoveNumber();
 				}
 			}
-			*/
-			/* ###########################################*/
+
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
 			/*
-			if (board.getMoveNumber() == moveNumber + 1 && board.getMoveNumber() % 2 == 1)
-			{
-				moveNumber += 2;
-				int bestMove = Negamax::GetBestMove(board, transpositionTable, 8);
-				board.Play(bestMove);
-				board.printBoard();
-				robot->Play(bestMove);
-			}*/
-			/* #############################################
 			std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
 			for (int i = 0; i < bestPositions.size() - 1; i++)
 			{
@@ -133,52 +121,75 @@ int main()
 				robot->Play(lastPos, -1);
 				robot->Play(-1, lastPos);
 			}
-			/*if (lastPos % BOARDSIZE == 0 && board.getPiece(lastPos % BOARDSIZE, lastPos / BOARDSIZE) == 1)
+			if (lastPos % BOARDSIZE == 0 && board.getPiece(lastPos % BOARDSIZE, lastPos / BOARDSIZE) == 1)
 			{
 				// show that the piece need to be upgraded
 			}*/
-			/* ####################################*/
 		}
-
+	
 	}
 	uiController.stop(stateMachine.getState());
-	/**/
+	
 	/*
 	Board board;
-	board.initBoard();
+	//board.initBoard();
+	
+	board.setPlayerPiece(4, 0, true, true);
+	board.setPlayerPiece(3, 5, true);
+	board.setPlayerPiece(4, 6, true);
+	board.setPlayerPiece(5, 7, true);
+	board.setPlayerPiece(6, 6, true);
+	board.setPlayerPiece(7, 5, true);
+	board.setPlayerPiece(7, 7, true);
+
+	board.setRobotPiece(0, 2, true);
+	board.setRobotPiece(1, 1, true);
+	board.setRobotPiece(3, 7, true, true);
+	board.setRobotPiece(6, 0, true);
+	board.setRobotPiece(7, 1, true);
+	
+
 	while (!board.isTerminal())
 	{
 		board.printBoard();
-		int pos = 0;
-		int newpos = 0;
+		int pos = -1;
+		int newpos = -1;
 		int continuer = 1;
 		// player
 		while (continuer == 1)
 		{
-			cout << "Positions initial : ";
-			cin >> pos;
-			cout << "Nouvelle position : ";
-			cin >> newpos;
-			std::cout << pos << std::endl;
-			std::cout << newpos << std::endl;
+			while (!board.isValidMove(pos % BOARDSIZE, (int)pos / BOARDSIZE, newpos % BOARDSIZE, (int)newpos / BOARDSIZE))
+			{
+				cout << "Positions initial : ";
+				cin >> pos;
+				cout << "Nouvelle position : ";
+				cin >> newpos;
+			}
 			std::cout << "Continuer ? (1/0) : ";
 			cin >> continuer;
 			board.Play(pos, newpos);
 			board.newKing();
 		}
 
-		board.printBoard();
 		// Robot
 		TranspositionTable* transpositionTable = new TranspositionTable();
-		std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
-		std::cout << "Reponse : ";
-		for (int i = 0; i < bestPositions.size() - 1; i++)
+		std::cout << "Beginning Negamax." << std::endl;
+		std::vector<int> bestPositions = Negamax::GetBestMove_noThreads(board, transpositionTable, 4);
+		std::cout << "End Negamax." << std::endl;
+		board.printBoard();
+		if (bestPositions.size() > 0)
 		{
-			std::cout << "(" << bestPositions[i] << ", " << bestPositions[i + 1] << ") ";
-			board.Play(bestPositions[i], bestPositions[i + 1]);
-			board.newKing();
+			for (int i = 0; i < bestPositions.size() - 1; i++)
+			{
+				std::cout << bestPositions[i] << ", " << bestPositions[i + 1] << std::endl;
+				board.Play(bestPositions[i], bestPositions[i + 1]);
+				board.newKing();
+			}
 		}
-		std::cout << std::endl;
+		else
+		{
+			std::cout << "No moves found." << std::endl;
+		}
 	}
 	*/
 	return 0;

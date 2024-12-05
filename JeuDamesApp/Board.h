@@ -75,7 +75,7 @@ public:
 	/// <param name="row">Row of the initial position</param>
 	/// <param name="newColumn">Column of the new position</param>
 	/// <param name="newRow">Row of the new position</param>
-	/// <returns>Position of the eaten piece, -1 if o piece eaten</returns>
+	/// <returns>Position of the eaten piece, -1 if no piece eaten</returns>
 	int MoveEatPiece(int column, int row, int newColumn, int newRow);
 
 	/// <summary>
@@ -88,8 +88,14 @@ public:
 	/// <returns>True if the move is valid, false otherwise</returns>
 	bool isValidMove(int column, int row, int newColumn, int newRow);
 
+	/// <summary> ############################################################################################
+	/// Check if the board is valid
+	/// </summary>
+	/// <returns>True if every piece has another piece below, false otherwise</returns>
+	bool isValid();
+
 	/// <summary>
-	/// Print the board in the console
+	/// Print the board in the console (X for player pieces and O for robot pieces
 	/// </summary>
 	void printBoard();
 
@@ -101,48 +107,10 @@ public:
 	void upgradePiece(int column, int row);
 
 	/// <summary>
-	/// Move the player piece at the given position (empty the position if value is false)
+	/// Get the piece at the given position
 	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <param name="value">If add or empty the position
-	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
-	void setPlayerPiece(int column, int row, bool value, bool king=false);
-
-	/// <summary>
-	/// Move the robot piece at the given position (empty the position if value is false)
-	/// </summary>
-	/// <param name="column">Column of the position</param>
-	/// <param name="row">Row of the position</param>
-	/// <param name="value">If add or empty the position
-	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
-	void setRobotPiece(int column, int row, bool value, bool king=false);
-
-	/// <summary>
-	/// Upgrade a piece into a king if is at the end of the board
-	/// </summary>
-	void newKing();
-
-	/// <summary>
-	/// Check if the board is at the initial position :
-	/// 
-	/// . X . X . X . X
-	/// X . X . X . X .
-	/// . X . X . X . X
-	/// . . . . . . . .
-	/// . . . . . . . .
-	/// O . O . O . O .
-	/// . O . O . O . O
-	/// O . O . O . O .
-	/// 
-	/// </summary>
-	/// <returns>True if the board is initialised, false otherwise</returns>
-	bool isInit();
-
-	/// <summary>
-	/// Initialize the board in the initial position
-	/// </summary>
-	void initBoard();
+	/// <returns>1 if the player has a piece, 3 if the player has a king, 2 if the robot has a piece, 4 if the robot has a king, 0 otherwise</returns>
+	int getPiece(int column, int row);
 
 	/// <summary>
 	/// Get the player bitboard as an unsigned __int64
@@ -174,19 +142,52 @@ public:
 	/// <returns>Number of move done</returns>
 	int getMoveNumber();
 
-	/// <summary> ############################################################################################
-	/// Check if the board is valid
+	/// <summary>
+	/// Move the player piece at the given position (empty the position if value is false)
 	/// </summary>
-	/// <returns>True if every piece has another piece below, false otherwise</returns>
-	bool isValid();
+	/// <param name="column">Column of the initial position</param>
+	/// <param name="row">Row of the initial position</param>
+	/// <param name="value">If add or empty the position
+	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
+	void setPlayerPiece(int column, int row, bool value, bool king=false);
 
 	/// <summary>
-	/// Get the piece at the given position
+	/// Move the robot piece at the given position (empty the position if value is false)
 	/// </summary>
-	/// <returns>1 if the player has a piece, 3 if the player has a king, 2 if the robot has a piece, 4 if the robot has a king, 0 otherwise</returns>
-	int getPiece(int column, int row);
+	/// <param name="column">Column of the position</param>
+	/// <param name="row">Row of the position</param>
+	/// <param name="value">If add or empty the position
+	/// <param name="king">If the piece is a king or not (false for piece and true for king)</param>
+	void setRobotPiece(int column, int row, bool value, bool king=false);
 
-	// Funciotns to calculate the score of the board
+	/// <summary>
+	/// Upgrade a piece into a king if is at the end of the board
+	/// </summary>
+	/// <returns>True if there was an upgrade, false otherwise</returns>
+	bool newKing();
+
+	/// <summary>
+	/// Check if the board is at the initial position :
+	/// 
+	/// . X . X . X . X
+	/// X . X . X . X .
+	/// . X . X . X . X
+	/// . . . . . . . .
+	/// . . . . . . . .
+	/// O . O . O . O .
+	/// . O . O . O . O
+	/// O . O . O . O .
+	/// 
+	/// </summary>
+	/// <returns>True if the board is initialised, false otherwise</returns>
+	bool isInit();
+
+	/// <summary>
+	/// Initialize the board in the initial position
+	/// </summary>
+	void initBoard();
+
+	// ##################### Functions to calculate the score of the board #######################################
 
 	/// <summary>
 	/// Get the number of opponent piece eaten
@@ -237,6 +238,8 @@ public:
 	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
 	/// <returns>Number of ally piece in the opponent part of the board</returns>
 	int atEnemy(int side);
+
+	// ######################################################################################################
 
 private:
 	unsigned __int64 playerBoard;

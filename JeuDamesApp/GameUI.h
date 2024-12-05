@@ -27,8 +27,10 @@ public:
 	/// <summary>
 	/// Initialize the game UI with the given font.
 	/// </summary>
+	/// <param name="window">The window where is the GameUI.</param>
 	/// <param name="font">The font to use for the texts.</param>
-	GameUI(sf::Font* font, Robot* robot);
+	/// <para name="robot">The robot playing</param>
+	GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot);
 
 	/// <summary>
 	/// Draw the game UI and all his components on the given window.
@@ -64,24 +66,27 @@ private:
 	sf::Texture* webcamTexture;
 	sf::Sprite* webcamSprite;
 
-	//grille de jeu
-	sf::RectangleShape gameGrid;
+	// game board
+	sf::RectangleShape gameBoard;
 
-	//cercles de la couleur des pièces dans la grille de jeu
+	// squares of the board
+	std::vector<sf::RectangleShape> gameSquares;
+
+	// circles of the pieces color in the board
 	std::vector<sf::CircleShape> circlesPieces;
 
-	//texte de chargement
+	// charging text
 	sf::Text loadingText;
 
-	//texte de victoire
+	// victoryy text
 	sf::Text victoryText;
 	bool victoryVisible = false;
 
 	Button restartButton;
 	Button refillButton;
+	Button frameDetailButton;
 
 	sf::RectangleShape left_available_pieces;
-	sf::RectangleShape right_available_pieces;
 	std::vector<sf::CircleShape> availablePieces;
 
 	Robot* robot;

@@ -10,7 +10,7 @@ uiController::uiController(sf::Vector2u windowSize, Robot* robot)
 		std::cerr << "Add the font file here :" << fontPath << std::endl;
 	}
 	mainMenu = new MainMenu(font);
-	gameUI = new GameUI(font, robot);
+	gameUI = new GameUI(window, font, robot);
 }
 
 StateMachine::State uiController::tick(StateMachine::State actualState)

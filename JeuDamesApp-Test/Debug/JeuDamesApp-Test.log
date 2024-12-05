@@ -12,5 +12,4 @@ D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(78,22): 
 D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(107,22): warning C4018: '<' : incompatibilité signed/unsigned
   (compiler le fichier source '/Board-Test.cpp')
   
-     Création de la bibliothèque D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.lib et de l'objet D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.exp
   JeuDamesApp-Test.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll

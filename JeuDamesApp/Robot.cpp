@@ -93,9 +93,10 @@ Robot::~Robot()
 
 bool Robot::connect()
 {
+	/*
 	char dobotPortName[64];
 	int dobotSearchCount = SearchDobot(dobotPortName, 64);
-
+	
 	if (dobotSearchCount == 0) {
 		std::cerr << "No dobot found" << std::endl;
 		return false;
@@ -103,9 +104,11 @@ bool Robot::connect()
 	else if (dobotSearchCount > 1) {
 		std::cerr << "Multiple dobot found. Please connect only one dobot" << std::endl;
 		return false;
-	}
+	}*/
 
-	int connectDobotResult = ConnectDobot(dobotPortName, 115200, nullptr, nullptr, &dobotId);
+	const char* dobotPortName = "COM13";
+
+	int connectDobotResult = ConnectDobot("COM13", 115200, nullptr, nullptr, &dobotId);
 	if (connectDobotResult != DobotConnect_NoError) {
 		std::cerr << "Failed to connect to dobot. Error : ";
 		switch (connectDobotResult) {

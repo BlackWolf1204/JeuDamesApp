@@ -29,37 +29,35 @@ std::vector<int> Board::Play(int initPos, int newPos)
 	int newColumn = newPos % BOARDSIZE;
 	int newRow = newPos / BOARDSIZE;
 
-	std::cout << column << ", " << row << "; " << newColumn << ", " << newRow << std::endl;
 
 	if (isValidMove(column, row, newColumn, newRow))
 	{
+		int moveEat = MoveEatPiece(column, row, newColumn, newRow);
 		moveNumber++;
 		// move the piece/king
 		int getpiece = getPiece(column, row);
-		if (getpiece == 1)
+		if (getpiece % 2 == 1)
 		{
-			setPiece(column, row, &playerBoard, false);
-			setPiece(column, row, &playerBoard, true);
+			setPlayerPiece(column, row, false);
+			if (getpiece == 3)
+				setPlayerPiece(newColumn, newRow, true, true);
+			else
+				setPlayerPiece(newColumn, newRow, true);
 		}
-		else if (getpiece == 3)
+		else if (getpiece % 2 == 0)
 		{
-			setPiece(column, row, &playerKingBoard, false);
-			setPiece(column, row, &playerKingBoard, true);
+			setRobotPiece(column, row, false);
+			if (getpiece == 4)
+				setRobotPiece(newColumn, newRow, true, true);
+			else
+				setRobotPiece(newColumn, newRow, true);
 		}
-		else if (getpiece == 2)
+		if (moveEat != -1)
 		{
-			setPiece(column, row, &robotBoard, false);
-			setPiece(column, row, &robotBoard, true);
-		}
-		else if (getpiece == 4)
-		{ 
-			setPiece(column, row, &robotKingBoard, false);
-			setPiece(column, row, &robotKingBoard, true);
-		}
-
-		int moveEat = MoveEatPiece(column, row, newColumn, newRow);
-		if (moveEat == 1)
-		{
+			if (getpiece % 2 == 0)
+				setPlayerPiece(moveEat % BOARDSIZE, (int)moveEat / BOARDSIZE, false);
+			if (getpiece % 2 == 1)
+				setRobotPiece(moveEat % BOARDSIZE, (int)moveEat / BOARDSIZE, false);
 			std::vector<std::vector<int>> positions = canMoveEat(newColumn, newRow);
 			return positions[1];
 		}
@@ -73,6 +71,8 @@ std::vector<int> Board::Play(int initPos, int newPos)
 
 bool Board::isTerminal()
 {
+	if (playerWins()) std::cout << "Player wins" << std::endl;
+	if (robotWins()) std::cout << "Robot wins" << std::endl;
 	if (playerWins() || robotWins() || draw())
 	{
 		return true;
@@ -100,33 +100,47 @@ std::vector<std::vector<int>> Board::canMoveEat(int column, int row)
 {
 	std::vector<int> positionsMove;
 	std::vector<int> positionsEat;
+	unsigned __int64 allyBoard;
+	unsigned __int64 opponentBoard;
+	if (getPiece(column, row, playerBoard))
+	{
+		allyBoard = getPlayerBitboard();
+		opponentBoard = getRobotBitboard();
+	}
+	else
+	{
+		allyBoard = getRobotBitboard();
+		opponentBoard = getPlayerBitboard();
+	}
+
 	// king
 	if (getPiece(column, row, playerKingBoard) || getPiece(column, row, robotKingBoard))
 	{
+		// Left bottom diagonal
 		int col = 0;
-		while (column - (col + 2) >= 0 && row - (col + 2) >= 0)
+		int nbEat = 0;
+		while (column - (col + 2) >= 0 && row - (col + 2) >= 0 && nbEat < 1)
 		{
-			if (!getPiece(column - (col + 2), row - (col + 2)))
+			// if meet an ally, don't look behind it
+			if (getPiece(column - (col + 1), row - (col + 1), allyBoard))
 			{
-				// eat opponent piece
-				if (getPiece(column, row, playerBoard))
-				{
-					if (getPiece(column - (col + 1), row - (col + 1), robotBoard))
-						positionsEat.push_back((column - (col + 2)) + (row - (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						col = BOARDSIZE;
-
-				}
-				if (getPiece(column, row, robotBoard))
-				{
-					if (getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						positionsEat.push_back((column - (col + 2)) + (row - (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column - (col + 1), row - (col + 1), robotBoard))
-						col = BOARDSIZE;
-				}
+				col = BOARDSIZE;
+				continue;
 			}
+			// eat opponent piece
+			if (getPiece(column - (col + 1), row - (col + 1), opponentBoard))
+			{
+				nbEat += 1;
+				if (!getPiece(column - (col + 2), row - (col + 2)))
+					positionsEat.push_back((column - (col + 2)) + (row - (col + 2)) * BOARDSIZE);
+				else
+				{
+					col = BOARDSIZE;
+					continue;
+				}
+				continue;
+			}
+			// move
 			if (column - (col + 1) >= 0 && row - (col + 1) >= 0)
 				if (!getPiece(column - (col + 1), row - (col + 1)))
 					positionsMove.push_back((column - (col + 1)) + (row - (col + 1)) * BOARDSIZE);
@@ -135,96 +149,105 @@ std::vector<std::vector<int>> Board::canMoveEat(int column, int row)
 		if (column - (col + 1) >= 0 && row - (col + 1) >= 0)
 			if (!getPiece(column - (col + 1), row - (col + 1)))
 				positionsMove.push_back((column - (col + 1)) + (row - (col + 1)) * BOARDSIZE);
+		// Left top diagonal
 		col = 0;
-		while (column - (col + 2) >= 0 && row + (col + 2) < BOARDSIZE)
+		nbEat = 0;
+		while (column - (col + 2) >= 0 && row + (col + 2) < BOARDSIZE && nbEat < 1)
 		{
-			if (!getPiece(column - (col + 2), row + (col + 2)))
+			// if meet an ally, don't look behind it
+			if (getPiece(column - (col + 1), row + (col + 1), allyBoard))
 			{
-				// eat opponent piece
-				if (getPiece(column, row, playerBoard))
-				{
-					if (getPiece(column - (col + 1), row + (col + 1), robotBoard))
-						positionsEat.push_back((column - (col + 2)) + (row + (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column - (col + 1), row + (col + 1), playerBoard))
-						col = BOARDSIZE;
-				}
-				if (getPiece(column, row, robotBoard))
-				{
-					if (getPiece(column - (col + 1), row + (col + 1), playerBoard))
-						positionsEat.push_back((column - (col + 2)) + (row + (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column - (col + 1), row + (col + 1), robotBoard))
-						col = BOARDSIZE;
-				}
+				col = BOARDSIZE;
+				continue;
 			}
+			// eat opponent piece
+			if (getPiece(column - (col + 1), row + (col + 1), opponentBoard))
+			{
+				nbEat += 1;
+				if (!getPiece(column - (col + 2), row + (col + 2)))
+					positionsEat.push_back((column - (col + 2)) + (row + (col + 2)) * BOARDSIZE);
+				else
+				{
+					col = BOARDSIZE;
+					continue;
+				}
+				continue;
+			}
+			// move
 			if (column - (col + 1) >= 0 && row + col + 1 < BOARDSIZE)
 				if (!getPiece(column - (col + 1), row + (col + 1)))
 					positionsMove.push_back((column - (col + 1)) + (row + (col + 1)) * BOARDSIZE);
 			col++;
 		}
+		// move
 		if (column - (col + 1) >= 0 && row + col + 1 < BOARDSIZE)
 			if (!getPiece(column - (col + 1), row + (col + 1)))
 				positionsMove.push_back((column - (col + 1)) + (row + (col + 1)) * BOARDSIZE);
+		// Right bottom diagonal
 		col = 0;
-		while (column + (col + 2) < BOARDSIZE && row - (col + 2) >= 0)
+		nbEat = 0;
+		while (column + (col + 2) < BOARDSIZE && row - (col + 2) >= 0 && nbEat < 1)
 		{
-			if (!getPiece(column + (col + 2), row - (col + 2)))
+			// if meet an ally, don't look behind it
+			if (getPiece(column + (col + 1), row - (col + 1), allyBoard))
 			{
-				// eat opponent piece
-				if (getPiece(column, row, playerBoard))
-				{
-					if (getPiece(column + (col + 1), row - (col + 1), robotBoard))
-						positionsEat.push_back((column + (col + 2)) + (row - (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column + (col + 1), row - (col + 1), playerBoard))
-						col = BOARDSIZE;
-				}
-				if (getPiece(column, row, robotBoard))
-				{
-					if (getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						positionsEat.push_back((column + (col + 2)) + (row - (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column - (col + 1), row - (col + 1), playerBoard))
-						col = BOARDSIZE;
-				}
+				col = BOARDSIZE;
+				continue;
 			}
+			// eat opponent piece
+			if (getPiece(column + (col + 1), row - (col + 1), opponentBoard))
+			{
+				nbEat += 1;
+				if (!getPiece(column + (col + 2), row - (col + 2)))
+						positionsEat.push_back((column + (col + 2)) + (row - (col + 2)) * BOARDSIZE);
+				else
+				{
+					col = BOARDSIZE;
+					continue;
+				}
+				continue;
+			}
+			// move
 			if (column + col + 1 < BOARDSIZE && row - (col + 1) >= 0)
 				if (!getPiece(column + (col + 1), row - (col + 1)))
 					positionsMove.push_back((column + (col + 1)) + (row - (col + 1)) * BOARDSIZE);
 			col++;
 		}
+		// move
 		if (column + col + 1 < BOARDSIZE && row - (col + 1) >= 0)
 			if (!getPiece(column + (col + 1), row - (col + 1)))
 				positionsMove.push_back((column + (col + 1)) + (row - (col + 1)) * BOARDSIZE);
+		// Left top diagonal
 		col = 0;
-		while (column + col + 2 < BOARDSIZE && row + col + 2 < BOARDSIZE)
+		nbEat = 0;
+		while (column + col + 2 < BOARDSIZE && row + col + 2 < BOARDSIZE && nbEat < 1)
 		{
-			if (!getPiece(column + (col + 2), row + (col + 2)))
+			// if meet an ally, don't look behind it
+			if (getPiece(column + (col + 1), row + (col + 1), allyBoard))
 			{
-				// eat opponent piece
-				if (getPiece(column, row, playerBoard))
-				{
-					if (getPiece(column + (col + 1), row + (col + 1), robotBoard))
-						positionsEat.push_back((column + (col + 2)) + (row + (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column + (col + 1), row + (col + 1), robotBoard))
-						col = BOARDSIZE;
-				}
-				else if (getPiece(column, row, robotBoard))
-				{
-					if (getPiece(column + (col + 1), row + (col + 1), playerBoard))
-						positionsEat.push_back((column + (col + 2)) + (row + (col + 2)) * BOARDSIZE);
-					// if meet an ally, don't look behind it
-					else if (getPiece(column + (col + 1), row + (col + 1), playerBoard))
-						col = BOARDSIZE;
-				}
+				col = BOARDSIZE;
+				continue;
 			}
+			// eat opponent piece
+			if (getPiece(column + (col + 1), row + (col + 1), opponentBoard))
+			{
+				nbEat += 1;
+				if (!getPiece(column + (col + 2), row + (col + 2)))
+						positionsEat.push_back((column + (col + 2)) + (row + (col + 2)) * BOARDSIZE);
+				else
+				{
+					col = BOARDSIZE;
+					continue;
+				}
+				continue;
+			}
+			// move
 			if (column + col + 1 < BOARDSIZE && row + col + 1 < BOARDSIZE)
 				if (!getPiece(column + (col + 1), row + (col + 1)))
 					positionsMove.push_back((column + (col + 1)) + (row + (col + 1)) * BOARDSIZE);
 			col++;
 		}
+		// move
 		if (column + col + 1 < BOARDSIZE && row + col + 1 < BOARDSIZE)
 			if (!getPiece(column + (col + 1), row + (col + 1)))
 				positionsMove.push_back((column + (col + 1)) + (row + (col + 1)) * BOARDSIZE);
@@ -234,24 +257,24 @@ std::vector<std::vector<int>> Board::canMoveEat(int column, int row)
 		// piece
 		if (getPiece(column, row, playerBoard))
 		{
-			if (column > 1 && row > 1 && !getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
+			if (row > 1 && column > 1 && !getPiece(column - 2, row - 2) && getPiece(column - 1, row - 1, robotBoard))
 				positionsEat.push_back((column - 2) + (row - 2) * BOARDSIZE);
-			if (column > 1 && row < 6 && !getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, robotBoard))
-				positionsEat.push_back((column - 2) + (row + 2) * BOARDSIZE);
-			if (column > 0 && row > 0 && !getPiece(column - 1, row - 1))
+			if (row > 1 && column < 6 && !getPiece(column + 2, row - 2) && getPiece(column + 1, row - 1, robotBoard))
+				positionsEat.push_back((column + 2) + (row - 2) * BOARDSIZE);
+			if (row > 0 && column > 0 && !getPiece(column - 1, row - 1))
 				positionsMove.push_back((column - 1) + (row - 1) * BOARDSIZE);
-			if (column > 0 && row < 7 && !getPiece(column - 1, row + 1))
-				positionsMove.push_back((column - 1) + (row + 1) * BOARDSIZE);
+			if (row > 0 && column < 7 && !getPiece(column + 1, row - 1))
+				positionsMove.push_back((column + 1) + (row - 1) * BOARDSIZE);
 		}
 		if (getPiece(column, row, robotBoard))
 		{
-			if (column < 6 && row > 1 && !getPiece(column + 2, row - 2) && getPiece(column + 1, row - 1, playerBoard))
-				positionsEat.push_back((column + 2) + (row - 2) * BOARDSIZE);
-			if (column < 6 && row < 6 && !getPiece(column + 2, row + 2) && getPiece(column + 1, row + 1, playerBoard))
+			if (row < 6 && column > 1 && !getPiece(column - 2, row + 2) && getPiece(column - 1, row + 1, playerBoard))
+				positionsEat.push_back((column - 2) + (row + 2) * BOARDSIZE);
+			if (row < 6 && column < 6 && !getPiece(column + 2, row + 2) && getPiece(column + 1, row + 1, playerBoard))
 				positionsEat.push_back((column + 2) + (row + 2) * BOARDSIZE);
-			if (column < 7 && row > 0 && !getPiece(column + 1, row - 1))
-				positionsMove.push_back((column + 1) + (row - 1) * BOARDSIZE);
-			if (column < 7 && row < 7 && !getPiece(column + 1, row + 1))
+			if (row < 7 && column > 0 && !getPiece(column - 1, row + 1))
+				positionsMove.push_back((column - 1) + (row + 1) * BOARDSIZE);
+			if (row < 7 && column < 7 && !getPiece(column + 1, row + 1))
 				positionsMove.push_back((column + 1) + (row + 1) * BOARDSIZE);
 		}
 	}
@@ -326,7 +349,7 @@ std::vector<int> Board::canMove(int column, int row)
 bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 {
 	// in the board
-	if (column < 0 || column > BOARDSIZE-1 || row < 0 || row > BOARDSIZE-1)
+	if (column < 0 || column > BOARDSIZE - 1 || row < 0 || row > BOARDSIZE - 1)
 	{
 		return false;
 	}
@@ -364,16 +387,16 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 	if (piece == 1 || piece == 2)
 	{
 		// Move 2 cases in diagonal forward
-		if (diffC * side == 2)
+		if (diffR * side == 2)
 		{
 			// Don't eat an opponent piece
-			if (getPiece(column, row, playerBoard) && !getPiece(column + side, row + dirRow, robotBoard))
+			if (getPiece(column, row, playerBoard) && !getPiece(column + dirCol, row + side, robotBoard))
 				return false;
-			if (getPiece(column, row, robotBoard) && !getPiece(column + side, row + dirRow, playerBoard))
+			if (getPiece(column, row, robotBoard) && !getPiece(column + dirCol, row + side, playerBoard))
 				return false;
 		}
 		// Don't move 1 case in diagonal forward
-		else if (diffC * side != 1)
+		else if (diffR * side != 1)
 			return false;
 	}
 	// king
@@ -381,7 +404,7 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 	{
 		int eatOpponent = 0;
 		// Look at all the positions of the trajectory
-		for (int i = 1; i < abs(diffC); i++)
+		for (int i = 1; i < abs(diffR); i++)
 		{
 			// Eat a piece of his side
 			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
@@ -402,6 +425,23 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 	return true;
 }
 
+bool Board::isValid()
+{
+	// A piece can't be on a light square
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			if (i % 2 != j % 2 && getPiece(j, i))
+			{
+				std::cout << "Plateau non valide : Une piece est sur une case claire" << std::endl;
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 int Board::MoveEatPiece(int column, int row, int newColumn, int newRow)
 {
 	int diffC = newColumn - column;
@@ -410,21 +450,23 @@ int Board::MoveEatPiece(int column, int row, int newColumn, int newRow)
 	int dirRow = (diffR >= 0) - (diffR < 0);
 	
 	// Look at all the positions of the trajectory
-	for (int i = 0; i < abs(diffC); i++)
+	for (int i = 1; i < abs(diffC); i++)
 	{
 		if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
-			return (column + (i * dirCol) + (row +(i * dirRow)) * BOARDSIZE);
+		{
+			return (column + (i * dirCol) + (row + (i * dirRow)) * BOARDSIZE);
+		}
 		if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
-			return (column + (i * dirCol) + row + ((i * dirRow)) * BOARDSIZE);
+			return (column + (i * dirCol) + (row + (i * dirRow)) * BOARDSIZE);
 	}
 	return -1;
 }
 
 void Board::printBoard()
 {
-	for (int column = 0; column < BOARDSIZE; column++)
+	for (int row = 0; row < BOARDSIZE; row++)
 	{
-		for (int row = 0; row < BOARDSIZE; row++)
+		for (int column = BOARDSIZE - 1; column >= 0; column--)
 		{
 			if (getPiece(column, row, playerBoard))
 			{
@@ -463,50 +505,23 @@ void Board::upgradePiece(int column, int row)
 	return;
 }
 
-void Board::setPlayerPiece(int column, int row, bool value, bool king)
+int Board::getPiece(int column, int row)
 {
-	if (king)
-		setKingPiece(column, row, &playerKingBoard, value);
-	else if (getPiece(column, row, playerKingBoard) && !value)
-		setKingPiece(column, row, &playerKingBoard, value);
-	setPiece(column, row, &playerBoard, value);
-}
-
-void Board::setRobotPiece(int column, int row, bool value, bool king)
-{
-	if (king)
-		setKingPiece(column, row, &robotKingBoard, value);
-	else if (getPiece(column, row, robotKingBoard) && !value)
-		setKingPiece(column, row, &robotKingBoard, value);
-	setPiece(column, row, &robotBoard, value);
-}
-
-void Board::newKing()
-{
-	for (int i = 0; i < BOARDSIZE; i++)
+	if (getPiece(column, row, playerBoard))
 	{
-		if (getPiece(0, i) == 1)
-			upgradePiece(i, 0);
-		if (getPiece(BOARDSIZE - 1, i) == 2)
-			upgradePiece(i, BOARDSIZE - 1);
+		if (getPiece(column, row, playerKingBoard))
+			return 3;
+		else
+			return 1;
 	}
-}
-
-bool Board::isInit()
-{
-	if (playerBoard == 4656793071724282016 && robotBoard == 360856426375152898)
+	if (getPiece(column, row, robotBoard))
 	{
-		return true;
+		if (getPiece(column, row, robotKingBoard))
+			return 4;
+		else
+			return 2;
 	}
-	return false;
-}
-
-void Board::initBoard()
-{
-	playerBoard = 4656793071724282016;
-	playerKingBoard = 0;
-	robotBoard = 360856426375152898;
-	robotKingBoard = 0;
+	return 0;
 }
 
 unsigned __int64 Board::getPlayerBitboard()
@@ -534,42 +549,62 @@ int Board::getMoveNumber()
 	return moveNumber;
 }
 
-bool Board::isValid()
+void Board::setPlayerPiece(int column, int row, bool value, bool king)
 {
-	// A piece can't be on a light square
+	if (king)
+		setKingPiece(column, row, &playerKingBoard, value);
+	else if (getPiece(column, row, playerKingBoard))
+		setKingPiece(column, row, &playerKingBoard, value);
+	setPiece(column, row, &playerBoard, value);
+}
+
+void Board::setRobotPiece(int column, int row, bool value, bool king)
+{
+	if (king)
+		setKingPiece(column, row, &robotKingBoard, value);
+	else if (getPiece(column, row, robotKingBoard))
+		setKingPiece(column, row, &robotKingBoard, value);
+	setPiece(column, row, &robotBoard, value);
+}
+
+bool Board::newKing()
+{
+	bool upgraded = false;
 	for (int i = 0; i < BOARDSIZE; i++)
 	{
-		for (int j = 0; j < BOARDSIZE; j++)
+		if (getPiece(i, 0) == 1)
 		{
-			if (i % 2 != j % 2 && getPiece(j, i))
-			{
-				std::cout << "Plateau non valide : Une piece est sur une case claire" << std::endl;
-				return false;
-			}
+			upgradePiece(i, 0);
+			upgraded = true;
+		}
+		if (getPiece(i, BOARDSIZE - 1) == 2)
+		{
+			upgradePiece(i, BOARDSIZE - 1);
+			upgraded = true;
 		}
 	}
-	return true;
+
+	return upgraded;
 }
 
-int Board::getPiece(int column, int row)
+bool Board::isInit()
 {
-	if (getPiece(column, row, playerBoard))
+	if (playerBoard == 12273903276444876800 && robotBoard == 5614165)
 	{
-		if (getPiece(column, row, playerKingBoard))
-			return 3;
-		else
-			return 1;
+		return true;
 	}
-	if (getPiece(column, row, robotBoard))
-	{
-		if (getPiece(column, row, robotKingBoard))
-			return 4;
-		else
-			return 2;
-	}
-	return 0;
+	return false;
 }
 
+void Board::initBoard()
+{
+	playerBoard = 12273903276444876800;
+	playerKingBoard = 0;
+	robotBoard = 5614165;
+	robotKingBoard = 0;
+}
+
+// ################## Functions to calculate the board score ######################
 int Board::numCaptured(int side)
 {
 	int count = 0;
@@ -740,6 +775,7 @@ int Board::atEnemy(int side)
 	}
 	return count;
 }
+// ################################################################################
 
 bool Board::getPiece(int column, int row, unsigned __int64 board)
 {
@@ -786,35 +822,18 @@ bool Board::checkWin(unsigned __int64 winBboard, unsigned __int64 loseBoard, uns
 {
 	// no more piece in loseBoard
 	if (loseBoard == 0)
-	{
 		return true;
-	}
 
 	//can't move any piece
-	for (int column = 1; column < BOARDSIZE - 1; column++)
+	for (int column = 0; column < BOARDSIZE; column++)
 	{
-		for (int row = 1; row < BOARDSIZE - 1; row++)
+		for (int row = 0; row < BOARDSIZE; row++)
 		{
 			if (getPiece(column, row, loseBoard))
 			{
-				if (canMoveEat(column, row).size() > 0)
+				std::vector<std::vector<int>> moveEat = canMoveEat(column, row);
+				if (moveEat[0].size() > 0 || moveEat[1].size() > 0)
 					return false;
-				/*
-				// piece/king can move forward (no piece in front of the piece/king)
-				if (isValidMove(column, row, column + 1, row) || isValidMove(column, row, column - 1, row))
-				{
-					return false;
-				}
-				// piece can eat
-				if (isValidMove(column, row, column + 2, row - 2) || isValidMove(column, row, column + 2, row + 2)
-					|| isValidMove(column, row, column - 2, row - 2) || isValidMove(column, row, column - 2, row + 2))
-					return false;
-				// king can move in diagonal
-				if (getPiece(column, row, playerKingBoard) || getPiece(column, row, robotKingBoard))
-					if (isValidMove(column, row, column + 1, row - 1) || isValidMove(column, row, column + 1, row + 1)
-						|| isValidMove(column, row, column - 1, row - 1) || isValidMove(column, row, column - 1, row + 1))
-						return false;
-				*/
 			}
 		}
 	}

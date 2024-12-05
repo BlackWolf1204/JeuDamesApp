@@ -15,7 +15,7 @@ public:
 		RED			// robot's king
 	};
 
-	static Board detectBoard(cv::Mat image, Color playerColor);
+	static Board detectBoard(cv::Mat image);
 
 private:
 
@@ -40,37 +40,25 @@ private:
 	static std::vector<cv::Vec3f> detectCircles(cv::Mat frame, std::vector<std::vector<cv::Point>> contours);
 
 	/// <summary>
-	/// Search for squares in a list of contours (shapes)
-	/// </summary>
-	/// <param name="frame">Source image</param>
-	/// <param name="contours">Vector containing the contours</param>
-	/// <returns>A vector containing all the squares (represented in circles) detected in the image</returns>
-	static std::vector<cv::Vec3f> detectSquares(cv::Mat frame, std::vector<std::vector<cv::Point>> contours);
-
-	/// <summary>
 	/// Sort the circles in the correct squares of the board
+	/// The squares are ordered like this :
+	/// 
+	///         ROBOT
+	///  7  6  5  4  3  2  1  0
+	/// 15 14 13 12 11 10  9  8
+	/// 23 22 21 20 19 18 17 16
+	/// 31 30 29 28 27 26 25 24
+	/// 39 38 37 36 35 34 33 32
+	/// 47 46 45 44 43 42 41 40
+	/// 55 54 53 52 51 50 49 48
+	/// 63 62 61 60 59 58 57 56
+	///         PLAYER
+	/// 
 	/// </summary>
 	/// <param name="boardCircles">Vector containing the circles from the board</param>
 	/// <param name="boardSquares">Vector containing the squares from the board</param>
 	/// <returns>A vector containing the position of the circles and the square id which contain them</returns>
 	static std::vector<cv::Vec4f> containCircles(std::vector<cv::Vec3f> boardCircles, std::vector<cv::Vec3f> boardSquares);
-
-	/// <summary>
-	/// Create squares and sort from the corners board in the correct order :
-	/// 
-	/// 0  8 16 24 32 40 48 56
-	/// 1  9 17 25 33 41 49 57
-	/// 2 10 18 26 34 42 50 58
-	/// 3 11 19 27 35 43 51 59
-	/// 4 12 20 28 36 44 52 60
-	/// 5 13 21 29 37 45 53 61
-	/// 6 14 22 30 38 46 54 62
-	/// 7 15 23 31 39 47 55 63
-	/// 
-	/// </summary>
-	/// <param name="squares">Vector containing the squares from the board</param>
-	/// <returns>A vector containing the squares from the board in the correct order</returns>
-	static std::vector<cv::Vec3f> sortSquares(std::vector<cv::Vec3f> squares);
 
 	/// <summary>
 	/// Detect the color inside the circle acording to the image
