@@ -9,7 +9,7 @@ Board BoardDetector::detectBoard(cv::Mat image)
 	// modify the image to see only the contours
 	modifyFrame(copy);
 
-	// Show the squares positions on the camera
+	// Square positions on the image
 	cv::Point p1(510, 460);
 	cv::Point p2(100, 30);
 	float gap = (p2.x - p1.x) / BOARDSIZE;
@@ -21,7 +21,8 @@ Board BoardDetector::detectBoard(cv::Mat image)
 		{
 			cv::Vec3f square(p1.x + gap * i, p1.y + gap * j, gap);
 			sortedSquares.push_back(square);
-			cv::rectangle(image, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 255), 2);
+			// Uncomment to show the squares positions on the camera
+			//cv::rectangle(image, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 255), 2);
 		}
 	}
 
@@ -50,31 +51,53 @@ Board BoardDetector::detectBoard(cv::Mat image)
 	return board;
 }
 
-void BoardDetector::modifyFrame(cv::Mat& frame)
+std::vector<cv::Mat> BoardDetector::modifyFrame(cv::Mat& frame)
 {
+	std::vector<cv::Mat> modifiedFrame;
 	if (frame.empty())
 	{
-		return;
+		return modifiedFrame;
 	}
+	cv::Mat img_squares = frame.clone();
 
 	// Declaring few Mat object for further operations
-	cv::Mat img_gray, img_gaus_blur, img_canny;
+	cv::Mat img_gray, color_gray, img_gaus_blur, color_gaus_blur, img_canny, color_canny;
+
+	// Square positions on the image
+	cv::Point p1(510, 460);
+	cv::Point p2(100, 30);
+	float gap = (p2.x - p1.x) / BOARDSIZE;
+
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			cv::Vec3f square(p1.x + gap * i, p1.y + gap * j, gap);
+			cv::rectangle(img_squares, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 255), 2);
+		}
+	}
+	modifiedFrame.push_back(img_squares);
 
 	// Convert img color to gray. Output image is second arg
 	cv::cvtColor(frame, img_gray, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(img_gray, color_gray, cv::COLOR_GRAY2BGR);
+	modifiedFrame.push_back(color_gray);
 
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
 	cv::GaussianBlur(img_gray, img_gaus_blur, cv::Size(3, 3), 3, 0);
+	cv::cvtColor(img_gaus_blur, color_gaus_blur, cv::COLOR_GRAY2BGR);
+	modifiedFrame.push_back(color_gaus_blur);
 
 	// Edge detection using canny algo
 	cv::Canny(img_gaus_blur, img_canny, 25, 110);
 	
 	// Running dilation on canny output to improve edge thickness
-	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
+	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
 	cv::dilate(img_canny, frame, se1);
+	cv::cvtColor(frame, color_canny, cv::COLOR_GRAY2BGR);
+	modifiedFrame.push_back(color_canny);
 
-	cv::imshow("Test", frame);
-	cv::waitKey(0);
+	return modifiedFrame;
 }
 
 std::vector<std::vector<cv::Point>> BoardDetector::getShapeContours(cv::Mat& frame)
@@ -105,7 +128,7 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 
 	//Search for circles in the frame
 	std::vector<cv::Vec3f> circles;
-	cv::HoughCircles(grayFrame, circles, cv::HOUGH_GRADIENT, 0.5, grayFrame.rows / 12, 200, 30, grayFrame.rows / 20, grayFrame.rows / 6);
+	cv::HoughCircles(grayFrame, circles, cv::HOUGH_GRADIENT, 0.5, grayFrame.rows / 12, 200, 30, grayFrame.rows / 24, grayFrame.rows / 10);
 
 	return circles;*/
 	
@@ -132,13 +155,13 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 
 			int obj_corners = (int)contourPoly[i].size();
 			// number of corners
-			if (obj_corners > 6)
+			if (obj_corners > 5)
 			{
 				float aspect_ratio = (float)bound_rect[i].width /
 					(float)bound_rect[i].height;
 				
 				// tolerance for l/w ratio and size of the object
-				if (aspect_ratio >= 0.7 && aspect_ratio <= 1.5 && bound_rect[i].width <= frame.rows / 9 && bound_rect[i].width > frame.rows/24)
+				if (bound_rect[i].width <= frame.rows / 10 && bound_rect[i].width > frame.rows/26)
 				{
 					// center and width of the circle
 					cv::Point center(bound_rect[i].x + bound_rect[i].width / 2, bound_rect[i].y + bound_rect[i].height / 2);
@@ -232,7 +255,7 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec4f circle)
 
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 {
-	if (abs(color[0] - color[1]) < 60 && abs(color[1] - color[2]) < 60 && abs(color[0] - color[2]) < 60)
+	if (abs(color[0] - color[1]) < 40 && abs(color[1] - color[2]) < 40 && abs(color[0] - color[2]) < 40)
 	{
 		return Color::WHITE;
 	}
@@ -240,10 +263,10 @@ BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 	{
 		return Color::RED;
 	}
-	if (abs(color[1] - color[0]) > 40 && abs(color[1] - color[2]) > 50)
+	if (abs(color[0] - color[1]) > 35 && abs(color[0] - color[2]) > 50)
 	{
-		return Color::GREEN;
+		return Color::BLUE;
 	}
-	return Color::BLUE;
+	return Color::GREEN;
 }
 

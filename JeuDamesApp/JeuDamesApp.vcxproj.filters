@@ -13,48 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Camera">
-      <UniqueIdentifier>{dd8b9176-e1a1-44a6-a0f1-70b2b0fa469f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Camera">
-      <UniqueIdentifier>{23b2386e-1671-471d-a54b-33b0ae1008bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\MinMax">
-      <UniqueIdentifier>{9312fee6-d577-4c54-8bd4-5032643ca725}</UniqueIdentifier>
+    <Filter Include="Fichiers d%27en-tête\UserInterface">
+      <UniqueIdentifier>{b12c84ec-1115-4af6-9a12-a62d049da3ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers d%27en-tête\RobotControl">
-      <UniqueIdentifier>{b1f1f2a1-0365-4cbf-b294-0f1f84c68951}</UniqueIdentifier>
+      <UniqueIdentifier>{4181e58b-a5c4-4eaf-b9cd-6e67c2b37fd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\UserInterface">
-      <UniqueIdentifier>{4086ae04-4b58-46a1-bf86-df4397562157}</UniqueIdentifier>
+    <Filter Include="Fichiers d%27en-tête\Negamax">
+      <UniqueIdentifier>{eb275cee-f682-48d7-9327-eb5252bb2597}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers sources\MinMax">
-      <UniqueIdentifier>{bc8829e1-82ab-4a7f-a32a-b0ca16d7188c}</UniqueIdentifier>
+    <Filter Include="Fichiers d%27en-tête\Camera">
+      <UniqueIdentifier>{7d88466b-c31a-49a8-9429-56c9aa70fe42}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers sources\RobotControl">
-      <UniqueIdentifier>{1944cfb8-8c92-4ef9-965a-eb5098dfffd9}</UniqueIdentifier>
+      <UniqueIdentifier>{8eb54529-ed19-4ee8-97dd-299d0ad5d4a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fichiers sources\UserInterface">
-      <UniqueIdentifier>{1858b82f-92d4-4653-a610-b2c7fa61b173}</UniqueIdentifier>
+      <UniqueIdentifier>{bac355ea-5a25-4bb1-b657-79291338191d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Negamax">
+      <UniqueIdentifier>{98c69b84-f0f8-4ff6-a8d4-9d8ef5905c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Camera">
+      <UniqueIdentifier>{ba93bc04-de78-4fc8-8758-6e3e505503fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Fichiers sources\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Fichiers sources\MinMax</Filter>
+      <Filter>Fichiers sources\Negamax</Filter>
     </ClCompile>
     <ClCompile Include="BoardDetector.cpp">
       <Filter>Fichiers sources\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
+      <Filter>Fichiers sources\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Fichiers sources\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameDetail.cpp">
       <Filter>Fichiers sources\UserInterface</Filter>
     </ClCompile>
     <ClCompile Include="GameUI.cpp">
@@ -64,38 +67,35 @@
       <Filter>Fichiers sources\UserInterface</Filter>
     </ClCompile>
     <ClCompile Include="Negamax.cpp">
-      <Filter>Fichiers sources\MinMax</Filter>
+      <Filter>Fichiers sources\Negamax</Filter>
     </ClCompile>
     <ClCompile Include="Robot.cpp">
       <Filter>Fichiers sources\RobotControl</Filter>
     </ClCompile>
     <ClCompile Include="TranspositionTable.cpp">
-      <Filter>Fichiers sources\MinMax</Filter>
+      <Filter>Fichiers sources\Negamax</Filter>
     </ClCompile>
     <ClCompile Include="uiController.cpp">
       <Filter>Fichiers sources\UserInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>Fichiers d%27en-tête\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
-      <Filter>Fichiers d%27en-tête\MinMax</Filter>
-    </ClInclude>
-    <ClInclude Include="TranspositionTable.h">
-      <Filter>Fichiers d%27en-tête\MinMax</Filter>
-    </ClInclude>
-    <ClInclude Include="Negamax.h">
-      <Filter>Fichiers d%27en-tête\MinMax</Filter>
+      <Filter>Fichiers d%27en-tête\Negamax</Filter>
     </ClInclude>
     <ClInclude Include="BoardDetector.h">
       <Filter>Fichiers d%27en-tête\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Fichiers d%27en-tête\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameDetail.h">
       <Filter>Fichiers d%27en-tête\UserInterface</Filter>
     </ClInclude>
     <ClInclude Include="GameUI.h">
@@ -104,11 +104,17 @@
     <ClInclude Include="MainMenu.h">
       <Filter>Fichiers d%27en-tête\UserInterface</Filter>
     </ClInclude>
+    <ClInclude Include="Negamax.h">
+      <Filter>Fichiers d%27en-tête\Negamax</Filter>
+    </ClInclude>
     <ClInclude Include="Robot.h">
       <Filter>Fichiers d%27en-tête\RobotControl</Filter>
     </ClInclude>
     <ClInclude Include="uiController.h">
       <Filter>Fichiers d%27en-tête\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="TranspositionTable.h">
+      <Filter>Fichiers d%27en-tête\Negamax</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,52 +1,28 @@
-﻿D:\VisualStudio\VisualStudio2022\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (JeuDamesApp-main.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
-  GameUI.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(38,30): warning C4305: 'argument' : troncation de 'double' à 'float'
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(38,25): warning C4305: 'argument' : troncation de 'double' à 'float'
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:             T=unsigned int
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         and
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:             T=float
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(85,70): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,66): warning C4244: 'argument' : conversion de 'double' en 'T', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,66): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,66): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,66): warning C4244:             T=float
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,66): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,46): warning C4244: 'argument' : conversion de 'double' en 'T', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,46): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,46): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,46): warning C4244:             T=float
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(108,46): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(117,60): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(117,60): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(117,60): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(117,60): warning C4244:             T=unsigned int
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(117,60): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:             T=unsigned int
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         and
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:             T=float
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,77): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:             T=unsigned int
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         and
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:             T=float
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(136,58): warning C4244:         ]
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(143,54): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(143,54): warning C4244:         with
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(143,54): warning C4244:         [
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(143,54): warning C4244:             T=unsigned int
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(143,54): warning C4244:         ]
+﻿  FrameDetail.cpp
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(35,30): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(35,25): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(41,28): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(41,23): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(47,28): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(47,23): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(53,29): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(53,24): warning C4305: 'argument' : troncation de 'double' à 'float'
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:             T=unsigned int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:             T=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(82,161): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         with
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:             T=unsigned int
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         ]
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         and
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         [
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:             T=float
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\FrameDetail.cpp(83,158): warning C4244:         ]
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe

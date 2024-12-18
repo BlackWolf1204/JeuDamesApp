@@ -7,6 +7,7 @@ class StateMachine
 		enum State {
 			MainMenu,
 			Game,
+			FrameDetail,
 			Options,
 			Quit
 		};

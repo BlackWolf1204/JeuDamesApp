@@ -18,40 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="BoardDetector.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GameUI.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Negamax.cpp" />
-    <ClCompile Include="Robot.cpp" />
-    <ClCompile Include="StateMachine.cpp" />
-    <ClCompile Include="TranspositionTable.cpp" />
-    <ClCompile Include="uiController.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Board.h" />
-    <ClInclude Include="BoardDetector.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="GameUI.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Negamax.h" />
-    <ClInclude Include="Robot.h" />
-    <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="TranspositionTable.h" />
-    <ClInclude Include="uiController.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8471b4e1-aa97-4c34-8e86-7f142c54d87d}</ProjectGuid>
+    <ProjectGuid>{15f681bd-a525-48b4-88a0-37bf21cf27ee}</ProjectGuid>
     <RootNamespace>JeuDamesApp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>JeuDamesApp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -104,13 +76,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources\ShortBaby.ttf;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\x86\vc17\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;DobotDll.lib;opencv_objdetect490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-graphics-d.lib;sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-main.lib;sfml-main-d.lib;sfml-network.lib;sfml-network-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;sfml-system.lib;sfml-system-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window.lib;sfml-window-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;opencv_calib3d490.lib;opencv_calib3d490d.lib;opencv_core490.lib;opencv_core490d.lib;opencv_dnn490.lib;opencv_dnn490d.lib;opencv_features2d490.lib;opencv_features2d490d.lib;opencv_flann490.lib;opencv_flann490d.lib;opencv_gapi490.lib;opencv_gapi490d.lib;opencv_highgui490.lib;opencv_highgui490d.lib;opencv_imgcodecs490.lib;opencv_imgcodecs490d.lib;opencv_imgproc490.lib;opencv_imgproc490d.lib;opencv_ml490.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490.lib;opencv_photo490d.lib;opencv_stitching490.lib;opencv_stitching490d.lib;opencv_video490.lib;opencv_video490d.lib;opencv_videoio490.lib;opencv_videoio490d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DobotDll.lib;opencv_calib3d490d.lib;opencv_core490d.lib;opencv_dnn490d.lib;opencv_features2d490d.lib;opencv_flann490d.lib;opencv_gapi490d.lib;opencv_highgui490d.lib;opencv_imgcodecs490d.lib;opencv_imgproc490d.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490d.lib;opencv_stitching490d.lib;opencv_video490d.lib;opencv_videoio490d.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio-d.lib;sfml-audio-s-d.lib;sfml-graphics-d.lib;sfml-graphics-s-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-network-s-d.lib;sfml-system-d.lib;sfml-system-s-d.lib;sfml-window-d.lib;sfml-window-s-d.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources\ShortBaby.ttf;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,7 +101,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\x86\vc17\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;DobotDll.lib;opencv_objdetect490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-graphics-d.lib;sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-main.lib;sfml-main-d.lib;sfml-network.lib;sfml-network-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;sfml-system.lib;sfml-system-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window.lib;sfml-window-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;opencv_calib3d490.lib;opencv_calib3d490d.lib;opencv_core490.lib;opencv_core490d.lib;opencv_dnn490.lib;opencv_dnn490d.lib;opencv_features2d490.lib;opencv_features2d490d.lib;opencv_flann490.lib;opencv_flann490d.lib;opencv_gapi490.lib;opencv_gapi490d.lib;opencv_highgui490.lib;opencv_highgui490d.lib;opencv_imgcodecs490.lib;opencv_imgcodecs490d.lib;opencv_imgproc490.lib;opencv_imgproc490d.lib;opencv_ml490.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490.lib;opencv_photo490d.lib;opencv_stitching490.lib;opencv_stitching490d.lib;opencv_video490.lib;opencv_video490d.lib;opencv_videoio490.lib;opencv_videoio490d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DobotDll.lib;opencv_calib3d490.lib;opencv_core490.lib;opencv_dnn490.lib;opencv_features2d490.lib;opencv_flann490.lib;opencv_gapi490.lib;opencv_highgui490.lib;opencv_imgcodecs490.lib;opencv_imgproc490.lib;opencv_ml490.lib;opencv_objdetect490.lib;opencv_photo490.lib;opencv_stitching490.lib;opencv_video490.lib;opencv_videoio490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio.lib;sfml-audio-s.lib;sfml-graphics.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network.lib;sfml-network-s.lib;sfml-system.lib;sfml-system-s.lib;sfml-window.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -138,13 +110,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources\ShortBaby.ttf;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\x86\vc17\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;DobotDll.lib;opencv_objdetect490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-graphics-d.lib;sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-main.lib;sfml-main-d.lib;sfml-network.lib;sfml-network-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;sfml-system.lib;sfml-system-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window.lib;sfml-window-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;opencv_calib3d490.lib;opencv_calib3d490d.lib;opencv_core490.lib;opencv_core490d.lib;opencv_dnn490.lib;opencv_dnn490d.lib;opencv_features2d490.lib;opencv_features2d490d.lib;opencv_flann490.lib;opencv_flann490d.lib;opencv_gapi490.lib;opencv_gapi490d.lib;opencv_highgui490.lib;opencv_highgui490d.lib;opencv_imgcodecs490.lib;opencv_imgcodecs490d.lib;opencv_imgproc490.lib;opencv_imgproc490d.lib;opencv_ml490.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490.lib;opencv_photo490d.lib;opencv_stitching490.lib;opencv_stitching490d.lib;opencv_video490.lib;opencv_video490d.lib;opencv_videoio490.lib;opencv_videoio490d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DobotDll.lib;opencv_calib3d490d.lib;opencv_core490d.lib;opencv_dnn490d.lib;opencv_features2d490d.lib;opencv_flann490d.lib;opencv_gapi490d.lib;opencv_highgui490d.lib;opencv_imgcodecs490d.lib;opencv_imgproc490d.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490d.lib;opencv_stitching490d.lib;opencv_video490d.lib;opencv_videoio490d.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio-d.lib;sfml-audio-s-d.lib;sfml-graphics-d.lib;sfml-graphics-s-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-network-s-d.lib;sfml-system-d.lib;sfml-system-s-d.lib;sfml-window-d.lib;sfml-window-s-d.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\Ressources\ShortBaby.ttf;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\include;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,9 +135,38 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\SFML-2.6.1\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\opencv\x86\vc17\lib;D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Dobot\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;DobotDll.lib;opencv_objdetect490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-graphics-d.lib;sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-main.lib;sfml-main-d.lib;sfml-network.lib;sfml-network-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;sfml-system.lib;sfml-system-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window.lib;sfml-window-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;opencv_calib3d490.lib;opencv_calib3d490d.lib;opencv_core490.lib;opencv_core490d.lib;opencv_dnn490.lib;opencv_dnn490d.lib;opencv_features2d490.lib;opencv_features2d490d.lib;opencv_flann490.lib;opencv_flann490d.lib;opencv_gapi490.lib;opencv_gapi490d.lib;opencv_highgui490.lib;opencv_highgui490d.lib;opencv_imgcodecs490.lib;opencv_imgcodecs490d.lib;opencv_imgproc490.lib;opencv_imgproc490d.lib;opencv_ml490.lib;opencv_ml490d.lib;opencv_objdetect490d.lib;opencv_photo490.lib;opencv_photo490d.lib;opencv_stitching490.lib;opencv_stitching490d.lib;opencv_video490.lib;opencv_video490d.lib;opencv_videoio490.lib;opencv_videoio490d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DobotDll.lib;opencv_calib3d490.lib;opencv_core490.lib;opencv_dnn490.lib;opencv_features2d490.lib;opencv_flann490.lib;opencv_gapi490.lib;opencv_highgui490.lib;opencv_imgcodecs490.lib;opencv_imgproc490.lib;opencv_ml490.lib;opencv_objdetect490.lib;opencv_photo490.lib;opencv_stitching490.lib;opencv_video490.lib;opencv_videoio490.lib;flac.lib;freetype.lib;ogg.lib;openal32.lib;sfml-audio.lib;sfml-audio-s.lib;sfml-graphics.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network.lib;sfml-network-s.lib;sfml-system.lib;sfml-system-s.lib;sfml-window.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardDetector.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FrameDetail.cpp" />
+    <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Negamax.cpp" />
+    <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="TranspositionTable.cpp" />
+    <ClCompile Include="uiController.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardDetector.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="FrameDetail.h" />
+    <ClInclude Include="GameUI.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Negamax.h" />
+    <ClInclude Include="Robot.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="TranspositionTable.h" />
+    <ClInclude Include="uiController.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

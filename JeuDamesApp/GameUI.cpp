@@ -9,7 +9,7 @@ GameUI::~GameUI()
 {
 	if (webcamThread != nullptr)
 	{
-		webcamThreadRunning = false;
+		webcamThreadRunningGame = false;
 		webcamThread->join();
 		delete webcamThread;
 		webcamThread = nullptr;
@@ -25,10 +25,10 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	backButton.setButtonColor(sf::Color::Red);
 	backButton.setButtonSize(sf::Vector2f(250, 100));
 	backButton.setButtonPosition(sf::Vector2f(10, 10));
-	//backButton.setButtonFont(font);
+	backButton.setButtonFont(font);
 	backButton.setButtonTextColor(sf::Color::White);
 	backButton.setButtonText("Retour");
-	backButton.setButtonTextSize(80);
+	backButton.setButtonTextSize(60);
 
 	gameBoard.setFillColor(sf::Color(36, 193, 224));
 
@@ -52,41 +52,32 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 		gameSquares.push_back(squares);
 	}
 
-	//loadingText.setFont(*font);
-	loadingText.setString("Chargement de la camera, \nVeuillez patienter...");
-	loadingText.setCharacterSize(30);
+	loadingText.setFont(*font);
+	loadingText.setString("Chargement de la camera, \n\tVeuillez patienter...");
+	loadingText.setCharacterSize(25);
 	loadingText.setFillColor(sf::Color::White);
 
 	victoryText.setFont(*font);
-	//victoryText.setCharacterSize(80);
+	victoryText.setCharacterSize(70);
 	victoryText.setFillColor(sf::Color::White);
 
 	restartButton = Button();
 	restartButton.setButtonColor(sf::Color::Red);
 	restartButton.setButtonSize(sf::Vector2f(250, 100));
 	restartButton.setButtonPosition(sf::Vector2f(10, 130));
-	//restartButton.setButtonFont(font);
+	restartButton.setButtonFont(font);
 	restartButton.setButtonTextColor(sf::Color::White);
 	restartButton.setButtonText("Rejouer");
-	restartButton.setButtonTextSize(78);
+	restartButton.setButtonTextSize(55);
 
 	refillButton = Button();
 	refillButton.setButtonColor(sf::Color::Red);
 	refillButton.setButtonSize(sf::Vector2f(250, 100));
 	refillButton.setButtonPosition(sf::Vector2f(10, 250));
-	//refillButton.setButtonFont(font);
+	refillButton.setButtonFont(font);
 	refillButton.setButtonTextColor(sf::Color::White);
 	refillButton.setButtonText("Recharger");
-	refillButton.setButtonTextSize(62);
-
-	frameDetailButton = Button();
-	frameDetailButton.setButtonColor(sf::Color::Red);
-	frameDetailButton.setButtonSize(sf::Vector2f(300, 100));
-	frameDetailButton.setButtonPosition(sf::Vector2f(window.getSize().x - 310, 10));
-	//frameDetailButton.setButtonFont(font);
-	frameDetailButton.setButtonTextColor(sf::Color::White);
-	frameDetailButton.setButtonText("Image Details");
-	frameDetailButton.setButtonTextSize(80);
+	refillButton.setButtonTextSize(55);
 
 	left_available_pieces.setFillColor(sf::Color(46, 161, 0));
 
@@ -176,7 +167,6 @@ void GameUI::draw(sf::RenderWindow& window)
 	backButton.draw(window);
 	restartButton.draw(window);
 	refillButton.draw(window);
-	frameDetailButton.draw(window);
 
 	if (victoryVisible)
 	{
@@ -236,12 +226,6 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 			refillButton.setButtonColor(sf::Color::Red);
 			robot->Refill();
 		}
-		if (frameDetailButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
-		{
-			std::cout << "Frame detail button pressed" << std::endl;
-			backButton.setButtonColor(sf::Color::Red);
-			//return StateMachine::State::FrameDetails;
-		}
 	}
 	if (event.type == sf::Event::MouseMoved)
 	{
@@ -257,16 +241,11 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 		{
 			refillButton.setButtonColor(sf::Color::Green);
 		}
-		else if (frameDetailButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
-		{
-			frameDetailButton.setButtonColor(sf::Color::Green);
-		}
 		else
 		{
 			backButton.setButtonColor(sf::Color::Red);
 			restartButton.setButtonColor(sf::Color::Red);
 			refillButton.setButtonColor(sf::Color::Red);
-			frameDetailButton.setButtonColor(sf::Color::Red);
 		}
 	}
 	return StateMachine::State::Game;

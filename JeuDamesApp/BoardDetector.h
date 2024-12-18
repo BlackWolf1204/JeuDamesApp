@@ -17,13 +17,14 @@ public:
 
 	static Board detectBoard(cv::Mat image);
 
-private:
-
 	// <summary>
 	// Modify a given image using gaussian filter and Canny algorithm
 	// </summary>
 	// <param name="frame">Source image containing the board</param>
-	static void modifyFrame(cv::Mat& frame);
+	// <return>Vector of the processing states of the given frame (3 channels image)</return>
+	static std::vector<cv::Mat> modifyFrame(cv::Mat& frame);
+
+private:
 
 	// <summary>
 	// Search contours in a given image using gaussian filter and Canny algorithm
@@ -82,5 +83,4 @@ private:
 	/// <param name="color">RGB color</param>
 	/// <returns>Color enum element</returns>
 	static Color getColor(cv::Vec3b color);
-
 };

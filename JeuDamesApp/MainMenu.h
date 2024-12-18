@@ -17,4 +17,5 @@ public:
 
 private:
 	Button playButton;
+	Button frameDetailButton;
 };

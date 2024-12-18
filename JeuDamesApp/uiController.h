@@ -4,6 +4,7 @@
 #include "StateMachine.h"
 #include <iostream>
 #include "GameUI.h"
+#include "FrameDetail.h"
 
 /// <summary>
 /// This class is the controller of the UI, it will manage the window and the different states of the game (main menu, game, etc)
@@ -16,10 +17,12 @@ public:
 	sf::Font* font;
 	void stop(StateMachine::State actualState);
 	GameUI* getGameUI();
+	FrameDetail* getFrameDetail();
 
 private:
 	sf::RenderWindow window;
-	std::string fontPath = ".\\Ressources\\Hanged_Letters.ttf";
+	std::string fontPath = "Ressources/ShortBaby.ttf";
 	MainMenu* mainMenu;
 	GameUI* gameUI;
+	FrameDetail* frameDetail;
 };

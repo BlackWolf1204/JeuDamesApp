@@ -9,7 +9,7 @@
 #include "Board.h"
 #include "Robot.h"
 
-static std::atomic<bool> webcamThreadRunning = true;
+static std::atomic<bool> webcamThreadRunningGame = true;
 
 /// <summary>
 /// This class is responsible for the game UI. it will display the webcam feed and the game grid.
@@ -84,7 +84,6 @@ private:
 
 	Button restartButton;
 	Button refillButton;
-	Button frameDetailButton;
 
 	sf::RectangleShape left_available_pieces;
 	std::vector<sf::CircleShape> availablePieces;

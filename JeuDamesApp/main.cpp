@@ -1,3 +1,4 @@
+#pragma warning(disable: 4996)
 #include <opencv2/opencv.hpp>
 #include "Robot.h"
 #include "Board.h"
@@ -43,15 +44,22 @@ int main()
 		}
 
 		cv::Mat frame = camera->getFrame();
-
 		uiController.getGameUI()->getCameraFrame(frame);
+		cv::Mat copy = frame.clone();
+		std::vector<cv::Mat> modifiedFrame = BoardDetector::modifyFrame(copy);
 
+		if (modifiedFrame.size() > 0)
+		{
+			uiController.getFrameDetail()->getCameraFrame(modifiedFrame[0]);
+			uiController.getFrameDetail()->getGrayFrame(modifiedFrame[1]);
+			uiController.getFrameDetail()->getBlurFrame(modifiedFrame[2]);
+			uiController.getFrameDetail()->getCannyFrame(modifiedFrame[3]);
+		}
+		
 		if (frame.empty())
 		{
 			continue;
 		}
-
-
 
 		if (uiController.getGameUI()->restart)
 		{
@@ -64,7 +72,7 @@ int main()
 		Board board = BoardDetector::detectBoard(frame);
 		uiController.getGameUI()->getCameraFrame(frame);
 
-		if (!board.isInit() && board.isValid())
+		if (board.isValid())
 		{
 			if (board.playerWins())
 			{
@@ -80,7 +88,7 @@ int main()
 				moveNumber = -1;
 				continue;
 			}
-			
+			/*
 			if (moveNumber == -1)
 			{
 				if (board.getMoveNumber() % 2 == 1)
@@ -91,7 +99,7 @@ int main()
 				{
 					moveNumber = board.getMoveNumber();
 				}
-			}
+			}*/
 
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);

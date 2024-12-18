@@ -1,4 +1,4 @@
-﻿D:\VisualStudio\VisualStudio2022\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (JeuDamesApp-main.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
+﻿  pch.cpp
   Board-Test.cpp
 D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(30,22): warning C4018: '<' : incompatibilité signed/unsigned
   (compiler le fichier source '/Board-Test.cpp')
@@ -12,4 +12,8 @@ D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(78,22): 
 D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(107,22): warning C4018: '<' : incompatibilité signed/unsigned
   (compiler le fichier source '/Board-Test.cpp')
   
+  BoardDetector-Test.cpp
+  JeuDamesApp-Test.cpp
+  Génération de code en cours...
+     Création de la bibliothèque D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.lib et de l'objet D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.exp
   JeuDamesApp-Test.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll
