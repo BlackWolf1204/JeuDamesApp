@@ -27,7 +27,7 @@ namespace BoardTest
 			Assert::AreEqual((size_t)2, positions[0].size());
 			bool found1 = false;
 			bool found2 = false;
-			for (int i = 0; i < positions[0].size(); i++)
+			for (size_t i = 0; i < positions[0].size(); i++)
 			{
 				if (positions[0].at(i) == 2 + 4* BOARDSIZE)
 					found1 = true;
@@ -46,7 +46,7 @@ namespace BoardTest
 			Assert::AreEqual((size_t)2, positions[1].size());
 			found1 = false;
 			found2 = false;
-			for (int i = 0; i < positions[1].size(); i++)
+			for (size_t i = 0; i < positions[1].size(); i++)
 			{
 				if (positions[1].at(i) == 1 + 5 * BOARDSIZE)
 					found1 = true;
@@ -75,7 +75,7 @@ namespace BoardTest
 			bool found2 = false;
 			bool found3 = false;
 			bool found4 = false;
-			for (int i = 0; i < positions[0].size(); i++)
+			for (size_t i = 0; i < positions[0].size(); i++)
 			{
 				if (positions[0].at(i) == 0 + 0 * BOARDSIZE)
 					found1 = true;
@@ -104,7 +104,7 @@ namespace BoardTest
 			found2 = false;
 			found3 = false;
 			found4 = false;
-			for (int i = 0; i < positions[1].size(); i++)
+			for (size_t i = 0; i < positions[1].size(); i++)
 			{
 				if (positions[1].at(i) == 0 + 0 * BOARDSIZE)
 					found1 = true;

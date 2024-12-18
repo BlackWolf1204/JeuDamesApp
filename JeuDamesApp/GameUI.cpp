@@ -3,6 +3,10 @@
 
 GameUI::GameUI()
 {
+	robot = nullptr;
+	webcamImage = nullptr;
+	webcamSprite = nullptr;
+	webcamTexture = nullptr;
 }
 
 GameUI::~GameUI()
@@ -35,7 +39,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	webcamImage = new sf::Image();
 	webcamTexture = new sf::Texture();
 	webcamSprite = new sf::Sprite();
-	webcamSprite->setScale(0.7, 0.7);
+	webcamSprite->setScale(0.7f, 0.7f);
 	webcamSprite->setRotation(-90);
 
 	for (int i = 0; i < BOARDSIZE * BOARDSIZE; i++)
@@ -96,7 +100,7 @@ void GameUI::draw(sf::RenderWindow& window)
 	sf::Vector2u windowSize = window.getSize();
 
 	// Update the board size and position according to the window size
-	gameBoard.setSize(sf::Vector2f(windowSize.y * 0.5, windowSize.y * 0.5));
+	gameBoard.setSize(sf::Vector2f((float)(windowSize.y * 0.5), (float)(windowSize.y * 0.5)));
 	gameBoard.setPosition(sf::Vector2f(windowSize.x / 2 - gameBoard.getSize().x / 2, windowSize.y - gameBoard.getSize().y - 10));
 
 	// Update the circles size and position according to the game board size and position
@@ -105,7 +109,7 @@ void GameUI::draw(sf::RenderWindow& window)
 		for (int j = 0; j < BOARDSIZE; j++)
 		{
 			circlesPieces[i + j * BOARDSIZE].setPosition(sf::Vector2f(gameBoard.getPosition().x + i * gameBoard.getSize().x / BOARDSIZE + 5, gameBoard.getPosition().y + j * gameBoard.getSize().y / BOARDSIZE + 5));
-			circlesPieces[i + j * BOARDSIZE].setRadius(windowSize.y / 40);
+			circlesPieces[i + j * BOARDSIZE].setRadius((float)windowSize.y / 40);
 		}
 	}
 
@@ -124,21 +128,29 @@ void GameUI::draw(sf::RenderWindow& window)
 	}
 
 	// Update the available pieces size and position according to the window size
-	left_available_pieces.setSize(sf::Vector2f(windowSize.x / 11, windowSize.y / 3));
+	left_available_pieces.setSize(sf::Vector2f((float)windowSize.x / 11, (float)windowSize.y / 3));
 	left_available_pieces.setPosition(sf::Vector2f(windowSize.x / 2 - gameBoard.getSize().x / 2 - 10 - left_available_pieces.getSize().x, gameBoard.getPosition().y));
 
 	for (int i = 0; i < 2; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			availablePieces[i + j * 2].setRadius(windowSize.y / 40);
+			availablePieces[i + j * 2].setRadius((float)windowSize.y / 40);
 			availablePieces[i + j * 2].setPosition(sf::Vector2f(left_available_pieces.getPosition().x + i * gameBoard.getSize().x / 6 + 10, left_available_pieces.getPosition().y + j * gameBoard.getSize().y / 6 + 10));
 
 		}
 	}
 
 	// Update the webcam feed size and position according to the window size
-	webcamSprite->setPosition(sf::Vector2f(windowSize.x / 2 - webcamSprite->getGlobalBounds().width / 2 - 10, webcamSprite->getGlobalBounds().width + 10));
+	if (webcamTexture->getSize().x > 0 && webcamTexture->getSize().y > 0)
+	{
+		float scaleX = windowSize.x / webcamTexture->getSize().x * 0.5f;
+		float scaleY = windowSize.y / webcamTexture->getSize().y * 0.5f;
+		float scale = std::min(scaleX, scaleY);
+		webcamSprite->setScale(scale, scale);
+	}
+
+	webcamSprite->setPosition(sf::Vector2f(windowSize.x / 2 - webcamSprite->getGlobalBounds().width / 2 - 10, (windowSize.y - gameBoard.getPosition().y) / 2 + webcamSprite->getGlobalBounds().height / 2 - 10));
 	
 	// Update the loading text size and position according to the window size
 	loadingText.setPosition(sf::Vector2f(windowSize.x / 2 - loadingText.getGlobalBounds().width / 2, 100));
@@ -201,6 +213,8 @@ void GameUI::getCameraFrame(cv::Mat frame)
 	delete[] pixels;
 	webcamTexture->loadFromImage(*webcamImage);
 	webcamSprite->setTexture(*webcamTexture);
+
+	loadingText.setFillColor(sf::Color::Transparent);
 }
 
 StateMachine::State GameUI::handleEvent(sf::Event event)
@@ -232,14 +246,20 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
 			backButton.setButtonColor(sf::Color::Green);
+			restartButton.setButtonColor(sf::Color::Red);
+			refillButton.setButtonColor(sf::Color::Red);
 		}
 		else if (restartButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
 			restartButton.setButtonColor(sf::Color::Green);
+			backButton.setButtonColor(sf::Color::Red);
+			refillButton.setButtonColor(sf::Color::Red);
 		}
 		else if (refillButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
 			refillButton.setButtonColor(sf::Color::Green);
+			backButton.setButtonColor(sf::Color::Red);
+			restartButton.setButtonColor(sf::Color::Red);
 		}
 		else
 		{

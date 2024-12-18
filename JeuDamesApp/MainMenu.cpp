@@ -27,7 +27,7 @@ MainMenu::MainMenu(sf::Font* font)
 void MainMenu::updateButton(sf::Vector2u windowSize)
 {
 	playButton.setButtonPosition(sf::Vector2f(windowSize.x / 2 - playButton.getButtonSize().x / 2, windowSize.y / 2 - playButton.getButtonSize().y / 2 - frameDetailButton.getButtonSize().y / 2 - 10));
-	frameDetailButton.setButtonPosition(sf::Vector2f(windowSize.x / 2 - frameDetailButton.getButtonSize().x / 2, windowSize.y / 2 + 20));
+	frameDetailButton.setButtonPosition(sf::Vector2f((float)windowSize.x / 2 - frameDetailButton.getButtonSize().x / 2, (float)windowSize.y / 2 + 20));
 }
 
 void MainMenu::draw(sf::RenderWindow& window)
@@ -40,7 +40,7 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		if (playButton.mouseIsInsideButton(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)))
+		if (playButton.mouseIsInsideButton(sf::Vector2f((float)event.mouseButton.x, (float)event.mouseButton.y)))
 		{
 			std::cout << "Play button pressed" << std::endl;
 			playButton.setButtonColor(sf::Color::Red);
@@ -54,13 +54,15 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 		}
 	}
 	if (event.type == sf::Event::MouseMoved) {
-		if (playButton.mouseIsInsideButton(sf::Vector2f(event.mouseMove.x, event.mouseMove.y)))
+		if (playButton.mouseIsInsideButton(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y)))
 		{
 			playButton.setButtonColor(sf::Color::Green);
+			frameDetailButton.setButtonColor(sf::Color::Red);
 		}
 		else if (frameDetailButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
 			frameDetailButton.setButtonColor(sf::Color::Green);
+			playButton.setButtonColor(sf::Color::Red);
 		}
 		else
 		{

@@ -2,6 +2,18 @@
 
 FrameDetail::FrameDetail()
 {
+	blurImage = nullptr;
+	blurSprite = nullptr;
+	blurTexture = nullptr;
+	cannyImage = nullptr;
+	cannySprite = nullptr;
+	cannyTexture = nullptr;
+	grayImage = nullptr;
+	graySprite = nullptr;
+	grayTexture = nullptr;
+	webcamImage = nullptr;
+	webcamSprite = nullptr;
+	webcamTexture = nullptr;
 }
 
 FrameDetail::~FrameDetail()
@@ -32,25 +44,25 @@ FrameDetail::FrameDetail(sf::RenderWindow& window, sf::Font* font)
 	webcamImage = new sf::Image();
 	webcamTexture = new sf::Texture();
 	webcamSprite = new sf::Sprite();
-	webcamSprite->setScale(0.7, 0.7);
+	webcamSprite->setScale(0.7f, 0.7f);
 	webcamSprite->setRotation(-90);
 
 	grayImage = new sf::Image();
 	grayTexture = new sf::Texture();
 	graySprite = new sf::Sprite();
-	graySprite->setScale(0.7, 0.7);
+	graySprite->setScale(0.7f, 0.7f);
 	graySprite->setRotation(-90);
 
 	blurImage = new sf::Image();
 	blurTexture = new sf::Texture();
 	blurSprite = new sf::Sprite();
-	blurSprite->setScale(0.7, 0.7);
+	blurSprite->setScale(0.7f, 0.7f);
 	blurSprite->setRotation(-90);
 
 	cannyImage = new sf::Image();
 	cannyTexture = new sf::Texture();
 	cannySprite = new sf::Sprite();
-	cannySprite->setScale(0.7, 0.7);
+	cannySprite->setScale(0.7f, 0.7f);
 	cannySprite->setRotation(-90);
 
 	webcamText.setFont(*font);
@@ -79,16 +91,40 @@ void FrameDetail::draw(sf::RenderWindow& window)
 	sf::Vector2u windowSize = window.getSize();
 
 	// Update the webcam feed size and position according to the window size
-	webcamSprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 - webcamSprite->getGlobalBounds().width / 2 - 10, (windowSize.y - 10) / 2));
-	graySprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 + graySprite->getGlobalBounds().width / 2 + 10,  (windowSize.y - 10) / 2));
+	if (webcamTexture->getSize().x > 0 && webcamTexture->getSize().y > 0)
+	{
+		float scaleX = windowSize.x / webcamTexture->getSize().x * 0.4f;
+		float scaleY = windowSize.y / webcamTexture->getSize().y * 0.4f;
+		float scale = std::min(scaleX, scaleY);
+		webcamSprite->setScale(scale, scale);
+	}
+	webcamSprite->setPosition(sf::Vector2f(((float)windowSize.x - backButton.getButtonSize().x) / 2 - webcamSprite->getGlobalBounds().width / 2 - 10, ((float)windowSize.y - 10) / 2));
+	
+	if (grayTexture->getSize().x > 0 && grayTexture->getSize().y > 0)
+	{
+		float scaleX = windowSize.x / grayTexture->getSize().x * 0.4f;
+		float scaleY = windowSize.y / grayTexture->getSize().y * 0.4f;
+		float scale = std::min(scaleX, scaleY);
+		graySprite->setScale(scale, scale);
+	}
+	graySprite->setPosition(sf::Vector2f(((float)windowSize.x - backButton.getButtonSize().x) / 2 + graySprite->getGlobalBounds().width / 2 + 10,  ((float)windowSize.y - 10) / 2));
+	
+	if (blurTexture->getSize().x > 0 && blurTexture->getSize().y > 0)
+	{
+		float scaleX = windowSize.x / blurTexture->getSize().x * 0.4f;
+		float scaleY = windowSize.y / blurTexture->getSize().y * 0.4f;
+		float scale = std::min(scaleX, scaleY);
+		blurSprite->setScale(scale, scale);
+	}
 	blurSprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 - blurSprite->getGlobalBounds().width / 2 - 10, webcamSprite->getPosition().y + blurSprite->getGlobalBounds().width + 20));
+	if (cannyTexture->getSize().x > 0 && cannyTexture->getSize().y > 0)
+	{
+		float scaleX = windowSize.x / cannyTexture->getSize().x * 0.4f;
+		float scaleY = windowSize.y / cannyTexture->getSize().y * 0.4f;
+		float scale = std::min(scaleX, scaleY);
+		cannySprite->setScale(scale, scale);
+	}
 	cannySprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 + cannySprite->getGlobalBounds().width / 2 + 10, graySprite->getPosition().y + cannySprite->getGlobalBounds().width + 20));
-
-	// Change the scale according to the size of the window
-	std::cout << "Bounds : " << spriteBounds.width << ", " << spriteBounds.height << std::endl;
-	std::cout << "Scale : " << windowSize.x / spriteBounds.width << ", " << windowSize.y / spriteBounds.height << std::endl;
-	webcamSprite->setScale(sf::Vector2f(windowSize.x / spriteBounds.width, windowSize.y / spriteBounds.height));
-
 
 	// Update the webcam text size and position according to the webcame sprite position
 	webcamText.setPosition(sf::Vector2f(webcamSprite->getPosition().x - webcamText.getGlobalBounds().width - 20, webcamSprite->getPosition().y - (webcamSprite->getGlobalBounds().height / 2)));
@@ -101,9 +137,9 @@ void FrameDetail::draw(sf::RenderWindow& window)
 	window.draw(blurText);
 	window.draw(cannyText);
 	window.draw(*webcamSprite);
-	//window.draw(*graySprite);
-	//window.draw(*blurSprite);
-	//window.draw(*cannySprite);
+	window.draw(*graySprite);
+	window.draw(*blurSprite);
+	window.draw(*cannySprite);
 
 	backButton.draw(window);
 }
@@ -123,8 +159,6 @@ void FrameDetail::getCameraFrame(cv::Mat frame)
 	delete[] pixels;
 	webcamTexture->loadFromImage(*webcamImage);
 	webcamSprite->setTexture(*webcamTexture);
-
-	spriteBounds = webcamSprite->getGlobalBounds();
 }
 
 void FrameDetail::getGrayFrame(cv::Mat frame)

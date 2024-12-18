@@ -173,7 +173,7 @@ void Robot::Play(int initPos, int newPos)
 		std::cerr << "Invalid position" << std::endl;
 		return;
 	}
-	if (initPos != -1 && newPos != -1) {
+	if (initPos > -1 && newPos > -1) {
 
 		std::cout << "Move from position " << initPos << " to position " << newPos << std::endl;
 		goTo(squareCoordinates[initPos], HIGHT);
@@ -306,7 +306,7 @@ void Robot::turnOffSuctionCup()
 void Robot::wait(float seconds)
 { 
 	WAITCmd waitCmd = { 0 };
-	waitCmd.timeout = seconds * 1000;
+	waitCmd.timeout = (uint32_t)seconds * 1000;
 
 	uint64_t queuedCmdIndex;
 	int resultDobotWait = SetWAITCmd(dobotId, &waitCmd, true, &queuedCmdIndex);

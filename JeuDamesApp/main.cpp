@@ -12,6 +12,7 @@ using namespace std;
 
 int main()
 {
+	/* ###############################################
 	sf::Vector2u windowSize(1280, 720);
 	Robot* robot = new Robot();
 	uiController uiController(windowSize, robot);
@@ -37,7 +38,7 @@ int main()
 				continue;
 			}
 		}*/
-		
+		/* #######################################
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
 			stateMachine.ChangeState(newState);
@@ -100,7 +101,7 @@ int main()
 					moveNumber = board.getMoveNumber();
 				}
 			}*/
-
+			/* ##############################################
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
 			/*
@@ -133,29 +134,26 @@ int main()
 			{
 				// show that the piece need to be upgraded
 			}*/
+			/* ###################################
 		}
 	
 	}
 	uiController.stop(stateMachine.getState());
+	############################################### */
 	
-	/*
 	Board board;
-	//board.initBoard();
-	
-	board.setPlayerPiece(4, 0, true, true);
-	board.setPlayerPiece(3, 5, true);
-	board.setPlayerPiece(4, 6, true);
-	board.setPlayerPiece(5, 7, true);
-	board.setPlayerPiece(6, 6, true);
-	board.setPlayerPiece(7, 5, true);
-	board.setPlayerPiece(7, 7, true);
+	board.initBoard();
+	/*
+	board.setPlayerPiece(5, 5, true);
 
-	board.setRobotPiece(0, 2, true);
+	board.setRobotPiece(0, 4, true);
+	board.setRobotPiece(0, 6, true);
+	board.upgradePiece(0, 6);
 	board.setRobotPiece(1, 1, true);
-	board.setRobotPiece(3, 7, true, true);
-	board.setRobotPiece(6, 0, true);
-	board.setRobotPiece(7, 1, true);
-	
+	board.setRobotPiece(2, 0, true);
+	board.setRobotPiece(3, 1, true);
+	board.setRobotPiece(7, 5, true);
+	*/
 
 	while (!board.isTerminal())
 	{
@@ -182,12 +180,12 @@ int main()
 		// Robot
 		TranspositionTable* transpositionTable = new TranspositionTable();
 		std::cout << "Beginning Negamax." << std::endl;
-		std::vector<int> bestPositions = Negamax::GetBestMove_noThreads(board, transpositionTable, 4);
+		std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 4);
 		std::cout << "End Negamax." << std::endl;
 		board.printBoard();
 		if (bestPositions.size() > 0)
 		{
-			for (int i = 0; i < bestPositions.size() - 1; i++)
+			for (size_t i = 0; i < bestPositions.size() - 1; i++)
 			{
 				std::cout << bestPositions[i] << ", " << bestPositions[i + 1] << std::endl;
 				board.Play(bestPositions[i], bestPositions[i + 1]);
@@ -199,6 +197,6 @@ int main()
 			std::cout << "No moves found." << std::endl;
 		}
 	}
-	*/
+	
 	return 0;
 }

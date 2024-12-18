@@ -12,7 +12,7 @@ Board BoardDetector::detectBoard(cv::Mat image)
 	// Square positions on the image
 	cv::Point p1(510, 460);
 	cv::Point p2(100, 30);
-	float gap = (p2.x - p1.x) / BOARDSIZE;
+	float gap = (float)(p2.x - p1.x) / BOARDSIZE;
 	std::vector<cv::Vec3f> sortedSquares;
 
 	for (int i = 0; i < BOARDSIZE; i++)
@@ -40,9 +40,9 @@ Board BoardDetector::detectBoard(cv::Mat image)
 		std::cout << "Not contained" << std::endl;
 		return Board();
 	}
-	for (int i = 0; i < containedCircles.size(); i++)
+	for (size_t i = 0; i < containedCircles.size(); i++)
 	{
-		cv::circle(image, cv::Point(containedCircles[i][0], containedCircles[i][1]), containedCircles[i][2], cv::Scalar(0, 255, 255), 2);
+		cv::circle(image, cv::Point((int)containedCircles[i][0], (int)containedCircles[i][1]), (int)containedCircles[i][2], cv::Scalar(0, 255, 255), 2);
 	}
 	
 	//Detect the colors of the circles
@@ -66,14 +66,14 @@ std::vector<cv::Mat> BoardDetector::modifyFrame(cv::Mat& frame)
 	// Square positions on the image
 	cv::Point p1(510, 460);
 	cv::Point p2(100, 30);
-	float gap = (p2.x - p1.x) / BOARDSIZE;
+	float gap = (float)(p2.x - p1.x) / BOARDSIZE;
 
 	for (int i = 0; i < BOARDSIZE; i++)
 	{
 		for (int j = 0; j < BOARDSIZE; j++)
 		{
 			cv::Vec3f square(p1.x + gap * i, p1.y + gap * j, gap);
-			cv::rectangle(img_squares, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 255), 2);
+			cv::rectangle(img_squares, cv::Point((int)square[0], (int)square[1]), cv::Point((int)square[0] + (int)square[2], (int)square[1] + (int)square[2]), cv::Scalar(255, 0, 255), 2);
 		}
 	}
 	modifiedFrame.push_back(img_squares);
@@ -140,13 +140,13 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 	std::vector<cv::Vec3f> circles;
 
 	// loop through all contours detected
-	for (int i = 0; i < contours.size(); ++i)
+	for (size_t i = 0; i < contours.size(); ++i)
 	{
-		int c_area = cv::contourArea(contours[i]);   // area of each object contour
+		int c_area = (int)cv::contourArea(contours[i]);   // area of each object contour
 
 		if (c_area > 500) // Area based threshold for emoving noise 
 		{
-			float peri = arcLength(contours[i], true);
+			float peri = (float)arcLength(contours[i], true);
 
 			// Approximate poly curve with stated accurracy
 			approxPolyDP(contours[i], contourPoly[i], 0.02 * peri, true);
@@ -165,9 +165,9 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 				{
 					// center and width of the circle
 					cv::Point center(bound_rect[i].x + bound_rect[i].width / 2, bound_rect[i].y + bound_rect[i].height / 2);
-					float radius = bound_rect[i].width / 2;
+					float radius = (float)bound_rect[i].width / 2;
 
-					circles.push_back(cv::Vec3f(center.x, center.y, radius));
+					circles.push_back(cv::Vec3f((float)center.x, (float)center.y, radius));
 				}
 			}
 		}
@@ -181,10 +181,10 @@ std::vector<cv::Vec4f> BoardDetector::containCircles(std::vector<cv::Vec3f> boar
 	std::vector<cv::Vec4f> containedCircles;
 
 	// For all the squares
-	for (int j = 0; j < boardSquares.size(); j++)
+	for (size_t j = 0; j < boardSquares.size(); j++)
 	{
 		//For all the circles
-		for (uint i = 0; i < boardCircles.size(); i++)
+		for (size_t i = 0; i < boardCircles.size(); i++)
 		{
 			// If it's not a clear square
 			if ((j % BOARDSIZE) % 2 == ((int)j / BOARDSIZE) % 2)
@@ -193,7 +193,7 @@ std::vector<cv::Vec4f> BoardDetector::containCircles(std::vector<cv::Vec3f> boar
 				if (boardSquares[j][0] > boardCircles[i][0] && boardSquares[j][0] + boardSquares[j][2] < boardCircles[i][0]
 					&& boardSquares[j][1] > boardCircles[i][1] && boardSquares[j][1] + boardSquares[j][2] < boardCircles[i][1])
 				{
-					containedCircles.push_back(cv::Vec4f(boardCircles[i][0], boardCircles[i][1], boardCircles[i][2], j));
+					containedCircles.push_back(cv::Vec4f(boardCircles[i][0], boardCircles[i][1], boardCircles[i][2], (float)j));
 					// Only one circle by square
 					i = boardCircles.size();
 				}
@@ -208,7 +208,7 @@ Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec4f> containe
 {
 	Board board;
 
-	for (int i = 0; i < containedCircles.size(); i++)
+	for (size_t i = 0; i < containedCircles.size(); i++)
 	{
 		cv::Vec3b pieceColor = getCircleMeanColor(image, containedCircles[i]);
 
@@ -246,11 +246,11 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec4f circle)
 {
 	//Create a mask to get only the circle pixels
 	cv::Mat mask = cv::Mat::zeros(image.size(), CV_8UC1);
-	cv::circle(mask, cv::Point(circle[0], circle[1]), circle[2] - 10, cv::Scalar(255, 255, 255), -1);	
+	cv::circle(mask, cv::Point((int)circle[0], (int)circle[1]),(int)circle[2] - 10, cv::Scalar(255, 255, 255), -1);	
 
 	//Get the mean color of the circle
 	cv::Scalar mean = cv::mean(image, mask);
-	return cv::Vec3b(mean[0], mean[1], mean[2]);
+	return cv::Vec3b((uchar)mean[0], (uchar)mean[1], (uchar)mean[2]);
 }
 
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)

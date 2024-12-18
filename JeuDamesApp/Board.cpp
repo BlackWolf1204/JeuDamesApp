@@ -12,7 +12,6 @@ Board::Board()
 
 Board Board::copy()
 {
-	//Not Tested
 	Board newBoard;
 	newBoard.playerBoard = playerBoard;
 	newBoard.playerKingBoard = playerKingBoard;
@@ -284,68 +283,7 @@ std::vector<std::vector<int>> Board::canMoveEat(int column, int row)
 
 	return positions;
 }
-/*
-std::vector<int> Board::canMove(int column, int row)
-{
-	if (getPiece(column, row, ))
 
-	// movements allowed
-	int side = 1;
-	if (getPiece(column, row, playerBoard))
-		side = -1;
-
-	int diffC = newColumn - column;
-	int dirCol = (diffC >= 0) - (diffC < 0);
-	int diffR = newRow - row;
-	int dirRow = (diffR >= 0) - (diffR < 0);
-
-	// Don't move in diagonal
-	if (diffR != diffC && diffR != -diffC)
-		return false;
-
-	// piece
-	int piece = getPiece(column, row);
-	if (piece == 1 || piece == 2)
-	{
-		// Move 2 cases in diagonal forward
-		if (diffC * side == 2)
-		{
-			// Don't eat an opponent piece
-			if (getPiece(column, row, playerBoard) && !getPiece(column + side, row + dirRow, robotBoard))
-				return false;
-			if (getPiece(column, row, robotBoard) && !getPiece(column + side, row + dirRow, playerBoard))
-				return false;
-		}
-		// Don't move 1 case in diagonal forward
-		else if (diffC * side != 1)
-			return false;
-	}
-	// king
-	else
-	{
-		int eatOpponent = 0;
-		// Look at all the positions of the trajectory
-		for (int i = 1; i < abs(diffC); i++)
-		{
-			// Eat a piece of his side
-			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
-				return false;
-			if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
-				return false;
-
-			// Count the number of opponent piece eaten
-			if (getPiece(column, row, playerBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), robotBoard))
-				eatOpponent++;
-			if (getPiece(column, row, robotBoard) && getPiece(column + (i * dirCol), row + (i * dirRow), playerBoard))
-				eatOpponent++;
-			// Can't eat more than one opponent piece
-			if (eatOpponent > 1)
-				return false;
-		}
-	}
-	return true;
-}
-*/
 bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 {
 	// in the board
@@ -427,6 +365,12 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 
 bool Board::isValid()
 {
+	// There is at least one piece
+	if (robotBoard == 0 && playerBoard == 0)
+	{
+		std::cout << "Plateau non valide : Aucun pion sur le plateau" << std::endl;
+		return false;
+	}
 	// A piece can't be on a light square
 	for (int i = 0; i < BOARDSIZE; i++)
 	{
@@ -434,7 +378,7 @@ bool Board::isValid()
 		{
 			if (i % 2 != j % 2 && getPiece(j, i))
 			{
-				std::cout << "Plateau non valide : Une piece est sur une case claire" << std::endl;
+				std::cout << "Plateau non valide : Un pion est sur une case claire" << std::endl;
 				return false;
 			}
 		}
@@ -705,7 +649,7 @@ int Board::uncapturables(int side)
 			{
 				if (i > 0 && i < BOARDSIZE - 1 && j > 0 && j < BOARDSIZE - 1)
 				{
-					if (getPiece(i + 1, j + 1, sideBoard) && getPiece(i + 1, j - 1, sideBoard))
+					if (getPiece(i + 1, j + 1) && getPiece(i + 1, j - 1))
 						count++;
 					else if (getPiece(i - 1, j + 1, sideBoard) && getPiece(i - 1, j - 1, sideBoard))
 						count++;

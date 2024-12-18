@@ -1,17 +1,5 @@
 ﻿  pch.cpp
   Board-Test.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(30,22): warning C4018: '<' : incompatibilité signed/unsigned
-  (compiler le fichier source '/Board-Test.cpp')
-  
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(49,22): warning C4018: '<' : incompatibilité signed/unsigned
-  (compiler le fichier source '/Board-Test.cpp')
-  
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(78,22): warning C4018: '<' : incompatibilité signed/unsigned
-  (compiler le fichier source '/Board-Test.cpp')
-  
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp-Test\Board-Test.cpp(107,22): warning C4018: '<' : incompatibilité signed/unsigned
-  (compiler le fichier source '/Board-Test.cpp')
-  
   BoardDetector-Test.cpp
   JeuDamesApp-Test.cpp
   Génération de code en cours...

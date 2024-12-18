@@ -25,7 +25,7 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 		}
 		if (event.type == sf::Event::Resized) {
 			sf::Vector2f windowSize = window.getView().getSize();
-			window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+			window.setView(sf::View(sf::FloatRect(0, 0, (float)event.size.width, (float)event.size.height)));
 		}
 		if (actualState == StateMachine::State::MainMenu) {
 			StateMachine::State newState = mainMenu->handleEvent(event);
@@ -47,7 +47,7 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 		}
 	}
 
-	window.clear();
+	window.clear(sf::Color(76,76,117));
 
 	if (actualState == StateMachine::State::MainMenu) {
 		mainMenu->updateButton(window.getSize());

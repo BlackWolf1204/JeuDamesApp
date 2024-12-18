@@ -74,8 +74,6 @@ private:
 
 	std::thread* webcamThread = nullptr;
 
-	sf::FloatRect spriteBounds;
-
 	// Frame states
 	sf::Image* webcamImage;
 	sf::Texture* webcamTexture;

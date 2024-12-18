@@ -2,7 +2,7 @@
 
 TranspositionTable::TranspositionTable()
 {
-	transpositionTable.resize(size);
+	transpositionTable.resize((const unsigned int)size);
 }
 
 TranspositionTable::~TranspositionTable()
