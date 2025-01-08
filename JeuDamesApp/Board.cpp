@@ -566,6 +566,28 @@ int Board::numCaptured(int side)
 	return 12 - count;
 }
 
+int Board::possibleMoves(int side)
+{
+	int countMove = 0;
+	int countEat = 0;
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			if (getPiece(j, i) % 2 == side)
+			{
+				std::vector<std::vector<int>> moves = canMoveEat(j, i);
+				countMove += moves[0].size();
+				countEat += moves[1].size();
+			}
+		}
+	}
+
+	if (countEat > 0)
+		return countEat;
+	return countMove;
+}
+
 int Board::numMen(int side)
 {
 	int count = 0;

@@ -197,6 +197,13 @@ public:
 	int numCaptured(int side);
 
 	/// <summary>
+	/// Get the number of possible moves of the pieces (don't count simple moves if a piece can eat)
+	/// </summary>
+	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
+	/// <returns>Number of possible moves</returns>
+	int possibleMoves(int side);
+
+	/// <summary>
 	/// Get the number of ally piece (man)
 	/// </summary>
 	/// <param name ="side">0 for the robot point of view and 1 for the player</param>

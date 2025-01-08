@@ -47,7 +47,7 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 		}
 	}
 
-	window.clear(sf::Color(76,76,117));
+	window.clear(sf::Color(80, 86, 191));
 
 	if (actualState == StateMachine::State::MainMenu) {
 		mainMenu->updateButton(window.getSize());

@@ -10,7 +10,7 @@ MainMenu::MainMenu(sf::Font* font)
 	playButton.setButtonSize(sf::Vector2f(250, 100));
 	playButton.setButtonFont(font);
 	playButton.setButtonText("Jouer");
-	playButton.setButtonTextSize(60);
+	playButton.setButtonTextSize(70);
 	playButton.setButtonTextColor(sf::Color::White);
 
 
@@ -21,7 +21,7 @@ MainMenu::MainMenu(sf::Font* font)
 	frameDetailButton.setButtonFont(font);
 	frameDetailButton.setButtonTextColor(sf::Color::White);
 	frameDetailButton.setButtonText("Image Details");
-	frameDetailButton.setButtonTextSize(60);
+	frameDetailButton.setButtonTextSize(70);
 }
 
 void MainMenu::updateButton(sf::Vector2u windowSize)

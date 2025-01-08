@@ -21,7 +21,7 @@ public:
 
 private:
 	sf::RenderWindow window;
-	std::string fontPath = "Ressources/ShortBaby.ttf";
+	std::string fontPath = "Ressources/Winter Snowman.otf";
 	MainMenu* mainMenu;
 	GameUI* gameUI;
 	FrameDetail* frameDetail;

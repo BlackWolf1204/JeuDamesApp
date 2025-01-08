@@ -67,22 +67,22 @@ FrameDetail::FrameDetail(sf::RenderWindow& window, sf::Font* font)
 
 	webcamText.setFont(*font);
 	webcamText.setString("Image de sortie de la caméra.\nAjout d'une grille pour calibrage.");
-	webcamText.setCharacterSize(20);
+	webcamText.setCharacterSize(35);
 	webcamText.setFillColor(sf::Color::White);
 
 	grayText.setFont(*font);
-	grayText.setString("Image après convertion \nsen niveau de gris.");
-	grayText.setCharacterSize(20);
+	grayText.setString("Image après convertion \nen niveau de gris.");
+	grayText.setCharacterSize(35);
 	grayText.setFillColor(sf::Color::White);
 
 	blurText.setFont(*font);
-	blurText.setString("Image après application \nd'un filtre Gaussien.\n\nLisse l'image \n(réduit le \"bruit\" de l'image).");
-	blurText.setCharacterSize(20);
+	blurText.setString("Image après application d'un \nfiltre Gaussien. Lisse l'image \n(réduit le \"bruit\" de l'image).");
+	blurText.setCharacterSize(35);
 	blurText.setFillColor(sf::Color::White);
 
 	cannyText.setFont(*font);
-	cannyText.setString("Image après application \nd'un filtre de Canny.\n\nFait ressortir les \ncontours des objets.");
-	cannyText.setCharacterSize(20);
+	cannyText.setString("Image après application d'un \nfiltre de Canny. Fait ressortir \nles contours des objets.");
+	cannyText.setCharacterSize(35);
 	cannyText.setFillColor(sf::Color::White);
 }
 

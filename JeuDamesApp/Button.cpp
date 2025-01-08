@@ -3,7 +3,9 @@
 Button::Button()
 {
 	buttonRect.setOutlineThickness(3);
-	buttonRect.setOutlineColor(sf::Color::White);
+	buttonColor = sf::Color(3, 10, 140);
+	buttonRect.setOutlineColor(sf::Color(242, 229, 48));
+	buttonText.setFillColor(sf::Color(242, 229, 48));
 }
 
 sf::Vector2f Button::getButtonSize()
@@ -13,7 +15,7 @@ sf::Vector2f Button::getButtonSize()
 
 void Button::setButtonColor(sf::Color color)
 {
-	buttonColor = color;
+	//buttonColor = color;
 }
 
 void Button::setButtonSize(sf::Vector2f size)
@@ -29,7 +31,7 @@ void Button::setButtonPosition(sf::Vector2f position)
 
 void Button::setButtonTextColor(sf::Color color)
 {
-	buttonText.setFillColor(color);
+	//buttonText.setFillColor(color);
 }
 
 void Button::setButtonText(std::string text)
@@ -54,7 +56,7 @@ void Button::draw(sf::RenderWindow& window)
 	buttonRect.setPosition(buttonPosition);
 	buttonRect.setFillColor(buttonColor);
 
-	buttonText.setOrigin(buttonText.getLocalBounds().width / 2, buttonText.getLocalBounds().height / 2);
+	buttonText.setOrigin(buttonText.getLocalBounds().width / 2, buttonText.getLocalBounds().height);
 	buttonText.setPosition(buttonRect.getPosition().x + buttonRect.getSize().x / 2, buttonRect.getPosition().y + buttonRect.getSize().y / 2);
 
 	window.draw(buttonRect);

@@ -75,8 +75,20 @@ private:
 	// circles of the pieces color in the board
 	std::vector<sf::CircleShape> circlesPieces;
 
+	// marks of the king on the piece of the board
+	std::vector<sf::Text> kingMarks;
+
+	// marks of the available king
+	std::vector<sf::Text> availableKingMarks;
+
 	// charging text
 	sf::Text loadingText;
+
+	// number of pieces eaten
+	sf::Text robotPieceCount;
+	sf::Text playerPieceCount;
+	sf::CircleShape robotPiece;
+	sf::CircleShape playerPiece;
 
 	// victoryy text
 	sf::Text victoryText;

@@ -34,7 +34,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	backButton.setButtonText("Retour");
 	backButton.setButtonTextSize(60);
 
-	gameBoard.setFillColor(sf::Color(36, 193, 224));
+	gameBoard.setFillColor(sf::Color(188, 187, 242));
 
 	webcamImage = new sf::Image();
 	webcamTexture = new sf::Texture();
@@ -47,18 +47,35 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 		sf::CircleShape circle;
 		circle.setFillColor(sf::Color::Transparent);
 		circlesPieces.push_back(circle);
-	}
 
-	for (int i = 0; i < BOARDSIZE * BOARDSIZE; i++)
-	{
 		sf::RectangleShape squares;
 		squares.setFillColor(sf::Color::Transparent);
 		gameSquares.push_back(squares);
+
+		sf::Text mark;
+		mark.setFont(*font);
+		mark.setString("K");
+		mark.setFillColor(sf::Color::Transparent);
+		kingMarks.push_back(mark);
+
 	}
+
+	robotPieceCount.setFont(*font);
+	robotPieceCount.setString("0");
+	robotPieceCount.setCharacterSize(50);
+	robotPieceCount.setFillColor(sf::Color::White);
+
+	robotPiece.setFillColor(sf::Color::White);
+	playerPiece.setFillColor(sf::Color::Green);
+
+	playerPieceCount.setFont(*font);
+	playerPieceCount.setString("0");
+	playerPieceCount.setCharacterSize(50);
+	playerPieceCount.setFillColor(sf::Color::White);
 
 	loadingText.setFont(*font);
 	loadingText.setString("Chargement de la camera, \n\tVeuillez patienter...");
-	loadingText.setCharacterSize(25);
+	loadingText.setCharacterSize(30);
 	loadingText.setFillColor(sf::Color::White);
 
 	victoryText.setFont(*font);
@@ -72,7 +89,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	restartButton.setButtonFont(font);
 	restartButton.setButtonTextColor(sf::Color::White);
 	restartButton.setButtonText("Rejouer");
-	restartButton.setButtonTextSize(55);
+	restartButton.setButtonTextSize(60);
 
 	refillButton = Button();
 	refillButton.setButtonColor(sf::Color::Red);
@@ -81,15 +98,21 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	refillButton.setButtonFont(font);
 	refillButton.setButtonTextColor(sf::Color::White);
 	refillButton.setButtonText("Recharger");
-	refillButton.setButtonTextSize(55);
+	refillButton.setButtonTextSize(60);
 
-	left_available_pieces.setFillColor(sf::Color(46, 161, 0));
+	left_available_pieces.setFillColor(sf::Color(2, 230, 96));
 
 	for (int i = 0; i < 8; i++)
 	{
 		sf::CircleShape circle;
 		circle.setFillColor(sf::Color::White);
 		availablePieces.push_back(circle);
+
+		sf::Text kingMark;
+		kingMark.setFont(*font);
+		kingMark.setString("K");
+		kingMark.setFillColor(sf::Color(0, 0, 0, 70));
+		availableKingMarks.push_back(kingMark);
 	}
 
 	this->robot = robot;
@@ -110,6 +133,9 @@ void GameUI::draw(sf::RenderWindow& window)
 		{
 			circlesPieces[i + j * BOARDSIZE].setPosition(sf::Vector2f(gameBoard.getPosition().x + i * gameBoard.getSize().x / BOARDSIZE + 5, gameBoard.getPosition().y + j * gameBoard.getSize().y / BOARDSIZE + 5));
 			circlesPieces[i + j * BOARDSIZE].setRadius((float)windowSize.y / 40);
+			
+			kingMarks[i + j * BOARDSIZE].setCharacterSize((float)circlesPieces[0].getRadius() * 3 / 2);
+			kingMarks[i + j * BOARDSIZE].setPosition(sf::Vector2f(circlesPieces[i + j * BOARDSIZE].getPosition().x + circlesPieces[i + j * BOARDSIZE].getRadius() * 3 / 5, circlesPieces[i + j * BOARDSIZE].getPosition().y - circlesPieces[i + j * BOARDSIZE].getRadius() * 1 / 5));
 		}
 	}
 
@@ -127,6 +153,16 @@ void GameUI::draw(sf::RenderWindow& window)
 		}
 	}
 
+	// Update the number of eaten pieces size and position according to the window size
+	playerPiece.setRadius((float)windowSize.y / 40);
+	playerPiece.setPosition(gameBoard.getPosition().x + gameBoard.getLocalBounds().width + 10, gameBoard.getPosition().y);
+	robotPiece.setRadius((float)windowSize.y / 40);
+	robotPiece.setPosition(gameBoard.getPosition().x + gameBoard.getLocalBounds().width + 10, gameBoard.getPosition().y + gameBoard.getLocalBounds().height - robotPiece.getRadius() * 2);
+	playerPieceCount.setCharacterSize((float)playerPiece.getRadius() * 3);
+	playerPieceCount.setPosition(playerPiece.getPosition().x + playerPiece.getRadius() * 2 + 10, playerPiece.getPosition().y - playerPiece.getRadius());
+	robotPieceCount.setCharacterSize((float)robotPiece.getRadius() * 3);
+	robotPieceCount.setPosition(robotPiece.getPosition().x + robotPiece.getRadius() * 2 + 10, robotPiece.getPosition().y - robotPiece.getRadius());
+
 	// Update the available pieces size and position according to the window size
 	left_available_pieces.setSize(sf::Vector2f((float)windowSize.x / 11, (float)windowSize.y / 3));
 	left_available_pieces.setPosition(sf::Vector2f(windowSize.x / 2 - gameBoard.getSize().x / 2 - 10 - left_available_pieces.getSize().x, gameBoard.getPosition().y));
@@ -137,7 +173,9 @@ void GameUI::draw(sf::RenderWindow& window)
 		{
 			availablePieces[i + j * 2].setRadius((float)windowSize.y / 40);
 			availablePieces[i + j * 2].setPosition(sf::Vector2f(left_available_pieces.getPosition().x + i * gameBoard.getSize().x / 6 + 10, left_available_pieces.getPosition().y + j * gameBoard.getSize().y / 6 + 10));
-
+			
+			availableKingMarks[i + j * 2].setCharacterSize((float)availablePieces[0].getRadius() * 3 / 2);
+			availableKingMarks[i + j * 2].setPosition(sf::Vector2f(availablePieces[i + j * 2].getPosition().x + availablePieces[i + j * 2].getRadius() * 3 / 5, availablePieces[i + j * 2].getPosition().y - availablePieces[i + j * 2].getRadius() * 1 / 5));
 		}
 	}
 
@@ -167,13 +205,20 @@ void GameUI::draw(sf::RenderWindow& window)
 	for (int i = 0; i < BOARDSIZE * BOARDSIZE; i++)
 	{
 		window.draw(circlesPieces[i]);
+		window.draw(kingMarks[i]);
 	}
+
+	window.draw(robotPiece);
+	window.draw(robotPieceCount);
+	window.draw(playerPiece);
+	window.draw(playerPieceCount);
 
 	window.draw(left_available_pieces);
 
 	for (int i = 0; i < robot->getRemainingKing(); i++)
 	{
 		window.draw(availablePieces[7 - i]);
+		window.draw(availableKingMarks[7 - i]);
 	}
 
 	backButton.draw(window);
@@ -279,17 +324,30 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 		{
 			int piece = board.getPiece(BOARDSIZE - j - 1, i);
 			if (piece == 0)
+			{
 				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Transparent);
+				kingMarks[j + i * BOARDSIZE].setFillColor(sf::Color::Transparent);
+			}
 			else if (piece == 1)
 				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Green);
 			else if (piece == 3)
-				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Blue);
+			{
+				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Green);
+				kingMarks[j + i * BOARDSIZE].setFillColor(sf::Color(0, 0, 0, 70));
+			}
 			else if (piece == 2)
 				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::White);
 			else if (piece == 4)
-				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Red);
+			{
+				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::White);
+				kingMarks[j + i * BOARDSIZE].setFillColor(sf::Color(0, 0, 0, 70));
+			}
 		}
 	}
+	
+	robotPieceCount.setString(std::to_string(board.numCaptured(0)));
+	playerPieceCount.setString(std::to_string(board.numCaptured(1)));
+
 	return;
 }
 
