@@ -53,14 +53,6 @@ public:
 	bool draw();
 
 	/// <summary>
-	/// Return the moves where the piece can eat (positions)
-	/// </summary>
-	/// <param name="column">Column of the initial position</param>
-	/// <param name="row">Row of the initial position</param>
-	/// <returns>Vector of position where the piece can eat, empty if can't eat</returns>
-	std::vector<int> canEat(int column, int row);
-
-	/// <summary>
 	/// Return the positions where the piece can move or eat
 	/// </summary>
 	/// <param name="column">Column of the initial position</param>
@@ -233,14 +225,14 @@ public:
 	int uncapturables(int side);
 
 	/// <summary>
-	/// Get the number of ally piece in the middle of the board
+	/// Get the number of ally piece in the middle of the board (doesn't count the kings)
 	/// </summary>
 	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
 	/// <returns>Number of ally piece in the middle of the board</returns>
 	int atMiddle(int side);
 
 	/// <summary>
-	/// Get the number of ally piece in the opponent part of the board
+	/// Get the number of ally piece in the opponent part of the board (doesn't count the kings)
 	/// </summary>
 	/// <param name ="side">0 for the robot point of view and 1 for the player</param>
 	/// <returns>Number of ally piece in the opponent part of the board</returns>

@@ -31,13 +31,13 @@ int main()
 			isConnected = robot->connect();
 			if (isConnected)
 			{
-				robot->Home();
+				//robot->Home();
 			}
 			else
 			{
 				continue;
 			}
-		}*/
+		}
 		/* #######################################*/
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
@@ -139,11 +139,41 @@ int main()
 	
 	}
 	uiController.stop(stateMachine.getState());
-	/*############################################### */
+	
 	/*
 	Board board;
 	board.initBoard();
+	/*
+	// without king
+	board.setRobotPiece(2, 4, true);
+	board.setRobotPiece(4, 4, true);
+	board.setRobotPiece(6, 2, true);
+	board.setRobotPiece(7, 5, true);
 
+	board.setPlayerPiece(4, 6, true);
+	board.setPlayerPiece(5, 7, true);
+	board.setPlayerPiece(6, 6, true);
+	
+	// with king PLAYER
+	board.setRobotPiece(1, 3, true);
+	board.setRobotPiece(3, 3, true);
+	board.setRobotPiece(5, 1, true);
+	board.setRobotPiece(7, 5, true);
+
+	board.setPlayerPiece(3, 5, true);
+	board.setPlayerPiece(4, 6, true);
+	board.setPlayerPiece(5, 7, true);
+	board.setPlayerPiece(6, 6, true);
+	
+	// with king ROBOT
+	board.setRobotPiece(1, 3, true);
+	board.setRobotPiece(3, 3, true);
+	board.setRobotPiece(5, 1, true);
+	board.setRobotPiece(7, 5, true);
+
+	board.setPlayerPiece(3, 5, true);
+	board.setPlayerPiece(4, 6, true);
+	*//*
 	while (!board.isTerminal())
 	{
 		board.printBoard();
@@ -185,7 +215,7 @@ int main()
 		{
 			std::cout << "No moves found." << std::endl;
 		}
-	}*/
-	
+	}
+	*/
 	return 0;
 }

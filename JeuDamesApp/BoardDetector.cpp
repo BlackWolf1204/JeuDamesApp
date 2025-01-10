@@ -7,7 +7,7 @@ Board BoardDetector::detectBoard(cv::Mat image)
 	cv::Mat copy = image.clone();
 	cv::Mat copy2 = image.clone();
 	// modify the image to see only the contours
-	modifyFrame(copy);
+	std::vector<cv::Mat> modifiedFrame = modifyFrame(copy);
 
 	// Square positions on the image
 	cv::Point p1(510, 460);
@@ -21,8 +21,6 @@ Board BoardDetector::detectBoard(cv::Mat image)
 		{
 			cv::Vec3f square(p1.x + gap * i, p1.y + gap * j, gap);
 			sortedSquares.push_back(square);
-			// Uncomment to show the squares positions on the camera
-			//cv::rectangle(image, cv::Point(square[0], square[1]), cv::Point(square[0] + square[2], square[1] + square[2]), cv::Scalar(255, 0, 255), 2);
 		}
 	}
 
@@ -44,7 +42,6 @@ Board BoardDetector::detectBoard(cv::Mat image)
 	{
 		cv::circle(image, cv::Point((int)containedCircles[i][0], (int)containedCircles[i][1]), (int)containedCircles[i][2], cv::Scalar(0, 255, 255), 2);
 	}
-	
 	//Detect the colors of the circles
 	Board board = detectColors(copy2, containedCircles);
 	
@@ -84,12 +81,13 @@ std::vector<cv::Mat> BoardDetector::modifyFrame(cv::Mat& frame)
 	modifiedFrame.push_back(color_gray);
 
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
-	cv::GaussianBlur(img_gray, img_gaus_blur, cv::Size(3, 3), 3, 0);
+	cv::GaussianBlur(img_gray, img_gaus_blur, cv::Size(5, 5), 3, 0);
+	//cv::bilateralFilter(img_gray, img_gaus_blur, 15, 90, 15);
 	cv::cvtColor(img_gaus_blur, color_gaus_blur, cv::COLOR_GRAY2BGR);
 	modifiedFrame.push_back(color_gaus_blur);
 
 	// Edge detection using canny algo
-	cv::Canny(img_gaus_blur, img_canny, 25, 110);
+	cv::Canny(img_gaus_blur, img_canny, 25, 65);
 	
 	// Running dilation on canny output to improve edge thickness
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
@@ -155,13 +153,13 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 
 			int obj_corners = (int)contourPoly[i].size();
 			// number of corners
-			if (obj_corners > 5)
+			if (obj_corners > 6)
 			{
 				float aspect_ratio = (float)bound_rect[i].width /
 					(float)bound_rect[i].height;
 				
 				// tolerance for l/w ratio and size of the object
-				if (bound_rect[i].width <= frame.rows / 10 && bound_rect[i].width > frame.rows/26)
+				if (bound_rect[i].width <= frame.rows / 10 && bound_rect[i].width > frame.rows/22)
 				{
 					// center and width of the circle
 					cv::Point center(bound_rect[i].x + bound_rect[i].width / 2, bound_rect[i].y + bound_rect[i].height / 2);
@@ -208,6 +206,9 @@ Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec4f> containe
 {
 	Board board;
 
+	if (image.empty())
+		return board;
+
 	for (size_t i = 0; i < containedCircles.size(); i++)
 	{
 		cv::Vec3b pieceColor = getCircleMeanColor(image, containedCircles[i]);
@@ -244,8 +245,21 @@ Board BoardDetector::detectColors(cv::Mat image, std::vector<cv::Vec4f> containe
 
 cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec4f circle)
 {
+	if (circle[0] < 0 || circle[1] < 0 || circle[2] - 10 <= 0 ||
+		circle[0] >= image.cols || circle[1] >= image.rows) {
+		std::cerr << "Erreur : Coordonnées ou rayon du cercle invalides.\n";
+		return cv::Vec3b((uchar)0, (uchar)0, (uchar)0);
+	}
 	//Create a mask to get only the circle pixels
 	cv::Mat mask = cv::Mat::zeros(image.size(), CV_8UC1);
+	if (image.type() != CV_8UC3) {
+		std::cerr << "Erreur : Type d'image non supporté. Attendu CV_8UC3.\n";
+		return cv::Vec3b((uchar)0, (uchar)0, (uchar)0);
+	}
+	if (mask.type() != CV_8UC1) {
+		std::cerr << "Erreur : Type de masque incorrect. Attendu CV_8UC1.\n";
+		return cv::Vec3b((uchar)0, (uchar)0, (uchar)0);
+	}
 	cv::circle(mask, cv::Point((int)circle[0], (int)circle[1]),(int)circle[2] - 10, cv::Scalar(255, 255, 255), -1);	
 
 	//Get the mean color of the circle
@@ -259,11 +273,11 @@ BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 	{
 		return Color::WHITE;
 	}
-	if (abs(color[2] - color[0]) > 50 && abs(color[2] - color[1]) > 50)
+	if (abs(color[2] - color[0]) > 80 && abs(color[2] - color[1]) > 80)
 	{
 		return Color::RED;
 	}
-	if (abs(color[0] - color[1]) > 35 && abs(color[0] - color[2]) > 50)
+	if (abs(color[0] - color[1]) > 80 && abs(color[0] - color[2]) > 80)
 	{
 		return Color::BLUE;
 	}

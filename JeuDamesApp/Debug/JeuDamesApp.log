@@ -1,6 +1,2 @@
-﻿  GameUI.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(137,90): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(161,67): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(163,65): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(177,93): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
+﻿  BoardDetector.cpp
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe

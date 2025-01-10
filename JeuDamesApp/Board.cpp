@@ -696,16 +696,23 @@ int Board::atMiddle(int side)
 {
 	int count = 0;
 	unsigned __int64 sideBoard;
+	unsigned __int64 sideKingBoard;
 	if (side == 0)
+	{
 		sideBoard = getRobotBitboard();
+		sideKingBoard = getRobotKingBitboard();
+	}
 	else
+	{
 		sideBoard = getPlayerBitboard();
+		sideKingBoard = getPlayerKingBitboard();
+	}
 
 	for (int i = 0; i < BOARDSIZE ; i++)
 	{
 		for (int j = 3; j < BOARDSIZE - 3; j++)
 		{
-			if (getPiece(i, j, sideBoard))
+			if (getPiece(i, j, sideBoard) && !getPiece(i, j, sideKingBoard))
 				count++;
 		}
 	}
@@ -716,17 +723,20 @@ int Board::atEnemy(int side)
 {
 	int count = 0;
 	unsigned __int64 sideBoard;
+	unsigned __int64 sideKingBoard;
 	int begin = 0;
 	int end = 0;
 	if (side == 0)
 	{
 		sideBoard = getRobotBitboard();
+		sideKingBoard = getRobotKingBitboard();
 		begin = 4;
 		end = 8;
 	}
 	else
 	{
 		sideBoard = getPlayerBitboard();
+		sideKingBoard = getPlayerKingBitboard();
 		begin = 0;
 		end = 3;
 	}
@@ -735,7 +745,7 @@ int Board::atEnemy(int side)
 	{
 		for (int j = begin; j < end; j++)
 		{
-			if (getPiece(i, j, sideBoard))
+			if (getPiece(i, j, sideBoard) && !getPiece(i, j, sideKingBoard))
 				count++;
 		}
 	}

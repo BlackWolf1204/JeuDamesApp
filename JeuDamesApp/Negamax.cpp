@@ -4,7 +4,7 @@
 std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth)
 {	
 	// If early game
-	if (board.getMoveNumber() == 1)      // A CHANGER //////////////////////////////////////////////////
+	if (board.getMoveNumber() == 0)      // A CHANGER //////////////////////////////////////////////////
 		return GetBestMoveEarlyGame(board);
 
 	std::vector<int> pieces;
@@ -150,7 +150,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 	int beta = 100000;
 
 	// If early game
-	if (board.getMoveNumber() == 1)
+	if (board.getMoveNumber() == 1)  // A CHANGER //////////////////////////
 		return GetBestMoveEarlyGame(board);
 
 	// Look all possible moves of robot pieces
@@ -200,7 +200,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 				{
 					int* ptr = movePositions;
 					ptr += 2;
-					value = Negamax(newBoard, alpha, beta, ptr, allPositionsEat[p][e], 0, transpositionTable, depth);
+					value = -Negamax(newBoard, alpha, beta, ptr, allPositionsEat[p][e], 0, transpositionTable, depth);
 				}
 				ind += 1;
 
@@ -338,8 +338,7 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 						allPositionsMove.push_back(positions[0]);
 						allPositionsEat.push_back(positions[1]);
 						// keep in mind that a piece can eat
-						if (positions[1].size() > 0)
-							canEat = 1;
+						canEat += positions[1].size();
 					}
 				}
 			}
@@ -421,7 +420,10 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 
 void Negamax::NegamaxThread(Board board, int* result, int* ptr, int posSweep, int playing, TranspositionTable* transpositionTable, unsigned int depth)
 {
-	*result = Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, transpositionTable, depth);
+	if (playing == 0)
+		*result = -Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, transpositionTable, depth);
+	else
+		*result = Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, transpositionTable, depth);
 }
 
 std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)

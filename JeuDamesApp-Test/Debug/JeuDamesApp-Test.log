@@ -1,2 +1,7 @@
-﻿  Board-Test.cpp
+﻿  pch.cpp
+  Board-Test.cpp
+  BoardDetector-Test.cpp
+  JeuDamesApp-Test.cpp
+  Génération de code en cours...
+     Création de la bibliothèque D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.lib et de l'objet D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.exp
   JeuDamesApp-Test.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp-Test.dll

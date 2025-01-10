@@ -34,7 +34,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	backButton.setButtonText("Retour");
 	backButton.setButtonTextSize(60);
 
-	gameBoard.setFillColor(sf::Color(188, 187, 242));
+	gameBoard.setFillColor(sf::Color(84, 56, 34));
 
 	webcamImage = new sf::Image();
 	webcamTexture = new sf::Texture();
@@ -88,7 +88,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	restartButton.setButtonPosition(sf::Vector2f(10, 130));
 	restartButton.setButtonFont(font);
 	restartButton.setButtonTextColor(sf::Color::White);
-	restartButton.setButtonText("Rejouer");
+	restartButton.setButtonText("Jouer");
 	restartButton.setButtonTextSize(60);
 
 	refillButton = Button();
@@ -100,7 +100,7 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	refillButton.setButtonText("Recharger");
 	refillButton.setButtonTextSize(60);
 
-	left_available_pieces.setFillColor(sf::Color(2, 230, 96));
+	left_available_pieces.setFillColor(sf::Color(84, 56, 34));
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -131,8 +131,8 @@ void GameUI::draw(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < BOARDSIZE; j++)
 		{
-			circlesPieces[i + j * BOARDSIZE].setPosition(sf::Vector2f(gameBoard.getPosition().x + i * gameBoard.getSize().x / BOARDSIZE + 5, gameBoard.getPosition().y + j * gameBoard.getSize().y / BOARDSIZE + 5));
-			circlesPieces[i + j * BOARDSIZE].setRadius((float)windowSize.y / 40);
+			circlesPieces[i + j * BOARDSIZE].setPosition(sf::Vector2f((gameBoard.getPosition().x + 10) + i * (gameBoard.getSize().x - 20) / BOARDSIZE + 5, (gameBoard.getPosition().y + 10) + j * (gameBoard.getSize().y - 20) / BOARDSIZE + 5));
+			circlesPieces[i + j * BOARDSIZE].setRadius((float)windowSize.y / 42);
 			
 			kingMarks[i + j * BOARDSIZE].setCharacterSize((float)circlesPieces[0].getRadius() * 3 / 2);
 			kingMarks[i + j * BOARDSIZE].setPosition(sf::Vector2f(circlesPieces[i + j * BOARDSIZE].getPosition().x + circlesPieces[i + j * BOARDSIZE].getRadius() * 3 / 5, circlesPieces[i + j * BOARDSIZE].getPosition().y - circlesPieces[i + j * BOARDSIZE].getRadius() * 1 / 5));
@@ -144,12 +144,12 @@ void GameUI::draw(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < BOARDSIZE; j++)
 		{
+			gameSquares[i + j * BOARDSIZE].setPosition(sf::Vector2f((gameBoard.getPosition().x + 10) + i * (gameBoard.getSize().x - 20) / BOARDSIZE, (gameBoard.getPosition().y + 10) + j * (gameBoard.getSize().y - 20) / BOARDSIZE));
+			gameSquares[i + j * BOARDSIZE].setSize(sf::Vector2f((gameBoard.getSize().x - 20) / BOARDSIZE, (gameBoard.getSize().y - 20) / BOARDSIZE));
 			if (i % 2 != j % 2)
-			{
-				gameSquares[i + j * BOARDSIZE].setPosition(sf::Vector2f(gameBoard.getPosition().x + i * gameBoard.getSize().x / BOARDSIZE, gameBoard.getPosition().y + j * gameBoard.getSize().y / BOARDSIZE));
-				gameSquares[i + j * BOARDSIZE].setSize(sf::Vector2f(gameBoard.getSize().x / BOARDSIZE, gameBoard.getSize().y / BOARDSIZE));
-				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(30, 6, 91));
-			}
+				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(105, 70, 42));
+			else
+				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(168, 136, 109));
 		}
 	}
 
@@ -328,7 +328,16 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Transparent);
 				kingMarks[j + i * BOARDSIZE].setFillColor(sf::Color::Transparent);
 			}
-			else if (piece == 1)
+			else if (piece % 2 == 1) {
+				std::vector<std::vector<int>> positions = board.canMoveEat(j, i);
+
+				for (int c = 0; c < positions[1].size(); c++)
+				{
+					gameSquares[positions[1][c]].setFillColor(sf::Color(250, 137, 45));
+					gameSquares[j + i * BOARDSIZE].setFillColor(sf::Color(63, 183, 224));
+				}
+			}
+			if (piece == 1)
 				circlesPieces[j + i * BOARDSIZE].setFillColor(sf::Color::Green);
 			else if (piece == 3)
 			{
@@ -345,8 +354,8 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 		}
 	}
 	
-	robotPieceCount.setString(std::to_string(board.numCaptured(0)));
-	playerPieceCount.setString(std::to_string(board.numCaptured(1)));
+	robotPieceCount.setString(std::to_string(board.numCaptured(1)));
+	playerPieceCount.setString(std::to_string(board.numCaptured(0)));
 
 	return;
 }
