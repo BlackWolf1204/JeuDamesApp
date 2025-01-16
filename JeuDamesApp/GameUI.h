@@ -58,6 +58,9 @@ public:
 
 private:
 	Button backButton;
+	Button restartButton;
+	Button refillButton;
+	Button playButton;
 
 	std::thread* webcamThread = nullptr;
 
@@ -93,9 +96,6 @@ private:
 	// victoryy text
 	sf::Text victoryText;
 	bool victoryVisible = false;
-
-	Button restartButton;
-	Button refillButton;
 
 	sf::RectangleShape left_available_pieces;
 	std::vector<sf::CircleShape> availablePieces;

@@ -8,6 +8,7 @@ class StateMachine
 			MainMenu,
 			Game,
 			FrameDetail,
+			Rules,
 			Options,
 			Quit
 		};

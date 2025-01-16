@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Button.h"
+#include "InputBar.h"
 #include "StateMachine.h"
 
 /// <summary>
@@ -15,7 +16,13 @@ public:
 	void draw(sf::RenderWindow& window);
 	StateMachine::State handleEvent(sf::Event event);
 
+	std::string portText;
+
 private:
 	Button playButton;
 	Button frameDetailButton;
+	Button rulesButton;
+	Button enterButton;
+	
+	InputBar portInputBar;
 };

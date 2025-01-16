@@ -76,14 +76,7 @@ Robot::Robot()
 	kingCoordinates[6] = { 33, 223, -126, 90 };
 	kingCoordinates[7] = { 78, 222, -126, 90 };
 
-	removedPieceCoordinates[0] = { -58, -220, -126, -90 };
-	removedPieceCoordinates[1] = { -13, -220, -126, -90 };
-	removedPieceCoordinates[2] = { 28, -220, -126, -90 };
-	removedPieceCoordinates[3] = { 75, -220, -126, -90 };
-	removedPieceCoordinates[4] = { -50, 223, -126, 90 };
-	removedPieceCoordinates[5] = { -11, 223, -126, 90 };
-	removedPieceCoordinates[6] = { 33, 223, -126, 90 };
-	removedPieceCoordinates[7] = { 78, 222, -126, 90 };
+	removedPieceCoordinates = { -58, -220, -126, -90 };
 	// ###################################################################
 }
 
@@ -91,7 +84,7 @@ Robot::~Robot()
 {
 }
 
-bool Robot::connect()
+bool Robot::connect(std::string portName)
 {
 	/*
 	char dobotPortName[64];
@@ -106,9 +99,9 @@ bool Robot::connect()
 		return false;
 	}*/
 
-	const char* dobotPortName = "COM13";
+	const char* dobotPortName = portName.c_str();
 
-	int connectDobotResult = ConnectDobot("COM13", 115200, nullptr, nullptr, &dobotId);
+	int connectDobotResult = ConnectDobot(dobotPortName, 115200, nullptr, nullptr, &dobotId);
 	if (connectDobotResult != DobotConnect_NoError) {
 		std::cerr << "Failed to connect to dobot. Error : ";
 		switch (connectDobotResult) {
@@ -145,6 +138,7 @@ void Robot::Home()
 	HOMECmd homeCmd;
 	uint64_t queuedCmdIndex;
 	int resultDobotHome = SetHOMECmd(dobotId, &homeCmd, true, &queuedCmdIndex);
+	lastCommandIndex = queuedCmdIndex;
 	if (resultDobotHome != DobotCommunicate_NoError) {
 		std::cerr << "Failed to reset dobot position" << std::endl;
 		return;
@@ -202,6 +196,28 @@ void Robot::Empty()
 	removedPieces = 0;
 }
 
+Robot::PlayingState Robot::getPlaying()
+{
+	return playing;
+}
+
+void Robot::setPlaying(PlayingState state)
+{
+	playing = state;
+}
+
+bool Robot::allCmdExecuted()
+{
+	uint64_t queuedCmdCurrentIndex;
+	int result = GetQueuedCmdCurrentIndex(dobotId, &queuedCmdCurrentIndex);
+	if (result != 0)
+	{
+		std::cout << "Failed to verify queue command current index" << std::endl;
+		return false;
+	}
+	return (queuedCmdCurrentIndex == lastCommandIndex);
+}
+
 int Robot::getRemainingKing()
 {
 	return remainingKing;
@@ -223,6 +239,7 @@ void Robot::goTo(Pose position)
 
 	uint64_t queuedCmdIndex;
 	int resultDobotPTP = SetPTPCmd(dobotId, &ptpCmd, true, &queuedCmdIndex);
+	lastCommandIndex = queuedCmdIndex;
 	if (resultDobotPTP != DobotCommunicate_NoError) {
 		std::cerr << "Failed to move dobot to position" << std::endl;
 	}
@@ -271,8 +288,8 @@ void Robot::removePiece(int position)
 	goTo(squareCoordinates[position]);
 	activeSuctionCup();
 	wait(0.5);
-	goTo(removedPieceCoordinates[removedPieces], HIGHT);
-	goTo(removedPieceCoordinates[removedPieces]);
+	goTo(removedPieceCoordinates, HIGHT);
+	goTo(removedPieceCoordinates);
 	desactiveSuctionCup();
 	wait(0.5);
 	turnOffSuctionCup();
@@ -293,6 +310,7 @@ void Robot::suctionCup(bool close, bool on)
 {
 	uint64_t queuedCmdIndex;
 	int resultDobotGripper = SetEndEffectorSuctionCup(dobotId, on, close, true, &queuedCmdIndex);
+	lastCommandIndex = queuedCmdIndex;
 	if (resultDobotGripper != DobotCommunicate_NoError) {
 		std::cerr << "Failed to suck" << std::endl;
 	}
@@ -310,6 +328,7 @@ void Robot::wait(float seconds)
 
 	uint64_t queuedCmdIndex;
 	int resultDobotWait = SetWAITCmd(dobotId, &waitCmd, true, &queuedCmdIndex);
+	lastCommandIndex = queuedCmdIndex;
 	if (resultDobotWait != DobotCommunicate_NoError) {
 		std::cerr << "Failed to wait" << std::endl;
 	}

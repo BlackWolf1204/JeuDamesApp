@@ -10,6 +10,13 @@
 class Robot
 {
 public:
+	enum class PlayingState
+	{
+		BEGIN,		// begin to play
+		DOING,		// is playing
+		WAIT,		// waiting to play
+	};
+
 	/// <summary>
 	/// Initializes the coordinates of the squares and pieces (hardcoded)
 	/// </summary>
@@ -20,8 +27,9 @@ public:
 	/// <summary>
 	/// Connect to the Dobot and check if it is connected
 	/// </summary>
+	/// <param name="portText">Port to connect to</param>
 	/// <returns>True if the Dobot is connected, false otherwise</returns>
-	bool connect();
+	bool connect(std::string portText);
 
 	/// <summary>
 	/// Reset the Dobot to its initial position
@@ -43,14 +51,24 @@ public:
 	int getRemainingKing();
 	int getRemovedPieces();
 
+	PlayingState getPlaying();
+	void setPlaying(PlayingState state);
+
+	/// <summary>
+	/// Return if the robot finished to execute all the commands in the queue
+	/// </summary>
+	bool allCmdExecuted();
+
 private:
 
 	int dobotId = -1;
 	int remainingKing = 8;
 	int removedPieces = 0;
+	uint64_t lastCommandIndex = 0;
+	PlayingState playing = PlayingState::WAIT;
 	Pose squareCoordinates[64];
 	Pose kingCoordinates[8];
-	Pose removedPieceCoordinates[8];
+	Pose removedPieceCoordinates;
 
 	/// <summary>
 	/// Move the Dobot to a specific position

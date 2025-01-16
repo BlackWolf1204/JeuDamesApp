@@ -145,10 +145,12 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FrameDetail.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="InputBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="Rules.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="TranspositionTable.cpp" />
     <ClCompile Include="uiController.cpp" />
@@ -160,9 +162,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="FrameDetail.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="InputBar.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Negamax.h" />
     <ClInclude Include="Robot.h" />
+    <ClInclude Include="Rules.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="TranspositionTable.h" />
     <ClInclude Include="uiController.h" />

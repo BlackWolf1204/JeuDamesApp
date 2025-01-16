@@ -33,55 +33,53 @@ FrameDetail::~FrameDetail()
 FrameDetail::FrameDetail(sf::RenderWindow& window, sf::Font* font)
 {
 	backButton = Button();
-	backButton.setButtonColor(sf::Color::Red);
+	backButton.setDefaultButtonColor();
 	backButton.setButtonSize(sf::Vector2f(250, 100));
 	backButton.setButtonPosition(sf::Vector2f(10, 10));
 	backButton.setButtonFont(font);
-	backButton.setButtonTextColor(sf::Color::White);
 	backButton.setButtonText("Retour");
 	backButton.setButtonTextSize(60);
 
 	webcamImage = new sf::Image();
 	webcamTexture = new sf::Texture();
 	webcamSprite = new sf::Sprite();
-	webcamSprite->setScale(0.7f, 0.7f);
+	webcamSprite->setScale(0.45f, 0.45f);
 	webcamSprite->setRotation(-90);
 
 	grayImage = new sf::Image();
 	grayTexture = new sf::Texture();
 	graySprite = new sf::Sprite();
-	graySprite->setScale(0.7f, 0.7f);
+	graySprite->setScale(0.45f, 0.45f);
 	graySprite->setRotation(-90);
 
 	blurImage = new sf::Image();
 	blurTexture = new sf::Texture();
 	blurSprite = new sf::Sprite();
-	blurSprite->setScale(0.7f, 0.7f);
+	blurSprite->setScale(0.45f, 0.45f);
 	blurSprite->setRotation(-90);
 
 	cannyImage = new sf::Image();
 	cannyTexture = new sf::Texture();
 	cannySprite = new sf::Sprite();
-	cannySprite->setScale(0.7f, 0.7f);
+	cannySprite->setScale(0.45f, 0.45f);
 	cannySprite->setRotation(-90);
 
 	webcamText.setFont(*font);
-	webcamText.setString("Image de sortie de la caméra.\nAjout d'une grille pour calibrage.");
-	webcamText.setCharacterSize(35);
+	webcamText.setString("-  Image de sortie de la caméra.\n   Ajout d'une grille pour calibrage.");
 	webcamText.setFillColor(sf::Color::White);
 
 	grayText.setFont(*font);
-	grayText.setString("Image après convertion \nen niveau de gris.");
+	grayText.setString("-  Image après convertion en niveau de gris.");
 	grayText.setCharacterSize(35);
 	grayText.setFillColor(sf::Color::White);
 
 	blurText.setFont(*font);
-	blurText.setString("Image après application d'un \nfiltre Gaussien. Lisse l'image \n(réduit le \"bruit\" de l'image).");
+	blurText.setString("-  Image après application d'un filtre Gaussien.\n   Lisse l'image (réduit le \"bruit\" de l'image).");
 	blurText.setCharacterSize(35);
 	blurText.setFillColor(sf::Color::White);
 
 	cannyText.setFont(*font);
-	cannyText.setString("Image après application d'un \nfiltre de Canny. Fait ressortir \nles contours des objets.");
+	cannyText.setString("-  Image après application d'un filtre de Canny.\n   Fait ressortir les contours des objets.");
 	cannyText.setCharacterSize(35);
 	cannyText.setFillColor(sf::Color::White);
 }
@@ -91,46 +89,23 @@ void FrameDetail::draw(sf::RenderWindow& window)
 	sf::Vector2u windowSize = window.getSize();
 
 	// Update the webcam feed size and position according to the window size
-	if (webcamTexture->getSize().x > 0 && webcamTexture->getSize().y > 0)
-	{
-		float scaleX = windowSize.x / webcamTexture->getSize().x * 0.4f;
-		float scaleY = windowSize.y / webcamTexture->getSize().y * 0.4f;
-		float scale = std::min(scaleX, scaleY);
-		webcamSprite->setScale(scale, scale);
-	}
-	webcamSprite->setPosition(sf::Vector2f(((float)windowSize.x - backButton.getButtonSize().x) / 2 - webcamSprite->getGlobalBounds().width / 2 - 10, ((float)windowSize.y - 10) / 2));
-	
-	if (grayTexture->getSize().x > 0 && grayTexture->getSize().y > 0)
-	{
-		float scaleX = windowSize.x / grayTexture->getSize().x * 0.4f;
-		float scaleY = windowSize.y / grayTexture->getSize().y * 0.4f;
-		float scale = std::min(scaleX, scaleY);
-		graySprite->setScale(scale, scale);
-	}
-	graySprite->setPosition(sf::Vector2f(((float)windowSize.x - backButton.getButtonSize().x) / 2 + graySprite->getGlobalBounds().width / 2 + 10,  ((float)windowSize.y - 10) / 2));
-	
-	if (blurTexture->getSize().x > 0 && blurTexture->getSize().y > 0)
-	{
-		float scaleX = windowSize.x / blurTexture->getSize().x * 0.4f;
-		float scaleY = windowSize.y / blurTexture->getSize().y * 0.4f;
-		float scale = std::min(scaleX, scaleY);
-		blurSprite->setScale(scale, scale);
-	}
-	blurSprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 - blurSprite->getGlobalBounds().width / 2 - 10, webcamSprite->getPosition().y + blurSprite->getGlobalBounds().width + 20));
-	if (cannyTexture->getSize().x > 0 && cannyTexture->getSize().y > 0)
-	{
-		float scaleX = windowSize.x / cannyTexture->getSize().x * 0.4f;
-		float scaleY = windowSize.y / cannyTexture->getSize().y * 0.4f;
-		float scale = std::min(scaleX, scaleY);
-		cannySprite->setScale(scale, scale);
-	}
-	cannySprite->setPosition(sf::Vector2f((windowSize.x - backButton.getButtonSize().x) / 2 + cannySprite->getGlobalBounds().width / 2 + 10, graySprite->getPosition().y + cannySprite->getGlobalBounds().width + 20));
+	webcamSprite->setPosition(sf::Vector2f(((float)windowSize.x / 2) - webcamSprite->getGlobalBounds().width - 5, webcamSprite->getGlobalBounds().height + 20));
+	graySprite->setPosition(sf::Vector2f(webcamSprite->getPosition().x + webcamSprite->getGlobalBounds().width + 10, webcamSprite->getPosition().y));
+	blurSprite->setPosition(sf::Vector2f(webcamSprite->getPosition().x, webcamSprite->getPosition().y + webcamSprite->getGlobalBounds().height + 10));
+	cannySprite->setPosition(sf::Vector2f(webcamSprite->getPosition().x + webcamSprite->getGlobalBounds().height + 10, webcamSprite->getPosition().y + webcamSprite->getGlobalBounds().height + 10));
 
 	// Update the webcam text size and position according to the webcame sprite position
-	webcamText.setPosition(sf::Vector2f(webcamSprite->getPosition().x - webcamText.getGlobalBounds().width - 20, webcamSprite->getPosition().y - (webcamSprite->getGlobalBounds().height / 2)));
-	grayText.setPosition(sf::Vector2f(graySprite->getPosition().x + graySprite->getGlobalBounds().width + 20, graySprite->getPosition().y - (graySprite->getGlobalBounds().height / 2)));
-	blurText.setPosition(sf::Vector2f(blurSprite->getPosition().x - blurText.getGlobalBounds().width - 20, blurSprite->getPosition().y - (blurSprite->getGlobalBounds().height / 2)));
-	cannyText.setPosition(sf::Vector2f(cannySprite->getPosition().x + cannySprite->getGlobalBounds().width + 20, cannySprite->getPosition().y - (cannySprite->getGlobalBounds().height / 2)));
+	webcamText.setCharacterSize(windowSize.x / 35);
+	grayText.setCharacterSize(windowSize.x / 35);
+	blurText.setCharacterSize(windowSize.x / 35);
+	cannyText.setCharacterSize(windowSize.x / 35);
+
+	int maxWidth = std::max(webcamText.getGlobalBounds().width, blurText.getGlobalBounds().width);
+	int maxHeight = std::max(webcamText.getGlobalBounds().height, grayText.getGlobalBounds().height);
+	webcamText.setPosition(sf::Vector2f(((float)windowSize.x / 2) - maxWidth - 20, blurSprite->getPosition().y + 50));
+	grayText.setPosition(sf::Vector2f(((float)windowSize.x / 2) + 20, webcamText.getPosition().y));
+	blurText.setPosition(sf::Vector2f(((float)windowSize.x / 2) - maxWidth - 20, webcamText.getPosition().y + maxHeight + 30));
+	cannyText.setPosition(sf::Vector2f(((float)windowSize.x / 2) + 20, webcamText.getPosition().y + maxHeight + 30));
 
 	window.draw(webcamText);
 	window.draw(grayText);
@@ -244,7 +219,7 @@ StateMachine::State FrameDetail::handleEvent(sf::Event event)
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Back button pressed" << std::endl;
-			backButton.setButtonColor(sf::Color::Red);
+			backButton.setDefaultButtonColor();
 			return StateMachine::State::MainMenu;
 		}
 	}
@@ -252,11 +227,11 @@ StateMachine::State FrameDetail::handleEvent(sf::Event event)
 	{
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
-			backButton.setButtonColor(sf::Color::Green);
+			backButton.setSelectedButtonColor();
 		}
 		else
 		{
-			backButton.setButtonColor(sf::Color::Red);
+			backButton.setDefaultButtonColor();
 		}
 	}
 	return StateMachine::State::FrameDetail;

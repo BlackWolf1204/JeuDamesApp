@@ -15,8 +15,12 @@ public:
 	/// <summary>
 	/// Set the button color
 	/// </summary>
-	/// <param name="color">Color of the button using a Color type from SFML library</param>
-	void setButtonColor(sf::Color color);
+	void setDefaultButtonColor();
+
+	/// <summary>
+	/// Set the button color
+	/// </summary>
+	void setSelectedButtonColor();
 
 	/// <summary>
 	/// Set the button size
@@ -29,12 +33,6 @@ public:
 	/// </summary>
 	/// <param name="position">Position vector containing the x and y position of the button</param>
 	void setButtonPosition(sf::Vector2f position);
-
-	/// <summary>
-	/// Set the button text color
-	/// </summary>
-	/// <param name="color">Color of the text using a Color type from SFML library</param>
-	void setButtonTextColor(sf::Color color);
 
 	/// <summary>
 	/// Set the button text

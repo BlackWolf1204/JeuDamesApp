@@ -80,14 +80,13 @@ public:
 	/// <returns>True if the move is valid, false otherwise</returns>
 	bool isValidMove(int column, int row, int newColumn, int newRow);
 
-	/// <summary> ############################################################################################
+	/// <summary>
 	/// Check if the board is valid
 	/// </summary>
-	/// <returns>True if every piece has another piece below, false otherwise</returns>
 	bool isValid();
 
 	/// <summary>
-	/// Print the board in the console (X for player pieces and O for robot pieces
+	/// Print the board in the console (X for player pieces and O for robot pieces)
 	/// </summary>
 	void printBoard();
 
@@ -274,7 +273,7 @@ private:
 	/// <param name="value">True to set a piece, false to empty the position</param>
 	void setKingPiece(int column, int row, unsigned __int64* board, bool value);
 
-	/// <summary> #############################################################################################
+	/// <summary>
 	/// Check if the opponent has no more pieces or can't move anymore
 	/// </summary>
 	/// <param name="winBoard">Bitboard to check if is winning</param>
@@ -285,16 +284,6 @@ private:
 
 public:
 
-	/// <summary> ##############################################################################################
-	/// A faster way to check if the opponent has no more pieces or can't move anymore
-	/// Keep it to improve the speed of the game in the future
-	/// </summary>
-	/// <param name="winBoard">Bitboard to check if is winning</param>
-	/// <param name="loseBoard">Opponent bitboard</param>
-	/// <param name="loseKingBoard">Opponent king bitboard to check</param>
-	/// <returns>True if 4 pieces are aligned, false otherwise</returns>
-	bool checkWinFast(unsigned __int64 winBoard, unsigned __int64 loseBoard, unsigned __int64 loseKingBoard);
-	
 	bool moveIsWinning(int column, int row, int newColumn, int newRow);
 };
 

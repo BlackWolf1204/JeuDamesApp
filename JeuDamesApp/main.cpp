@@ -25,20 +25,20 @@ int main()
 	
 	while (uiController.getWindow().isOpen())
 	{
-		/*
+		/*#######################################*/
 		if (!isConnected)
 		{
-			isConnected = robot->connect();
+			isConnected = robot->connect(uiController.getMainMenu()->portText);
 			if (isConnected)
 			{
-				//robot->Home();
-			}
-			else
-			{
-				continue;
+				robot->Home();
 			}
 		}
-		/* #######################################*/
+
+		if (isConnected)
+			if (robot->allCmdExecuted())
+				robot->setPlaying(Robot::PlayingState::WAIT);
+
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
 		if (newState != stateMachine.getState()) {
 			stateMachine.ChangeState(newState);
@@ -89,52 +89,44 @@ int main()
 				moveNumber = -1;
 				continue;
 			}
-			/*
-			if (moveNumber == -1)
+			
+			if (isConnected)
 			{
-				if (board.getMoveNumber() % 2 == 1)
+				if (robot->getPlaying() == Robot::PlayingState::BEGIN)
 				{
-					moveNumber = board.getMoveNumber() - 1;
+					robot->setPlaying(Robot::PlayingState::DOING);
+					robot->Home();
+					/*
+					std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
+					for (int i = 0; i < bestPositions.size() - 1; i++)
+					{
+						int column = bestPositions[i] % BOARDSIZE;
+						int row = (int)bestPositions[i] / BOARDSIZE;
+						int newCol = bestPositions[i + 1] % BOARDSIZE;
+						int newRow = (int)bestPositions[i + 1] / BOARDSIZE;
+						board.Play(bestPositions[i], bestPositions[i + 1]);
+
+						// remove a player piece if eaten by robot's piece
+						int eatPiece = board.MoveEatPiece(column, row, newCol, newRow);
+						if (eatPiece != -1) {
+							robot->Play(eatPiece, -1);
+						}
+						board.printBoard();
+						robot->Play(bestPositions[i], bestPositions[i + 1]);
+					}
+
+					// upgrade a piece into a king if at the opposite of the board (only for robot pieces)
+					int lastPos = bestPositions.back();
+					if (lastPos % BOARDSIZE == BOARDSIZE - 1 && board.getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
+					{
+						robot->Play(lastPos, -1);
+						robot->Play(-1, lastPos);
+					}
+					*/
 				}
-				else
-				{
-					moveNumber = board.getMoveNumber();
-				}
-			}*/
-			/* ##############################################*/
+			}
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
-			/*
-			std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 8);
-			for (int i = 0; i < bestPositions.size() - 1; i++)
-			{
-				int column = bestPositions[i] % BOARDSIZE;
-				int row = (int)bestPositions[i] / BOARDSIZE;
-				int newCol = bestPositions[i + 1] % BOARDSIZE;
-				int newRow = (int)bestPositions[i + 1] / BOARDSIZE;
-				board.Play(bestPositions[i], bestPositions[i + 1]);
-
-				// remove a player piece if eaten by robot's piece
-				int eatPiece = board.MoveEatPiece(column, row, newCol, newRow);
-				if (eatPiece != -1) {
-					robot->Play(eatPiece, -1);
-				}
-				board.printBoard();
-				robot->Play(bestPositions[i], bestPositions[i+1]);
-			}
-			
-			// upgrade a piece into a king if at the opposite of the board (only for robot pieces)
-			int lastPos = bestPositions.back();
-			if (lastPos % BOARDSIZE == BOARDSIZE - 1 && board.getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
-			{
-				robot->Play(lastPos, -1);
-				robot->Play(-1, lastPos);
-			}
-			if (lastPos % BOARDSIZE == 0 && board.getPiece(lastPos % BOARDSIZE, lastPos / BOARDSIZE) == 1)
-			{
-				// show that the piece need to be upgraded
-			}*/
-			/* ###################################*/
 		}
 	
 	}

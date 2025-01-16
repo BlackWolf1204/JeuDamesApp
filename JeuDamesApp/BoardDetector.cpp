@@ -277,7 +277,7 @@ BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 	{
 		return Color::RED;
 	}
-	if (abs(color[0] - color[1]) > 80 && abs(color[0] - color[2]) > 80)
+	if (abs(color[0] - color[1]) > 70 && abs(color[0] - color[2]) > 70)
 	{
 		return Color::BLUE;
 	}

@@ -13,9 +13,13 @@ sf::Vector2f Button::getButtonSize()
 	return buttonSize;
 }
 
-void Button::setButtonColor(sf::Color color)
+void Button::setDefaultButtonColor()
 {
-	//buttonColor = color;
+	buttonColor = sf::Color(3, 10, 140);
+}
+void Button::setSelectedButtonColor()
+{
+	buttonColor = sf::Color(154, 187, 242);
 }
 
 void Button::setButtonSize(sf::Vector2f size)
@@ -27,11 +31,6 @@ void Button::setButtonSize(sf::Vector2f size)
 void Button::setButtonPosition(sf::Vector2f position)
 {
 	buttonPosition = position;
-}
-
-void Button::setButtonTextColor(sf::Color color)
-{
-	//buttonText.setFillColor(color);
 }
 
 void Button::setButtonText(std::string text)

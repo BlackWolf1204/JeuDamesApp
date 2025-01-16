@@ -26,11 +26,10 @@ GameUI::~GameUI()
 GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 {
 	backButton = Button();
-	backButton.setButtonColor(sf::Color::Red);
+	backButton.setDefaultButtonColor();
 	backButton.setButtonSize(sf::Vector2f(250, 100));
 	backButton.setButtonPosition(sf::Vector2f(10, 10));
 	backButton.setButtonFont(font);
-	backButton.setButtonTextColor(sf::Color::White);
 	backButton.setButtonText("Retour");
 	backButton.setButtonTextSize(60);
 
@@ -60,6 +59,17 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 
 	}
 
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
+			if (i % 2 != j % 2)
+				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(105, 70, 42));
+			else
+				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(168, 136, 109));
+		}
+	}
+
 	robotPieceCount.setFont(*font);
 	robotPieceCount.setString("0");
 	robotPieceCount.setCharacterSize(50);
@@ -83,22 +93,26 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 	victoryText.setFillColor(sf::Color::White);
 
 	restartButton = Button();
-	restartButton.setButtonColor(sf::Color::Red);
+	restartButton.setDefaultButtonColor();
 	restartButton.setButtonSize(sf::Vector2f(250, 100));
-	restartButton.setButtonPosition(sf::Vector2f(10, 130));
 	restartButton.setButtonFont(font);
-	restartButton.setButtonTextColor(sf::Color::White);
-	restartButton.setButtonText("Jouer");
+	restartButton.setButtonText("Réinitialiser");
 	restartButton.setButtonTextSize(60);
 
 	refillButton = Button();
-	refillButton.setButtonColor(sf::Color::Red);
+	refillButton.setDefaultButtonColor();
 	refillButton.setButtonSize(sf::Vector2f(250, 100));
-	refillButton.setButtonPosition(sf::Vector2f(10, 250));
+	refillButton.setButtonPosition(sf::Vector2f(10, 130));
 	refillButton.setButtonFont(font);
-	refillButton.setButtonTextColor(sf::Color::White);
 	refillButton.setButtonText("Recharger");
 	refillButton.setButtonTextSize(60);
+
+	playButton = Button();
+	playButton.setDefaultButtonColor();
+	playButton.setButtonSize(sf::Vector2f(250, 100));
+	playButton.setButtonFont(font);
+	playButton.setButtonText("Jouer");
+	playButton.setButtonTextSize(60);
 
 	left_available_pieces.setFillColor(sf::Color(84, 56, 34));
 
@@ -121,6 +135,10 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 void GameUI::draw(sf::RenderWindow& window)
 {
 	sf::Vector2u windowSize = window.getSize();
+
+	// Update the playing and restart button position according to the winsow size
+	playButton.setButtonPosition(sf::Vector2f((float)windowSize.x - playButton.getButtonSize().x - 10, 10));
+	restartButton.setButtonPosition(sf::Vector2f((float)windowSize.x - restartButton.getButtonSize().x - 10, playButton.getButtonSize().y + 30));
 
 	// Update the board size and position according to the window size
 	gameBoard.setSize(sf::Vector2f((float)(windowSize.y * 0.5), (float)(windowSize.y * 0.5)));
@@ -146,10 +164,6 @@ void GameUI::draw(sf::RenderWindow& window)
 		{
 			gameSquares[i + j * BOARDSIZE].setPosition(sf::Vector2f((gameBoard.getPosition().x + 10) + i * (gameBoard.getSize().x - 20) / BOARDSIZE, (gameBoard.getPosition().y + 10) + j * (gameBoard.getSize().y - 20) / BOARDSIZE));
 			gameSquares[i + j * BOARDSIZE].setSize(sf::Vector2f((gameBoard.getSize().x - 20) / BOARDSIZE, (gameBoard.getSize().y - 20) / BOARDSIZE));
-			if (i % 2 != j % 2)
-				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(105, 70, 42));
-			else
-				gameSquares[i + j * BOARDSIZE].setFillColor(sf::Color(168, 136, 109));
 		}
 	}
 
@@ -224,6 +238,7 @@ void GameUI::draw(sf::RenderWindow& window)
 	backButton.draw(window);
 	restartButton.draw(window);
 	refillButton.draw(window);
+	playButton.draw(window);
 
 	if (victoryVisible)
 	{
@@ -269,48 +284,66 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Back button pressed" << std::endl;
-			backButton.setButtonColor(sf::Color::Red);
+			backButton.setDefaultButtonColor();
 			return StateMachine::State::MainMenu;
 		}
 		if (restartButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Restart button pressed" << std::endl;
-			restartButton.setButtonColor(sf::Color::Red);
+			restartButton.setDefaultButtonColor();
 			victoryVisible = false;
 			restart = true;
 		}
 		if (refillButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Refill button pressed" << std::endl;
-			refillButton.setButtonColor(sf::Color::Red);
+			refillButton.setDefaultButtonColor();
 			robot->Refill();
+		}
+		if (playButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
+		{
+			std::cout << "Play button pressed" << std::endl;
+			playButton.setDefaultButtonColor();
+			if (robot->getPlaying() == Robot::PlayingState::WAIT)
+				robot->setPlaying(Robot::PlayingState::BEGIN);
 		}
 	}
 	if (event.type == sf::Event::MouseMoved)
 	{
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
-			backButton.setButtonColor(sf::Color::Green);
-			restartButton.setButtonColor(sf::Color::Red);
-			refillButton.setButtonColor(sf::Color::Red);
+			backButton.setSelectedButtonColor();
+			restartButton.setDefaultButtonColor();
+			refillButton.setDefaultButtonColor();
+			playButton.setDefaultButtonColor();
 		}
 		else if (restartButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
-			restartButton.setButtonColor(sf::Color::Green);
-			backButton.setButtonColor(sf::Color::Red);
-			refillButton.setButtonColor(sf::Color::Red);
+			restartButton.setSelectedButtonColor();
+			backButton.setDefaultButtonColor();
+			refillButton.setDefaultButtonColor();
+			playButton.setDefaultButtonColor();
 		}
 		else if (refillButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
-			refillButton.setButtonColor(sf::Color::Green);
-			backButton.setButtonColor(sf::Color::Red);
-			restartButton.setButtonColor(sf::Color::Red);
+			refillButton.setSelectedButtonColor();
+			backButton.setDefaultButtonColor();
+			restartButton.setDefaultButtonColor();
+			playButton.setDefaultButtonColor();
+		}
+		else if (playButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
+		{
+			playButton.setSelectedButtonColor();
+			backButton.setDefaultButtonColor();
+			restartButton.setDefaultButtonColor();
+			refillButton.setDefaultButtonColor();
 		}
 		else
 		{
-			backButton.setButtonColor(sf::Color::Red);
-			restartButton.setButtonColor(sf::Color::Red);
-			refillButton.setButtonColor(sf::Color::Red);
+			backButton.setDefaultButtonColor();
+			restartButton.setDefaultButtonColor();
+			refillButton.setDefaultButtonColor();
+			playButton.setDefaultButtonColor();
 		}
 	}
 	return StateMachine::State::Game;
@@ -322,6 +355,17 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 	{
 		for (int j = 0; j < BOARDSIZE; j++)
 		{
+			if (i % 2 != j % 2)
+				gameSquares[j + i * BOARDSIZE].setFillColor(sf::Color(105, 70, 42));
+			else
+				gameSquares[j + i * BOARDSIZE].setFillColor(sf::Color(168, 136, 109));
+		}
+	}
+
+	for (int i = 0; i < BOARDSIZE; i++)
+	{
+		for (int j = 0; j < BOARDSIZE; j++)
+		{
 			int piece = board.getPiece(BOARDSIZE - j - 1, i);
 			if (piece == 0)
 			{
@@ -329,11 +373,12 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 				kingMarks[j + i * BOARDSIZE].setFillColor(sf::Color::Transparent);
 			}
 			else if (piece % 2 == 1) {
-				std::vector<std::vector<int>> positions = board.canMoveEat(j, i);
+				std::vector<std::vector<int>> positions = board.canMoveEat(BOARDSIZE - j - 1, i);
 
 				for (int c = 0; c < positions[1].size(); c++)
 				{
-					gameSquares[positions[1][c]].setFillColor(sf::Color(250, 137, 45));
+					int reste = positions[1][c] % BOARDSIZE;
+					gameSquares[(BOARDSIZE - reste - 1) + (positions[1][c] - reste)].setFillColor(sf::Color(250, 137, 45));
 					gameSquares[j + i * BOARDSIZE].setFillColor(sf::Color(63, 183, 224));
 				}
 			}

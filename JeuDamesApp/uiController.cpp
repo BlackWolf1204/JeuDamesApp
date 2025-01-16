@@ -12,6 +12,7 @@ uiController::uiController(sf::Vector2u windowSize, Robot* robot)
 	mainMenu = new MainMenu(font);
 	gameUI = new GameUI(window, font, robot);
 	frameDetail = new FrameDetail(window, font);
+	rules = new Rules(window, font);
 }
 
 StateMachine::State uiController::tick(StateMachine::State actualState)
@@ -45,6 +46,12 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 				return newState;
 			}
 		}
+		if (actualState == StateMachine::State::Rules) {
+			StateMachine::State newState = rules->handleEvent(event);
+			if (newState != StateMachine::State::Rules) {
+				return newState;
+			}
+		}
 	}
 
 	window.clear(sf::Color(80, 86, 191));
@@ -58,6 +65,9 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 	}
 	else if (actualState == StateMachine::State::FrameDetail) {
 		frameDetail->draw(window);
+	}
+	else if (actualState == StateMachine::State::Rules) {
+		rules->draw(window);
 	}
 
 	window.display();
@@ -82,6 +92,12 @@ void uiController::stop(StateMachine::State actualState)
 		frameDetail->~FrameDetail();
 	}
 }
+
+MainMenu* uiController::getMainMenu()
+{
+	return mainMenu;
+}
+
 
 GameUI* uiController::getGameUI()
 {
