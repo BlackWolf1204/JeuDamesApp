@@ -2,81 +2,55 @@
 
 Robot::Robot()
 {// ######################################################################################################
-	squareCoordinates[0] = { 254, -111, 88, 0 };
-	squareCoordinates[1] = { 255, -77, 88, 0 };
-	squareCoordinates[2] = { 256, -38, 88, 0 };
-	squareCoordinates[3] = { 256, -6, 88, 0 };
-	squareCoordinates[4] = { 256, 32, 88, 0 };
-	squareCoordinates[5] = { 257, 66, 88, 0 };
-	squareCoordinates[6] = { 257, 107, 88, 0 };
-	squareCoordinates[7] = { 254, -111, 88, 0 };
-	squareCoordinates[8] = { 255, -77, 88, 0 };
-	squareCoordinates[9] = { 256, -38, 88, 0 };
-	squareCoordinates[10] = { 256, -6, 88, 0 };
-	squareCoordinates[11] = { 256, 32, 88, 0 };
-	squareCoordinates[12] = { 257, 66, 88, 0 };
-	squareCoordinates[13] = { 257, 107, 88, 0 };
-	squareCoordinates[14] = { 254, -111, 88, 0 };
-	squareCoordinates[15] = { 255, -77, 88, 0 };
-	squareCoordinates[16] = { 256, -38, 88, 0 };
-	squareCoordinates[17] = { 256, -6, 88, 0 };
-	squareCoordinates[18] = { 256, 32, 88, 0 };
-	squareCoordinates[19] = { 257, 66, 88, 0 };
-	squareCoordinates[20] = { 257, 107, 88, 0 };
-	squareCoordinates[21] = { 254, -111, 88, 0 };
-	squareCoordinates[22] = { 255, -77, 88, 0 };
-	squareCoordinates[23] = { 256, -38, 88, 0 };
-	squareCoordinates[24] = { 256, -6, 88, 0 };
-	squareCoordinates[25] = { 256, 32, 88, 0 };
-	squareCoordinates[26] = { 257, 66, 88, 0 };
-	squareCoordinates[27] = { 257, 107, 88, 0 };
-	squareCoordinates[28] = { 256, -6, 88, 0 };
-	squareCoordinates[29] = { 256, 32, 88, 0 };
-	squareCoordinates[30] = { 257, 66, 88, 0 };
-	squareCoordinates[31] = { 257, 107, 88, 0 };
-	squareCoordinates[32] = { 254, -111, 88, 0 };
-	squareCoordinates[33] = { 255, -77, 88, 0 };
-	squareCoordinates[34] = { 256, -38, 88, 0 };
-	squareCoordinates[35] = { 256, -6, 88, 0 };
-	squareCoordinates[36] = { 256, 32, 88, 0 };
-	squareCoordinates[37] = { 257, 66, 88, 0 };
-	squareCoordinates[38] = { 257, 107, 88, 0 };
-	squareCoordinates[39] = { 254, -111, 88, 0 };
-	squareCoordinates[40] = { 255, -77, 88, 0 };
-	squareCoordinates[41] = { 256, -38, 88, 0 };
-	squareCoordinates[42] = { 256, -6, 88, 0 };
-	squareCoordinates[43] = { 256, 32, 88, 0 };
-	squareCoordinates[44] = { 257, 66, 88, 0 };
-	squareCoordinates[45] = { 257, 107, 88, 0 };
-	squareCoordinates[46] = { 256, -6, 88, 0 };
-	squareCoordinates[47] = { 256, 32, 88, 0 };
-	squareCoordinates[48] = { 257, 66, 88, 0 };
-	squareCoordinates[49] = { 257, 107, 88, 0 };
-	squareCoordinates[50] = { 254, -111, 88, 0 };
-	squareCoordinates[51] = { 255, -77, 88, 0 };
-	squareCoordinates[52] = { 256, -38, 88, 0 };
-	squareCoordinates[53] = { 256, -6, 88, 0 };
-	squareCoordinates[54] = { 256, 32, 88, 0 };
-	squareCoordinates[55] = { 257, 66, 88, 0 };
-	squareCoordinates[56] = { 257, 107, 88, 0 };
-	squareCoordinates[57] = { 254, -111, 88, 0 };
-	squareCoordinates[58] = { 255, -77, 88, 0 };
-	squareCoordinates[59] = { 256, -38, 88, 0 };
-	squareCoordinates[60] = { 256, -6, 88, 0 };
-	squareCoordinates[61] = { 256, 32, 88, 0 };
-	squareCoordinates[62] = { 257, 66, 88, 0 };
-	squareCoordinates[63] = { 257, 107, 88, 0 };
+	squareCoordinates[0] = { 170, 75, -7, 0 };
+	squareCoordinates[1] = { 170, 33, -7, 0 };
+	squareCoordinates[2] = { 168, -8, -7, 0 };
+	squareCoordinates[3] = { 165, -50, -7, 0 };
+	squareCoordinates[4] = { 189, 52, -7, 0 };
+	squareCoordinates[5] = { 188, 11, -7, 0 };
+	squareCoordinates[6] = { 186, -30, -7, 0 };
+	squareCoordinates[7] = { 184, -71, -7, 0 };
+	squareCoordinates[8] = { 210, 72, -7, 0 };
+	squareCoordinates[9] = { 208, 31, -7, 0 };
+	squareCoordinates[10] = { 208, -11, -7, 0 };
+	squareCoordinates[11] = { 205, -51, -7, 0 };
+	squareCoordinates[12] = { 228, 50, -7, 0 };
+	squareCoordinates[13] = { 227, 9, -7, 0 };
+	squareCoordinates[14] = { 225, -32, -7, 0 };
+	squareCoordinates[15] = { 223, -73, -7, 0 };
+	squareCoordinates[16] = { 249, 69, -7, 0 };
+	squareCoordinates[17] = { 247, 28, -7, 0 };
+	squareCoordinates[18] = { 245, -13, -7, 0 };
+	squareCoordinates[19] = { 244, -54, -7, 0 };
+	squareCoordinates[20] = { 268, 48, -7, 0 };
+	squareCoordinates[21] = { 266, 7, -7, 0 };
+	squareCoordinates[22] = { 264, -34, -7, 0 };
+	squareCoordinates[23] = { 262, -75, -7, 0 };
+	squareCoordinates[24] = { 288, 67, -7, 0 };
+	squareCoordinates[25] = { 286, 26, -7, 0 };
+	squareCoordinates[26] = { 285, -15, -7, 0 };
+	squareCoordinates[27] = { 283, -54, -7, 0 };
+	squareCoordinates[28] = { 306, 45, -7, 0 };
+	squareCoordinates[29] = { 306, 4, -7, 0 };
+	squareCoordinates[30] = { 303, -36, -7, 0 };
+	squareCoordinates[31] = { 302, -76, -7, 0 };
 
-	kingCoordinates[0] = { -58, -220, -126, -90 };
-	kingCoordinates[1] = { -13, -220, -126, -90 };
-	kingCoordinates[2] = { 28, -220, -126, -90 };
-	kingCoordinates[3] = { 75, -220, -126, -90 };
-	kingCoordinates[4] = { -50, 223, -126, 90 };
-	kingCoordinates[5] = { -11, 223, -126, 90 };
-	kingCoordinates[6] = { 33, 223, -126, 90 };
-	kingCoordinates[7] = { 78, 222, -126, 90 };
+	kingCoordinates[0] = { 35, -200, 5, 0 };
+	kingCoordinates[1] = { 10, -199, 5, 0 };
+	kingCoordinates[2] = { -16, -197, 5, 0 };
+	kingCoordinates[3] = { -42, -197, 5, 0 };
+	kingCoordinates[4] = { 36, -175, 5, 0 };
+	kingCoordinates[5] = { 10, -174, 5, 0 };
+	kingCoordinates[6] = { -16, -173, 5, 0 };
+	kingCoordinates[7] = { -41, -171, 5, 0 };
 
-	removedPieceCoordinates = { -58, -220, -126, -90 };
+	removedPieceCoordinates = { -58, -220, -126, 90 };
+
+	calibrationCoordinates[0] = { 170, 75, -7, 0 };		// Left bottom square
+	calibrationCoordinates[1] = { 302, -76, -7, 0 };	// Right top square
+	calibrationCoordinates[2] = { 0, 200, 5, 90 };		// Removed pieces
+	calibrationCoordinates[3] = { -41, -171, 5, 0 };	// Right bottom king
+	calibrationCoordinates[5] = { 35, -200, 5, 0 };		// Left top king
 	// ###################################################################
 }
 
@@ -145,43 +119,46 @@ void Robot::Home()
 	}
 	std::cout << "Dobot position successfully reset" << std::endl;
 
-	goReadBoard();
+	//goReadBoard();
 	
 }
 
 void Robot::Play(int initPos, int newPos)
 {
-	if (initPos < 0 && newPos < 0) {
-		std::cerr << "Invalid position" << std::endl;
-		return;
-	}
-	if (initPos == -1) {
-		addKing(newPos);
-		return;
-	}
-	else if (newPos == -1) {
-		removePiece(initPos);
-		return;
-	}
-	if ((int)initPos / BOARDSIZE > 7 || (int)newPos / BOARDSIZE > 7) {
-		std::cerr << "Invalid position" << std::endl;
-		return;
-	}
-	if (initPos > -1 && newPos > -1) {
+	if (dobotId != -1)
+	{
+		goTo(INITPOS);		// Transition between reading position and playing positions (else path between those two positions impossible)
+		if (initPos < 0 && newPos < 0) {
+			std::cerr << "Invalid position" << std::endl;
+			return;
+		}
+		if (initPos == -1) {
+			addKing(newPos);
+			return;
+		}
+		else if (newPos == -1) {
+			removePiece(initPos);
+			return;
+		}
+		if ((int)initPos / BOARDSIZE > 7 || (int)newPos / BOARDSIZE > 7) {
+			std::cerr << "Invalid position" << std::endl;
+			return;
+		}
+		if (initPos > -1 && newPos > -1) {
 
-		std::cout << "Move from position " << initPos << " to position " << newPos << std::endl;
-		goTo(squareCoordinates[initPos], HIGHT);
-		goTo(squareCoordinates[initPos]);
-		activeSuctionCup();
-		wait(0.5);
-		goTo(squareCoordinates[newPos], HIGHT);
-		goTo(squareCoordinates[newPos]);
-		desactiveSuctionCup();
-		wait(0.5);
-		turnOffSuctionCup();
+			std::cout << "Move from position " << initPos << " to position " << newPos << std::endl;
+			goTo(squareCoordinates[initPos], HIGHT);
+			goTo(squareCoordinates[initPos]);
+			activeSuctionCup();
+			wait(0.5);
+			goTo(squareCoordinates[newPos], HIGHT);
+			goTo(squareCoordinates[newPos]);
+			desactiveSuctionCup();
+			wait(0.5);
+			turnOffSuctionCup();
+		}
+		goReadBoard();
 	}
-	goReadBoard();
-	
 }
 
 void Robot::Refill()
@@ -194,6 +171,27 @@ void Robot::Empty()
 {
 	std::cout << "Empty removed piece locations" << std::endl;
 	removedPieces = 0;
+}
+
+void Robot::Calibrate()
+{
+	if (dobotId != -1 && allCmdExecuted() && playing == PlayingState::WAIT)
+	{
+		setPlaying(PlayingState::DOING);
+		std::cout << "Calibrate to postion " << calibrationPosition << std::endl;
+		if (calibrationPosition == 0)		// Transition between reading position and calibration position (else path between those two positions impossible)
+			goTo(INITPOS);
+		if (calibrationPosition < 6)
+		{
+			goTo(calibrationCoordinates[calibrationPosition]);
+			calibrationPosition++;
+		}
+		else
+		{
+			calibrationPosition = 0;
+			goReadBoard();
+		}
+	}
 }
 
 Robot::PlayingState Robot::getPlaying()
@@ -228,6 +226,11 @@ int Robot::getRemovedPieces()
 	return removedPieces;
 }
 
+int Robot::getCalibrationPosition()
+{
+	return calibrationPosition;
+}
+
 void Robot::goTo(Pose position)
 {
 	PTPCmd ptpCmd = { 0 };
@@ -247,13 +250,14 @@ void Robot::goTo(Pose position)
 
 void Robot::goTo(Pose position, float z)
 {
-	Pose newPose = {position.x, position.y, z, position.r};
+	Pose newPose = {position.x, position.y, position.z + z, position.r};
 	goTo(newPose);
 }
 
 void Robot::goReadBoard()
 {
-	goTo({ 217, 62, 160,0 });
+	goTo(INITPOS);
+	goTo({ 217, 62, 160});
 }
 
 void Robot::addKing(int position)

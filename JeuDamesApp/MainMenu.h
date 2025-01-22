@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "InputBar.h"
 #include "StateMachine.h"
+#include "Robot.h"
 
 /// <summary>
 /// This class is responsible for the main menu of the game.
@@ -11,7 +12,7 @@
 class MainMenu {
 public:
 	MainMenu();
-	MainMenu(sf::Font* font);
+	MainMenu(sf::Font* font, Robot* robot);
 	void updateButton(sf::Vector2u windowSize);
 	void draw(sf::RenderWindow& window);
 	StateMachine::State handleEvent(sf::Event event);
@@ -23,6 +24,9 @@ private:
 	Button frameDetailButton;
 	Button rulesButton;
 	Button enterButton;
+	Button calibrationButton;
 	
 	InputBar portInputBar;
+
+	Robot* robot;
 };

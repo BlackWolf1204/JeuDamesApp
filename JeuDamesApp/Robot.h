@@ -5,7 +5,8 @@
 #include "Board.h"
 #include <iostream>
 
-#define HIGHT 50
+#define HIGHT 16
+#define INITPOS { 259, 0, 13, 0 }
 
 class Robot
 {
@@ -47,9 +48,11 @@ public:
 
 	void Refill();
 	void Empty();
+	void Calibrate();
 
 	int getRemainingKing();
 	int getRemovedPieces();
+	int getCalibrationPosition();
 
 	PlayingState getPlaying();
 	void setPlaying(PlayingState state);
@@ -64,11 +67,13 @@ private:
 	int dobotId = -1;
 	int remainingKing = 8;
 	int removedPieces = 0;
+	int calibrationPosition = 0;
 	uint64_t lastCommandIndex = 0;
 	PlayingState playing = PlayingState::WAIT;
 	Pose squareCoordinates[64];
 	Pose kingCoordinates[8];
 	Pose removedPieceCoordinates;
+	Pose calibrationCoordinates[6];
 
 	/// <summary>
 	/// Move the Dobot to a specific position
@@ -95,7 +100,7 @@ private:
 	void addKing(int position);
 
 	/// <summary>
-	/// Grab the piece at the given position with the suctionCup, move up and put it at the last empty position for removed pieces
+	/// Grab the piece at the given position with the suctionCup, move up and put it at the removed pieces position
 	/// </summary>
 	/// <param name="position">Position of the piece in the board</param>
 	void removePiece(int position);

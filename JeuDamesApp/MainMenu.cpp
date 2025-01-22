@@ -5,7 +5,7 @@ MainMenu::MainMenu()
 	portText = "";
 }
 
-MainMenu::MainMenu(sf::Font* font)
+MainMenu::MainMenu(sf::Font* font, Robot* robot)
 {
 	playButton.setDefaultButtonColor();
 	playButton.setButtonSize(sf::Vector2f(250, 100));
@@ -44,6 +44,15 @@ MainMenu::MainMenu(sf::Font* font)
 	enterButton.setButtonFont(font);
 	enterButton.setButtonText("Entrer");
 	enterButton.setButtonTextSize(50);
+
+	calibrationButton = Button();
+	calibrationButton.setDefaultButtonColor();
+	calibrationButton.setButtonSize(sf::Vector2f(300, 100));
+	calibrationButton.setButtonFont(font);
+	calibrationButton.setButtonText("Calibrage");
+	calibrationButton.setButtonTextSize(70);
+
+	this->robot = robot;
 }
 
 void MainMenu::updateButton(sf::Vector2u windowSize)
@@ -51,6 +60,7 @@ void MainMenu::updateButton(sf::Vector2u windowSize)
 	frameDetailButton.setButtonPosition(sf::Vector2f(windowSize.x / 2 - frameDetailButton.getButtonSize().x / 2, windowSize.y / 2 - frameDetailButton.getButtonSize().y / 2 - playButton.getButtonSize().y / 2 - 10));
 	playButton.setButtonPosition(sf::Vector2f((float)windowSize.x / 2 - playButton.getButtonSize().x - 10, (float)windowSize.y / 2 + 20));
 	rulesButton.setButtonPosition(sf::Vector2f((float)windowSize.x / 2 + 10, (float)windowSize.y / 2 + 20));
+	calibrationButton.setButtonPosition(sf::Vector2f(20, (float)windowSize.y - calibrationButton.getButtonSize().y - 20));
 }
 
 void MainMenu::draw(sf::RenderWindow& window)
@@ -60,6 +70,7 @@ void MainMenu::draw(sf::RenderWindow& window)
 	rulesButton.draw(window);
 	enterButton.draw(window);
 	portInputBar.draw(window);
+	calibrationButton.draw(window);
 }
 
 StateMachine::State MainMenu::handleEvent(sf::Event event)
@@ -104,6 +115,15 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			portText = portInputBar.getInputBarText();
 			portInputBar.setInputBarText("");
 		}
+		if (calibrationButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
+		{
+			std::cout << "Calibration button pressed" << std::endl;
+			calibrationButton.setDefaultButtonColor();
+			if (robot != nullptr)
+			{
+				robot->Calibrate();
+			}
+		}
 	}
 	if (event.type == sf::Event::MouseMoved) {
 		if (playButton.mouseIsInsideButton(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y)))
@@ -112,6 +132,7 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			frameDetailButton.setDefaultButtonColor();
 			rulesButton.setDefaultButtonColor();
 			enterButton.setDefaultButtonColor();
+			calibrationButton.setDefaultButtonColor();
 		}
 		else if (frameDetailButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
@@ -119,6 +140,7 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			playButton.setDefaultButtonColor();
 			rulesButton.setDefaultButtonColor();
 			enterButton.setDefaultButtonColor();
+			calibrationButton.setDefaultButtonColor();
 		}
 		else if (rulesButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
@@ -126,6 +148,7 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			playButton.setDefaultButtonColor();
 			frameDetailButton.setDefaultButtonColor();
 			enterButton.setDefaultButtonColor();
+			calibrationButton.setDefaultButtonColor();
 		}
 		else if (enterButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
 		{
@@ -133,6 +156,15 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			rulesButton.setDefaultButtonColor();
 			playButton.setDefaultButtonColor();
 			frameDetailButton.setDefaultButtonColor();
+			calibrationButton.setDefaultButtonColor();
+		}
+		else if (calibrationButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseMove.x), float(event.mouseMove.y))))
+		{
+			calibrationButton.setSelectedButtonColor();
+			rulesButton.setDefaultButtonColor();
+			playButton.setDefaultButtonColor();
+			frameDetailButton.setDefaultButtonColor();
+			enterButton.setDefaultButtonColor();
 		}
 		else
 		{
@@ -140,6 +172,7 @@ StateMachine::State MainMenu::handleEvent(sf::Event event)
 			frameDetailButton.setDefaultButtonColor();
 			rulesButton.setDefaultButtonColor();
 			enterButton.setDefaultButtonColor();
+			calibrationButton.setDefaultButtonColor();
 		}
 	}
 	if (event.type == sf::Event::TextEntered && portInputBar.getIsWriting())

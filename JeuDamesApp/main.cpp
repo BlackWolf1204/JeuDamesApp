@@ -22,7 +22,7 @@ int main()
 	int moveNumber = -1;
 	bool isConnected = false;
 
-	
+
 	while (uiController.getWindow().isOpen())
 	{
 		/*#######################################*/
@@ -40,9 +40,8 @@ int main()
 				robot->setPlaying(Robot::PlayingState::WAIT);
 
 		StateMachine::State newState = uiController.tick(stateMachine.getState());
-		if (newState != stateMachine.getState()) {
+		if (newState != stateMachine.getState())
 			stateMachine.ChangeState(newState);
-		}
 
 		cv::Mat frame = camera->getFrame();
 		uiController.getGameUI()->getCameraFrame(frame);
@@ -56,7 +55,7 @@ int main()
 			uiController.getFrameDetail()->getBlurFrame(modifiedFrame[2]);
 			uiController.getFrameDetail()->getCannyFrame(modifiedFrame[3]);
 		}
-		
+
 		if (frame.empty())
 		{
 			continue;
@@ -89,7 +88,7 @@ int main()
 				moveNumber = -1;
 				continue;
 			}
-			
+
 			if (isConnected)
 			{
 				if (robot->getPlaying() == Robot::PlayingState::BEGIN)
@@ -128,8 +127,8 @@ int main()
 			board.printBoard();
 			uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
 		}
-	
 	}
+
 	uiController.stop(stateMachine.getState());
 	
 	/*

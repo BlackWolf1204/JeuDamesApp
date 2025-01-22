@@ -9,7 +9,7 @@ uiController::uiController(sf::Vector2u windowSize, Robot* robot)
 	if (!font->loadFromFile(fontPath)) {
 		std::cerr << "Add the font file here :" << fontPath << std::endl;
 	}
-	mainMenu = new MainMenu(font);
+	mainMenu = new MainMenu(font, robot);
 	gameUI = new GameUI(window, font, robot);
 	frameDetail = new FrameDetail(window, font);
 	rules = new Rules(window, font);
