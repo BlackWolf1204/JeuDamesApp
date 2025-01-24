@@ -87,13 +87,7 @@ private:
 	// charging text
 	sf::Text loadingText;
 
-	// number of pieces eaten
-	sf::Text robotPieceCount;
-	sf::Text playerPieceCount;
-	sf::CircleShape robotPiece;
-	sf::CircleShape playerPiece;
-
-	// victoryy text
+	// victory text
 	sf::Text victoryText;
 	bool victoryVisible = false;
 

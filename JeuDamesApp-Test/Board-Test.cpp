@@ -208,6 +208,10 @@ namespace BoardTest
 			board->setRobotPiece(3, 3, true);
 			board->setPlayerPiece(4, 4, true);
 			Assert::AreEqual(36, board->MoveEatPiece(3, 3, 5, 5));
+
+			board->setRobotPiece(3, 1, true);
+			board->setPlayerPiece(4, 2, true);
+			Assert::AreEqual(20, board->MoveEatPiece(3, 1, 5, 3));
 		}
 	};
 }

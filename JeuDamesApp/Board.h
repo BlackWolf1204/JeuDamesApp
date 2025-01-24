@@ -132,6 +132,12 @@ public:
 	/// </summary>
 	/// <returns>Number of move done</returns>
 	int getMoveNumber();
+	
+	/// <summary>
+	/// Set the number of move done by the robot
+	/// </summary>
+	/// <param name="number">Number of move done</param>
+	void setMoveNumber(int number);
 
 	/// <summary>
 	/// Move the player piece at the given position (empty the position if value is false)

@@ -357,6 +357,11 @@ int Board::getMoveNumber()
 	return moveNumber;
 }
 
+void Board::setMoveNumber(int move)
+{
+	moveNumber = move;
+}
+
 void Board::setPlayerPiece(int column, int row, bool value, bool king)
 {
 	if (king)
@@ -410,6 +415,7 @@ void Board::initBoard()
 	playerKingBoard = 0;
 	robotBoard = 5614165;
 	robotKingBoard = 0;
+	moveNumber = 0;
 }
 
 // ################## Functions to calculate the board score ######################
@@ -615,7 +621,7 @@ int Board::atEnemy(int side)
 	}
 	return count;
 }
-// ################################################################################
+// ####################### End functions board score ###############################
 
 bool Board::getPiece(int column, int row, unsigned __int64 board)
 {

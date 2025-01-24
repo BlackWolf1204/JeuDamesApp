@@ -5,7 +5,6 @@
 #include "Board.h"
 #include <iostream>
 
-#define HIGHT 16
 #define INITPOS { 259, 0, 13, 0 }
 
 class Robot
@@ -47,11 +46,9 @@ public:
 	void Play(int initPos, int newPos);
 
 	void Refill();
-	void Empty();
 	void Calibrate();
 
 	int getRemainingKing();
-	int getRemovedPieces();
 	int getCalibrationPosition();
 
 	PlayingState getPlaying();
@@ -62,18 +59,22 @@ public:
 	/// </summary>
 	bool allCmdExecuted();
 
+	/// <summary>
+	/// Move the Dobot to a specific position to read the state of the board
+	/// </summary>
+	void goReadBoard();
+
 private:
 
 	int dobotId = -1;
 	int remainingKing = 8;
-	int removedPieces = 0;
 	int calibrationPosition = 0;
 	uint64_t lastCommandIndex = 0;
 	PlayingState playing = PlayingState::WAIT;
-	Pose squareCoordinates[64];
+	Pose squareCoordinates[32];
 	Pose kingCoordinates[8];
 	Pose removedPieceCoordinates;
-	Pose calibrationCoordinates[6];
+	Pose calibrationCoordinates[5];
 
 	/// <summary>
 	/// Move the Dobot to a specific position
@@ -87,11 +88,6 @@ private:
 	/// <param name="position">Position vector from the dobot library</param>
 	/// <param name="z">Z value</param>
 	void goTo(Pose position, float z);
-
-	/// <summary>
-	/// Move the Dobot to a specific position to read the state of the board
-	/// </summary>
-	void goReadBoard();
 
 	/// <summary>
 	/// Go to the last remaining king, grab it with the suctionCup, move up and put it at the given position in the board

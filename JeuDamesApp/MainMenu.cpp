@@ -52,6 +52,7 @@ MainMenu::MainMenu(sf::Font* font, Robot* robot)
 	calibrationButton.setButtonText("Calibrage");
 	calibrationButton.setButtonTextSize(70);
 
+	portText = "";
 	this->robot = robot;
 }
 

@@ -82,12 +82,11 @@ std::vector<cv::Mat> BoardDetector::modifyFrame(cv::Mat& frame)
 
 	// Blurring image using gaussian fliter. Size(3,3) is SE kernal (erase noise)
 	cv::GaussianBlur(img_gray, img_gaus_blur, cv::Size(5, 5), 3, 0);
-	//cv::bilateralFilter(img_gray, img_gaus_blur, 15, 90, 15);
 	cv::cvtColor(img_gaus_blur, color_gaus_blur, cv::COLOR_GRAY2BGR);
 	modifiedFrame.push_back(color_gaus_blur);
 
 	// Edge detection using canny algo
-	cv::Canny(img_gaus_blur, img_canny, 25, 65);
+	cv::Canny(img_gaus_blur, img_canny, 20, 130);
 	
 	// Running dilation on canny output to improve edge thickness
 	cv::Mat se1 = getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
@@ -262,13 +261,17 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec4f circle)
 	}
 	cv::circle(mask, cv::Point((int)circle[0], (int)circle[1]),(int)circle[2] - 10, cv::Scalar(255, 255, 255), -1);	
 
+	cv::Mat imageHSV;
+	cv::cvtColor(image, imageHSV, cv::COLOR_BGR2HSV);
+
 	//Get the mean color of the circle
-	cv::Scalar mean = cv::mean(image, mask);
+	cv::Scalar mean = cv::mean(imageHSV, mask);
 	return cv::Vec3b((uchar)mean[0], (uchar)mean[1], (uchar)mean[2]);
 }
 
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 {
+	/*
 	if (abs(color[0] - color[1]) < 40 && abs(color[1] - color[2]) < 40 && abs(color[0] - color[2]) < 40)
 	{
 		return Color::WHITE;
@@ -282,5 +285,35 @@ BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 		return Color::BLUE;
 	}
 	return Color::GREEN;
+	*/
+
+	cv::Scalar lower_blue(86, 91, 91);		// Lower blue limit
+	cv::Scalar upper_blue(149, 255, 255);	// Upper blue limit
+
+	cv::Scalar lower_red(150, 91, 91);		// Lower red limit
+	cv::Scalar upper_red(34, 255, 255);		// Upper red limit
+
+	cv::Scalar lower_green(35, 91, 91);		// Lower green limit
+	cv::Scalar upper_green(85, 255, 255);	// Upper green limit
+
+	if (color[0] >= lower_blue[0] && color[0] <= upper_blue[0] &&
+		color[1] >= lower_blue[1] && color[1] <= upper_blue[1] &&
+		color[2] >= lower_blue[2] && color[2] <= upper_blue[2])
+	{
+		return Color::BLUE;
+	}
+	if (color[0] >= lower_red[0] && color[0] <= upper_red[0] &&
+		color[1] >= lower_red[1] && color[1] <= upper_red[1] &&
+		color[2] >= lower_red[2] && color[2] <= upper_red[2])
+	{
+		return Color::RED;
+	}
+	if (color[0] >= lower_green[0] && color[0] <= upper_green[0] &&
+		color[1] >= lower_green[1] && color[1] <= upper_green[1] &&
+		color[2] >= lower_green[2] && color[2] <= upper_green[2])
+	{
+		return Color::GREEN;
+	}
+	return Color::WHITE;
 }
 

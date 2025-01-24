@@ -25,6 +25,15 @@ FrameDetail::~FrameDetail()
 		delete webcamThread;
 		webcamThread = nullptr;
 	}
+	delete blurTexture;
+	delete blurImage;
+	delete blurSprite;
+	delete cannyImage;
+	delete cannySprite;
+	delete cannyTexture;
+	delete grayImage;
+	delete graySprite;
+	delete grayTexture;
 	delete webcamImage;
 	delete webcamTexture;
 	delete webcamSprite;
@@ -210,6 +219,16 @@ sf::Uint8* FrameDetail::getFramePixel(cv::Mat frame)
 	}
 
 	return pixels;
+}
+
+bool FrameDetail::getDisplayed()
+{
+	return displayed;
+}
+
+void FrameDetail::setDisplayed(bool state)
+{
+	displayed = state;
 }
 
 StateMachine::State FrameDetail::handleEvent(sf::Event event)

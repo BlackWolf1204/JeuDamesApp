@@ -4,7 +4,7 @@
 std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth)
 {	
 	// If early game
-	if (board.getMoveNumber() == 0)      // A CHANGER //////////////////////////////////////////////////
+	if (board.getMoveNumber() == 0)
 		return GetBestMoveEarlyGame(board);
 
 	std::vector<int> pieces;
@@ -150,7 +150,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 	int beta = 100000;
 
 	// If early game
-	if (board.getMoveNumber() == 1)  // A CHANGER //////////////////////////
+	if (board.getMoveNumber() == 0)
 		return GetBestMoveEarlyGame(board);
 
 	// Look all possible moves of robot pieces

@@ -41,8 +41,10 @@ StateMachine::State uiController::tick(StateMachine::State actualState)
 			}
 		}
 		if (actualState == StateMachine::State::FrameDetail) {
+			frameDetail->setDisplayed(true);
 			StateMachine::State newState = frameDetail->handleEvent(event);
 			if (newState != StateMachine::State::FrameDetail) {
+				frameDetail->setDisplayed(false);
 				return newState;
 			}
 		}

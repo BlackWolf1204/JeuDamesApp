@@ -70,19 +70,6 @@ GameUI::GameUI(sf::RenderWindow& window, sf::Font* font, Robot* robot)
 		}
 	}
 
-	robotPieceCount.setFont(*font);
-	robotPieceCount.setString("0");
-	robotPieceCount.setCharacterSize(50);
-	robotPieceCount.setFillColor(sf::Color::White);
-
-	robotPiece.setFillColor(sf::Color::White);
-	playerPiece.setFillColor(sf::Color::Green);
-
-	playerPieceCount.setFont(*font);
-	playerPieceCount.setString("0");
-	playerPieceCount.setCharacterSize(50);
-	playerPieceCount.setFillColor(sf::Color::White);
-
 	loadingText.setFont(*font);
 	loadingText.setString("Chargement de la camera, \n\tVeuillez patienter...");
 	loadingText.setCharacterSize(30);
@@ -167,16 +154,6 @@ void GameUI::draw(sf::RenderWindow& window)
 		}
 	}
 
-	// Update the number of eaten pieces size and position according to the window size
-	playerPiece.setRadius((float)windowSize.y / 40);
-	playerPiece.setPosition(gameBoard.getPosition().x + gameBoard.getLocalBounds().width + 10, gameBoard.getPosition().y);
-	robotPiece.setRadius((float)windowSize.y / 40);
-	robotPiece.setPosition(gameBoard.getPosition().x + gameBoard.getLocalBounds().width + 10, gameBoard.getPosition().y + gameBoard.getLocalBounds().height - robotPiece.getRadius() * 2);
-	playerPieceCount.setCharacterSize((float)playerPiece.getRadius() * 3);
-	playerPieceCount.setPosition(playerPiece.getPosition().x + playerPiece.getRadius() * 2 + 10, playerPiece.getPosition().y - playerPiece.getRadius());
-	robotPieceCount.setCharacterSize((float)robotPiece.getRadius() * 3);
-	robotPieceCount.setPosition(robotPiece.getPosition().x + robotPiece.getRadius() * 2 + 10, robotPiece.getPosition().y - robotPiece.getRadius());
-
 	// Update the available pieces size and position according to the window size
 	left_available_pieces.setSize(sf::Vector2f((float)windowSize.x / 11, (float)windowSize.y / 3));
 	left_available_pieces.setPosition(sf::Vector2f(windowSize.x / 2 - gameBoard.getSize().x / 2 - 10 - left_available_pieces.getSize().x, gameBoard.getPosition().y));
@@ -221,11 +198,6 @@ void GameUI::draw(sf::RenderWindow& window)
 		window.draw(circlesPieces[i]);
 		window.draw(kingMarks[i]);
 	}
-
-	window.draw(robotPiece);
-	window.draw(robotPieceCount);
-	window.draw(playerPiece);
-	window.draw(playerPieceCount);
 
 	window.draw(left_available_pieces);
 
@@ -281,6 +253,7 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
+		victoryText.setFillColor(sf::Color::Transparent);
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Back button pressed" << std::endl;
@@ -398,10 +371,6 @@ void GameUI::updateBoard(sf::RenderWindow& window, Board board)
 			}
 		}
 	}
-	
-	robotPieceCount.setString(std::to_string(board.numCaptured(1)));
-	playerPieceCount.setString(std::to_string(board.numCaptured(0)));
-
 	return;
 }
 

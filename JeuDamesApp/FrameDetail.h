@@ -22,7 +22,7 @@ public:
 	~FrameDetail();
 
 	/// <summary>
-	/// Initialize the frame details with the given font.
+	/// Initialise the frame details with the given font.
 	/// </summary>
 	/// <param name="window">The window where is the FrameDetail.</param>
 	/// <param name="font">The font to use for the texts.</param>
@@ -64,6 +64,18 @@ public:
 	sf::Uint8* getFramePixel(cv::Mat frame);
 
 	/// <summary>
+	/// Get if the frame detail is displayed or not
+	/// </summary>
+	/// <return>Displayed or not</return>
+	bool getDisplayed();
+
+	/// <summary>
+	/// Set if the frame detail is displayed or not
+	/// </summary>
+	/// <param name="state">Displayed or not</param>
+	void setDisplayed(bool state);
+
+	/// <summary>
 	/// Handle the given event (Mopuse click, Mouse move, ...)
 	/// </summary>
 	/// <param name="event">The event to handle.</param>
@@ -73,6 +85,9 @@ private:
 	Button backButton;
 
 	std::thread* webcamThread = nullptr;
+
+	// FrameDetail displayed or not
+	bool displayed = false;
 
 	// Frame states
 	sf::Image* webcamImage;
