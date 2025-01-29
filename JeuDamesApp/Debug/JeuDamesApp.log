@@ -1,9 +1,4 @@
 ﻿  Board.cpp
-  BoardDetector.cpp
-  Robot.cpp
-  main.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(22,21): warning C4018: '<' : incompatibilité signed/unsigned
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(94,21): warning C4018: '<' : incompatibilité signed/unsigned
+  Negamax.cpp
   Génération de code en cours...
-  LINK : D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe

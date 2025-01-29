@@ -64,8 +64,7 @@ std::vector<int> Board::Play(int initPos, int newPos)
 		return empty;
 	}
 
-	throw std::exception("Invalid move");
-
+	throw std::exception("Invalide move");
 }
 
 bool Board::isTerminal()
@@ -197,7 +196,7 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 	// Don't move in diagonal
 	if (diffR != diffC && diffR != -diffC)
 		return false;
-	
+
 	// piece
 	int piece = getPiece(column, row);
 	if (piece == 1 || piece == 2)
@@ -211,7 +210,7 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 			if (getPiece(column, row, robotBoard) && !getPiece(column + dirCol, row + side, playerBoard))
 				return false;
 		}
-		// Don't move 1 case in diagonal forward
+		// Don't move forward of one case in diagonal
 		else if (diffR * side != 1)
 			return false;
 	}
@@ -221,11 +220,14 @@ bool Board::isValidMove(int column, int row, int newColumn, int newRow)
 		if (diffR == -2 || diffR == 2)
 		{
 			// Don't eat an opponent piece
-			if (getPiece(column, row, playerBoard) && !getPiece(column + dirRow, row + dirRow, robotBoard))
+			if (getPiece(column, row, playerBoard) && !getPiece(column + dirCol, row + dirRow, robotBoard))
 				return false;
 			if (getPiece(column, row, robotBoard) && !getPiece(column + dirCol, row + dirRow, playerBoard))
 				return false;
 		}
+		// Don't move of one case in diagonal
+		else if (diffR != 1 && diffR != -1)
+			return false;
 	}
 	return true;
 }

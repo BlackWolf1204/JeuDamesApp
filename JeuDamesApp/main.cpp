@@ -52,7 +52,7 @@ void robotPlay(Board* board, Robot* robot)
 }
 
 int main()
-{	
+{
 	// Initialise
 	sf::Vector2u windowSize(1280, 720);
 	Robot* robot = new Robot();

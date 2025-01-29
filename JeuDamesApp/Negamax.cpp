@@ -1,4 +1,5 @@
 #include "Negamax.h"
+#include <chrono>
 
 
 std::vector<int> Negamax::GetBestMove(Board board, unsigned int depth)
@@ -91,6 +92,7 @@ std::vector<int> Negamax::GetBestMove(Board board, unsigned int depth)
 				movePositions[ind][1] = allPositionsMove[p][e];
 				pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], nullptr, -1, 1, depth);
 				ind += 1;
+				//std::this_thread::sleep_for(std::chrono::seconds(10));
 			}
 		}
 	}
