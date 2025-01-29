@@ -7,20 +7,21 @@
 #include "Negamax.h"
 #include "Camera.h"
 #include "BoardDetector.h"
-#include "TranspositionTable.h"
 #include "uiController.h"
 
 using namespace std;
 
-void robotPlay(Board* board, TranspositionTable* transpositionTable, Robot* robot)
+void robotPlay(Board* board, Robot* robot)
 {
+	robot->setPlaying(Robot::PlayingState::DOING);
 	std::cout << "Begin Negamax." << std::endl;
-	std::vector<int> bestPositions = Negamax::GetBestMove(*board, transpositionTable, 2);
+	std::vector<int> bestPositions = Negamax::GetBestMove(*board, 4);
 	std::cout << "End Negamax." << std::endl;
 	if (bestPositions.size() > 0)
 	{
 		for (int i = 0; i < bestPositions.size() - 1; i++)
 		{
+			std::cout << "Position : " << bestPositions[i] << " to " << bestPositions[i + 1] << std::endl;
 			int column = bestPositions[i] % BOARDSIZE;
 			int row = (int)bestPositions[i] / BOARDSIZE;
 			int newCol = bestPositions[i + 1] % BOARDSIZE;
@@ -37,64 +38,27 @@ void robotPlay(Board* board, TranspositionTable* transpositionTable, Robot* robo
 
 		// upgrade a piece into a king if at the opposite of the board (only for robot pieces)
 		int lastPos = bestPositions.back();
-		if (lastPos % BOARDSIZE == BOARDSIZE - 1 && board->getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
+		if (lastPos / BOARDSIZE == BOARDSIZE - 1 && board->getPiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE) == 2)
 		{
+			board->upgradePiece(lastPos % BOARDSIZE, (int)lastPos / BOARDSIZE);
 			robot->Play(lastPos, -1);
 			robot->Play(-1, lastPos);
 		}
 	}
+	else
+		std::cerr << "No move found." << std::endl;
 	robot->goReadBoard();
 	this_thread::sleep_for(chrono::seconds(1));		// Let the robot move before verifing if robot->allCmdExecuted() is true
-	robot->setPlaying(Robot::PlayingState::DOING);
 }
 
 int main()
-{/*
-	Board board;
-	board.initBoard();
-	while (!board.isTerminal())
-	{
-		board.printBoard();
-		int pos = 0;
-		int newpos = 0;
-		int continuer = 1;
-		// player
-		while (continuer == 1)
-		{
-			cout << "Positions initial : ";
-			cin >> pos;
-			cout << "Nouvelle position : ";
-			cin >> newpos;
-			std::cout << pos << std::endl;
-			std::cout << newpos << std::endl;
-			std::cout << "Continuer ? (1/0) : ";
-			cin >> continuer;
-			board.Play(pos, newpos);
-			board.newKing();
-		}
-
-		board.printBoard();
-		// Robot
-		TranspositionTable* transpositionTable = new TranspositionTable();
-		std::vector<int> bestPositions = Negamax::GetBestMove(board, transpositionTable, 4);
-		std::cout << "Reponse : ";
-		for (int i = 0; i < bestPositions.size() - 1; i++)
-		{
-			std::cout << "(" << bestPositions[i] << ", " << bestPositions[i + 1] << ") ";
-			board.Play(bestPositions[i], bestPositions[i + 1]);
-			board.newKing();
-		}
-		std::cout << std::endl;
-	}
-	return 0;*/
-	
+{	
 	// Initialise
 	sf::Vector2u windowSize(1280, 720);
 	Robot* robot = new Robot();
 	uiController uiController(windowSize, robot);
 	StateMachine stateMachine;
 	Camera* camera = new Camera();
-	TranspositionTable* transpositionTable = new TranspositionTable();
 	Board board;
 	board.initBoard();
 	int moveNumber = 0;
@@ -108,6 +72,7 @@ int main()
 			if (isConnected)
 			{
 				robot->Home();
+				//robot->setPlaying(Robot::PlayingState::WAIT);
 				this_thread::sleep_for(chrono::seconds(1));		// Let the robot move before verifing if robot->allCmdExecuted() is true
 			}
 		}
@@ -181,29 +146,13 @@ int main()
 					board.printBoard();
 					uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
 				}
-				/*
-				// Control of UIs
-				StateMachine::State newState = uiController.tick(stateMachine.getState());
-				if (newState != stateMachine.getState())
-					stateMachine.ChangeState(newState);
-					*/
 
 				// Robot's turn to play
 				if (robot->getPlaying() == Robot::PlayingState::BEGIN)
 				{
-					robotPlay(&board, transpositionTable, robot);
+					robotPlay(&board, robot);
 				}
 			}
-			/*
-			// Update board, camera frame and display of the board
-			if (robot->getPlaying() == Robot::PlayingState::WAIT)
-			{
-				Board newBoard = BoardDetector::detectBoard(frame);
-				newBoard.setMoveNumber(board.getMoveNumber());
-				board = newBoard;
-				board.printBoard();
-				uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
-			}*/
 
 			// Switch to wainting mode if robot ended playing
 			if (robot->allCmdExecuted() && robot->getPlaying() == Robot::PlayingState::DOING)

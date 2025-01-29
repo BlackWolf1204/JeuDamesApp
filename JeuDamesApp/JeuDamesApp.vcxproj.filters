@@ -72,9 +72,6 @@
     <ClCompile Include="Robot.cpp">
       <Filter>Fichiers sources\RobotControl</Filter>
     </ClCompile>
-    <ClCompile Include="TranspositionTable.cpp">
-      <Filter>Fichiers sources\Negamax</Filter>
-    </ClCompile>
     <ClCompile Include="uiController.cpp">
       <Filter>Fichiers sources\UserInterface</Filter>
     </ClCompile>
@@ -118,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="uiController.h">
       <Filter>Fichiers d%27en-tête\UserInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="TranspositionTable.h">
-      <Filter>Fichiers d%27en-tête\Negamax</Filter>
     </ClInclude>
     <ClInclude Include="Rules.h">
       <Filter>Fichiers d%27en-tête\UserInterface</Filter>

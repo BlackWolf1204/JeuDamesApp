@@ -118,16 +118,6 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 	{
 		return std::vector<cv::Vec3f>();
 	}
-	/*
-	//Convert the frame to gray
-	cv::Mat grayFrame;
-	cv::cvtColor(frame, grayFrame, cv::COLOR_BGR2GRAY);
-
-	//Search for circles in the frame
-	std::vector<cv::Vec3f> circles;
-	cv::HoughCircles(grayFrame, circles, cv::HOUGH_GRADIENT, 0.5, grayFrame.rows / 12, 200, 30, grayFrame.rows / 24, grayFrame.rows / 10);
-
-	return circles;*/
 	
 	//Search for circles in the frame
 	std::vector<std::vector<cv::Point>> contourPoly(contours.size());
@@ -141,18 +131,21 @@ std::vector<cv::Vec3f> BoardDetector::detectCircles(cv::Mat frame, std::vector<s
 	{
 		int c_area = (int)cv::contourArea(contours[i]);   // area of each object contour
 
-		if (c_area > 500) // Area based threshold for emoving noise 
+		if (c_area > 500 && c_area < 50000) // Area based threshold for emoving noise and big polygon
 		{
-			float peri = (float)arcLength(contours[i], true);
+			float peri = (float)cv::arcLength(contours[i], true);
 
 			// Approximate poly curve with stated accurracy
-			approxPolyDP(contours[i], contourPoly[i], 0.02 * peri, true);
+			cv::approxPolyDP(contours[i], contourPoly[i], 0.025 * peri, true);
+
+			// Uncomment to show the approximated polygons for debug
+			//cv::polylines(frame, contourPoly[i], true, cv::Scalar(255, 0, 0));
 
 			bound_rect[i] = cv::boundingRect(contourPoly[i]);
 
 			int obj_corners = (int)contourPoly[i].size();
 			// number of corners
-			if (obj_corners > 6)
+			if (obj_corners > 5)
 			{
 				float aspect_ratio = (float)bound_rect[i].width /
 					(float)bound_rect[i].height;
@@ -266,27 +259,12 @@ cv::Vec3b BoardDetector::getCircleMeanColor(cv::Mat image, cv::Vec4f circle)
 
 	//Get the mean color of the circle
 	cv::Scalar mean = cv::mean(imageHSV, mask);
+
 	return cv::Vec3b((uchar)mean[0], (uchar)mean[1], (uchar)mean[2]);
 }
 
 BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 {
-	/*
-	if (abs(color[0] - color[1]) < 40 && abs(color[1] - color[2]) < 40 && abs(color[0] - color[2]) < 40)
-	{
-		return Color::WHITE;
-	}
-	if (abs(color[2] - color[0]) > 80 && abs(color[2] - color[1]) > 80)
-	{
-		return Color::RED;
-	}
-	if (abs(color[0] - color[1]) > 70 && abs(color[0] - color[2]) > 70)
-	{
-		return Color::BLUE;
-	}
-	return Color::GREEN;
-	*/
-
 	cv::Scalar lower_blue(86, 91, 91);		// Lower blue limit
 	cv::Scalar upper_blue(149, 255, 255);	// Upper blue limit
 
@@ -302,7 +280,7 @@ BoardDetector::Color BoardDetector::getColor(cv::Vec3b color)
 	{
 		return Color::BLUE;
 	}
-	if (color[0] >= lower_red[0] && color[0] <= upper_red[0] &&
+	if ((color[0] >= lower_red[0] || color[0] <= upper_red[0]) &&		// between 0 - upper_red or lower_red - 255
 		color[1] >= lower_red[1] && color[1] <= upper_red[1] &&
 		color[2] >= lower_red[2] && color[2] <= upper_red[2])
 	{

@@ -1,7 +1,7 @@
 #include "Negamax.h"
 
 
-std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transpositionTable, unsigned int depth)
+std::vector<int> Negamax::GetBestMove(Board board, unsigned int depth)
 {	
 	// If early game
 	if (board.getMoveNumber() == 0)
@@ -68,12 +68,12 @@ std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transposi
 				bool upgraded = newBoard.newKing();
 				// Can't continue to move if the piece become a king
 				if (upgraded)
-					pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], nullptr, -1, 1, transpositionTable, depth - 1);
+					pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], nullptr, -1, 1, depth - 1);
 				else
 				{
 					int* ptr = movePositions[ind];
 					ptr += 2;
-					pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], ptr, allPositionsEat[p][e], 0, transpositionTable, depth);
+					pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], ptr, allPositionsEat[p][e], 0, depth);
 				}
 				ind += 1;
 			}
@@ -89,7 +89,7 @@ std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transposi
 				newBoard.Play(pieces[p], allPositionsMove[p][e]);
 				movePositions[ind][0] = pieces[p];
 				movePositions[ind][1] = allPositionsMove[p][e];
-				pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], nullptr, -1, 1, transpositionTable, depth);
+				pieceThreads[ind] = std::thread(NegamaxThread, newBoard, &results[ind], nullptr, -1, 1, depth);
 				ind += 1;
 			}
 		}
@@ -139,7 +139,7 @@ std::vector<int> Negamax::GetBestMove(Board board, TranspositionTable* transposi
 	return bestMove;
 }
 
-std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable* transpositionTable, unsigned int depth)
+std::vector<int> Negamax::GetBestMove_noThreads(Board board, unsigned int depth)
 {
 	std::vector<int> pieces;
 	std::vector<std::vector<int>> allPositionsMove;
@@ -195,12 +195,12 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 				int value;
 				// Can't continue to move if the piece become a king
 				if (upgraded)
-					value = Negamax(newBoard, alpha, beta, nullptr, -1, 1, transpositionTable, depth - 1);
+					value = Negamax(newBoard, alpha, beta, nullptr, -1, 1, depth - 1);
 				else
 				{
 					int* ptr = movePositions;
 					ptr += 2;
-					value = -Negamax(newBoard, alpha, beta, ptr, allPositionsEat[p][e], 0, transpositionTable, depth);
+					value = -Negamax(newBoard, alpha, beta, ptr, allPositionsEat[p][e], 0, depth);
 				}
 				ind += 1;
 
@@ -241,7 +241,7 @@ std::vector<int> Negamax::GetBestMove_noThreads(Board board, TranspositionTable*
 					*(movePositions + i) = -1;
 				movePositions[0] = pieces[p];
 				movePositions[1] = allPositionsMove[p][e];
-				int value = Negamax(newBoard, alpha, beta, nullptr, -1, 1, transpositionTable, depth - 1);
+				int value = Negamax(newBoard, alpha, beta, nullptr, -1, 1, depth - 1);
 
 				std::cout << "Result " << value << " ->[";
 				int j = 0;
@@ -288,19 +288,8 @@ int Negamax::Evaluate(Board board)
 	return score;
 }
 
-int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, int playing, TranspositionTable* transpositionTable, unsigned int depth)
+int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, int playing, unsigned int depth)
 {
-	//The transposition table is not working properly, so it is commented out
-	//It is supposed to store the values of the boards that have already been evaluated
-	//and return the value if the board is already in the table, instead of evaluating it again
-	//This is supposed to speed up the algorithm, but it is not
-	/*
-	if (transpositionTable->contains(board))
-	{
-		return transpositionTable->get(board);
-	}
-	*/
-
 	int value = -1000;
 	if (depth == 0 || board.isTerminal())
 	{
@@ -365,13 +354,9 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 					// Can't continue to move if the piece become a king
 					if (upgraded)
 						// Change the current player doing the move
-						value = std::max(value, -Negamax(boardCopy, -beta, alpha, nullptr, -1, std::abs(playing - 1), transpositionTable, depth - 1));
+						value = std::max(value, -Negamax(boardCopy, -beta, alpha, nullptr, -1, std::abs(playing - 1), depth - 1));
 					else
-						value = std::max(value, Negamax(boardCopy, alpha, beta, ptr, allPositionsEat[p][e], playing, transpositionTable, depth));
-					// If the piece that ate can't move afterward (value = -1000), keep the score of the actual board
-					//if (value == -1000)
-						// Change the current player doing the move
-						//value = std::max(value, -Negamax(boardCopy, -beta, alpha, nullptr, -1, std::abs(playing - 1), transpositionTable, depth - 1));
+						value = std::max(value, Negamax(boardCopy, alpha, beta, ptr, allPositionsEat[p][e], playing, depth));
 					alpha = std::max(alpha, value);
 					if (alpha >= beta)
 					{
@@ -385,7 +370,7 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 			// If there was a sweep but can't continue, look the possible moves of the other player
 			if (posSweep != -1)
 			{
-				value = std::max(value, -Negamax(board, -beta, alpha, nullptr, -1, std::abs(playing - 1), transpositionTable, depth));
+				value = std::max(value, -Negamax(board, -beta, alpha, nullptr, -1, std::abs(playing - 1), depth));
 				alpha = std::max(alpha, value);
 			}
 			// Else play the possible moves
@@ -397,7 +382,7 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 					{
 						Board boardCopy = board.copy();
 						boardCopy.Play(pieces[p], allPositionsMove[p][e]);
-						value = std::max(value, -Negamax(boardCopy, -beta, alpha, nullptr, -1, std::abs(playing - 1), transpositionTable, depth - 1));
+						value = std::max(value, -Negamax(boardCopy, -beta, alpha, nullptr, -1, std::abs(playing - 1), depth - 1));
 						alpha = std::max(alpha, value);
 						if (alpha >= beta)
 						{
@@ -407,23 +392,17 @@ int Negamax::Negamax(Board board, int alpha, int beta, int* ptr, int posSweep, i
 				}
 			}
 		}
-
-		/*
-		if (board.isTerminal())
-		{
-			transpositionTable->put(board, value);
-		}*/
 	}
 
 	return value;
 }
 
-void Negamax::NegamaxThread(Board board, int* result, int* ptr, int posSweep, int playing, TranspositionTable* transpositionTable, unsigned int depth)
+void Negamax::NegamaxThread(Board board, int* result, int* ptr, int posSweep, int playing, unsigned int depth)
 {
 	if (playing == 0)
-		*result = -Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, transpositionTable, depth);
+		*result = -Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, depth);
 	else
-		*result = Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, transpositionTable, depth);
+		*result = Negamax::Negamax(board, -100000, 100000, ptr, posSweep, playing, depth);
 }
 
 std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
@@ -434,12 +413,14 @@ std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
 		// Counter best player move
 		if (board.getPiece(5, 5) == 0)
 		{
+			std::cout << "First best move" << std::endl;
 			bestMove.push_back(2 + 2 * BOARDSIZE);
 			bestMove.push_back(1 + 3 * BOARDSIZE);
 		}
 		// Counter fourth best player move
 		else if (board.getPiece(3, 5) == 0)
 		{
+			std::cout << "Fourth best move" << std::endl;
 			bestMove.push_back(0 + 2 * BOARDSIZE);
 			bestMove.push_back(1 + 3 * BOARDSIZE);
 		}
@@ -449,12 +430,14 @@ std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
 		// Counter second best player move
 		if (board.getPiece(1, 5) == 0)
 		{
+			std::cout << "Second best move" << std::endl;
 			bestMove.push_back(2 + 2 * BOARDSIZE);
 			bestMove.push_back(3 + 3 * BOARDSIZE);
 		}
 		// Counter fifth best player move
 		else if (board.getPiece(3, 5) == 0)
 		{
+			std::cout << "Fifth best move" << std::endl;
 			bestMove.push_back(6 + 2 * BOARDSIZE);
 			bestMove.push_back(5 + 3 * BOARDSIZE);
 		}
@@ -464,12 +447,14 @@ std::vector<int> Negamax::GetBestMoveEarlyGame(Board board)
 		//Counter third best player move
 		if (board.getPiece(5, 5) == 0)
 		{
+			std::cout << "Third best move" << std::endl;
 			bestMove.push_back(4 + 2 * BOARDSIZE);
 			bestMove.push_back(3 + 3 * BOARDSIZE);
 		}
 		// Counter sixth best player move
 		else if (board.getPiece(7, 5) == 0)
 		{
+			std::cout << "Sixth best move" << std::endl;
 			bestMove.push_back(6 + 2 * BOARDSIZE);
 			bestMove.push_back(7 + 3 * BOARDSIZE);
 		}

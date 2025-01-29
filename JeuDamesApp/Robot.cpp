@@ -35,22 +35,22 @@ Robot::Robot()
 	squareCoordinates[30] = { 303, -36, -13, 0 };
 	squareCoordinates[31] = { 302, -76, -13, 0 };
 
-	kingCoordinates[0] = { 35, -200, -7, 0 };
-	kingCoordinates[1] = { 10, -199, -7, 0 };
-	kingCoordinates[2] = { -16, -197, -7, 0 };
-	kingCoordinates[3] = { -42, -197, -7, 0 };
-	kingCoordinates[4] = { 36, -175, -7, 0 };
-	kingCoordinates[5] = { 10, -174, -7, 0 };
-	kingCoordinates[6] = { -16, -173, -7, 0 };
-	kingCoordinates[7] = { -41, -171, -7, 0 };
+	kingCoordinates[0] = { -42, -197, -7, 0 };
+	kingCoordinates[1] = { -16, -197, -7, 0 };
+	kingCoordinates[2] = { 10, -199, -7, 0 };
+	kingCoordinates[3] = { 35, -200, -7, 0 };
+	kingCoordinates[4] = { -41, -171, -7, 0 };
+	kingCoordinates[5] = {-16, -173, -7, 0};
+	kingCoordinates[6] = { 10, -174, -7, 0 };
+	kingCoordinates[7] = { 36, -175, -7, 0 };
 
 	removedPieceCoordinates = { 0, 200, 5, 90 };
 
 	calibrationCoordinates[0] = { 170, 75, -7, 0 };		// Left bottom square
 	calibrationCoordinates[1] = { 302, -76, -7, 0 };	// Right top square
 	calibrationCoordinates[2] = { 0, 200, 5, 90 };		// Removed pieces
-	calibrationCoordinates[3] = { -41, -171, -7, 0 };	// Right bottom king
-	calibrationCoordinates[4] = { 35, -200, -7, 0 };	// Left top king
+	calibrationCoordinates[3] = { -41, -171, 5, 0 };	// Right bottom king
+	calibrationCoordinates[4] = { 35, -200, 5, 0 };		// Left top king
 }
 
 Robot::~Robot()
@@ -59,6 +59,7 @@ Robot::~Robot()
 
 bool Robot::connect(std::string portName)
 {
+	// Dobot API function doesn't find the port where the robot is connected (only with the newest Dobot bought)
 	/*
 	char dobotPortName[64];
 	int dobotSearchCount = SearchDobot(dobotPortName, 64);
@@ -127,8 +128,8 @@ void Robot::Play(int initPos, int newPos)
 {
 	if (dobotId != -1)
 	{
-		goTo(INITPOS);		// Transition between reading position and playing positions (else path between those two positions impossible)
-		if (initPos < 0 && newPos < 0) {
+		goTo(INITPOS);		// Transition between initial position and new position (else path between those two positions migth be impossible)
+		if (initPos < 0 && newPos < 0 && initPos > 63 && newPos > 63) {
 			std::cerr << "Invalid position" << std::endl;
 			return;
 		}
@@ -138,10 +139,6 @@ void Robot::Play(int initPos, int newPos)
 		}
 		else if (newPos == -1) {
 			removePiece(initPos);
-			return;
-		}
-		if ((int)initPos / BOARDSIZE > 7 || (int)newPos / BOARDSIZE > 7) {
-			std::cerr << "Invalid position" << std::endl;
 			return;
 		}
 		if (initPos > -1 && newPos > -1) {
@@ -234,9 +231,18 @@ void Robot::goTo(Pose position)
 
 	uint64_t queuedCmdIndex;
 	int resultDobotPTP = SetPTPCmd(dobotId, &ptpCmd, true, &queuedCmdIndex);
+	// if too much move commands, wait the robot to finish the moves
+	while (resultDobotPTP == DobotCommunicate_BufferFull)
+	{
+		if (allCmdExecuted())
+		{
+			resultDobotPTP = SetPTPCmd(dobotId, &ptpCmd, true, &queuedCmdIndex);
+		}
+	}
 	lastCommandIndex = queuedCmdIndex;
+
 	if (resultDobotPTP != DobotCommunicate_NoError) {
-		std::cerr << "Failed to move dobot to position" << std::endl;
+		std::cerr << "Failed to move dobot to position {" << position.x << ", " << position.y << ", " << position.z << "}" << std::endl;
 	}
 }
 

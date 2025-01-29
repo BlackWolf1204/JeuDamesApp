@@ -411,6 +411,7 @@ bool Board::isInit()
 
 void Board::initBoard()
 {
+	// values corresponding to the initial positions
 	playerBoard = 12273903276444876800;
 	playerKingBoard = 0;
 	robotBoard = 5614165;
