@@ -21,7 +21,6 @@ void robotPlay(Board* board, Robot* robot)
 	{
 		for (int i = 0; i < bestPositions.size() - 1; i++)
 		{
-			std::cout << "Position : " << bestPositions[i] << " to " << bestPositions[i + 1] << std::endl;
 			int column = bestPositions[i] % BOARDSIZE;
 			int row = (int)bestPositions[i] / BOARDSIZE;
 			int newCol = bestPositions[i + 1] % BOARDSIZE;
@@ -134,7 +133,7 @@ int main()
 					continue;
 				}
 				else if (board.robotWins())
-				{
+				{Position : 
 					uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
 					uiController.getGameUI()->playerDefeat(uiController.getWindow());
 					continue;

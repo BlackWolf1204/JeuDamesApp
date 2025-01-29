@@ -1,19 +1,9 @@
-﻿  Board.cpp
-  BoardDetector.cpp
-  GameUI.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(142,90): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(168,93): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\GameUI.cpp(351,23): warning C4018: '<' : incompatibilité signed/unsigned
-  MainMenu.cpp
-  Negamax.cpp
-  Robot.cpp
-  main.cpp
+﻿  main.cpp
 D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(22,21): warning C4018: '<' : incompatibilité signed/unsigned
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(99,21): warning C4018: '<' : incompatibilité signed/unsigned
-  uiController.cpp
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(136,6): warning C4102: 'Position' : étiquette non référencée
   Génération de code en cours
-  7 of 356 functions ( 2.0%) were compiled, the rest were copied from previous compilation.
+  2 of 1138 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+    8 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Release\JeuDamesApp.exe
