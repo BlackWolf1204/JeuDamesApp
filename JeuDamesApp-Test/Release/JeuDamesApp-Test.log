@@ -1,5 +1,4 @@
-﻿  Board-Test.cpp
-Board.obj : warning LNK4075: ' /EDITANDCONTINUE' ignoré à cause de la spécification '/OPT:ICF'
+﻿Board.obj : warning LNK4075: ' /EDITANDCONTINUE' ignoré à cause de la spécification '/OPT:ICF'
 Board-Test.obj : error LNK2038: discordance détectée pour '_ITERATOR_DEBUG_LEVEL' : la valeur '0' ne correspond pas à la valeur '2' in Board.obj
 Board-Test.obj : error LNK2038: discordance détectée pour 'RuntimeLibrary' : la valeur 'MD_DynamicRelease' ne correspond pas à la valeur 'MDd_DynamicDebug' in Board.obj
      Création de la bibliothèque D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Release\JeuDamesApp-Test.lib et de l'objet D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Release\JeuDamesApp-Test.exp

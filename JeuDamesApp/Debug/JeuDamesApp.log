@@ -1,4 +1,5 @@
-﻿  Board.cpp
-  Negamax.cpp
+﻿  Negamax.cpp
+  main.cpp
+D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(22,21): warning C4018: '<' : incompatibilité signed/unsigned
   Génération de code en cours...
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe

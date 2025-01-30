@@ -123,27 +123,29 @@ int main()
 
 		if (isConnected)
 		{
+			// Switch to wainting mode if robot ended playing
+			if (robot->allCmdExecuted() && robot->getPlaying() == Robot::PlayingState::DOING)
+				robot->setPlaying(Robot::PlayingState::WAIT);
+
 			if (board.isValid())
 			{
-				// Display victory message
-				if (board.playerWins())
-				{
-					uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
-					uiController.getGameUI()->playerVictory(uiController.getWindow());
-					continue;
-				}
-				else if (board.robotWins())
-				{Position : 
-					uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
-					uiController.getGameUI()->playerDefeat(uiController.getWindow());
-					continue;
-				}
-
 				// Update board and displayed board
 				if (robot->getPlaying() == Robot::PlayingState::WAIT)
 				{
 					board.printBoard();
 					uiController.getGameUI()->updateBoard(uiController.getWindow(), board);
+
+					// Display victory message
+					if (board.playerWins())
+					{
+						uiController.getGameUI()->playerVictory(uiController.getWindow());
+						continue;
+					}
+					else if (board.robotWins())
+					{
+						uiController.getGameUI()->playerDefeat(uiController.getWindow());
+						continue;
+					}
 				}
 
 				// Robot's turn to play
@@ -152,10 +154,6 @@ int main()
 					robotPlay(&board, robot);
 				}
 			}
-
-			// Switch to wainting mode if robot ended playing
-			if (robot->allCmdExecuted() && robot->getPlaying() == Robot::PlayingState::DOING)
-				robot->setPlaying(Robot::PlayingState::WAIT);
 		}
 	}
 

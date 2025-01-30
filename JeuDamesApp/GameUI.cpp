@@ -253,7 +253,7 @@ StateMachine::State GameUI::handleEvent(sf::Event event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		victoryText.setFillColor(sf::Color::Transparent);
+		victoryVisible = false;
 		if (backButton.mouseIsInsideButton(sf::Vector2f(float(event.mouseButton.x), float(event.mouseButton.y))))
 		{
 			std::cout << "Back button pressed" << std::endl;
