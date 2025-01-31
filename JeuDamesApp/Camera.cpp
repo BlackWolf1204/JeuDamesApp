@@ -34,17 +34,24 @@ void Camera::getWebcamImage(cv::Mat* frame)
 		return;
 
 	std::cout << "Begin connection camera" << std::endl;
-	cv::VideoCapture cap(1);
-	std::cout << "Camera connected !" << std::endl;
-	if (!cap.isOpened())
-		return;
+	try {
+		cv::VideoCapture cap(1);
+		
+		std::cout << "Camera connected !" << std::endl;
+		if (!cap.isOpened())
+			return;
 
-	while (webcamThreadRunning)
-	{
-		cv::Mat tempFrame;
-		cap >> tempFrame;
-		frameMutex.lock();
-		*frame = tempFrame;
-		frameMutex.unlock();
+		while (webcamThreadRunning)
+		{
+			cv::Mat tempFrame;
+			cap >> tempFrame;
+			frameMutex.lock();
+			*frame = tempFrame;
+			frameMutex.unlock();
+		}
+	}
+	catch (std::exception) {
+		std::cerr << "No camera found." << std::endl;
+		return;
 	}
 }

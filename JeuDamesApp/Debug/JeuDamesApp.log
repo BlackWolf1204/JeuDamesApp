@@ -1,5 +1,4 @@
-﻿  Negamax.cpp
-  main.cpp
-D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\JeuDamesApp\main.cpp(22,21): warning C4018: '<' : incompatibilité signed/unsigned
-  Génération de code en cours...
+﻿  Camera.cpp
+  LINK : D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
+BoardDetector.obj : warning LNK4099: PDB '' n'a pu être trouvé avec 'BoardDetector.obj' ou sur '' ; l'objet sera lié sans informations de débogage
   JeuDamesApp.vcxproj -> D:\1 Scolarite\DI5\PRI\JeuDamesApp-main\Debug\JeuDamesApp.exe
