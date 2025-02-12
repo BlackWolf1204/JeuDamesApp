@@ -4,9 +4,9 @@
 
 Inclure les différentes bibliothèques dans le projet mais faire attention à n’inclure que les -d pour la version debug et les mêmes sans -d pour la version release (sinon possibilité de bug si tout est inclus comme le font ne pouvant pas être chargé).
 
-Pour contrôler le robot en dehors de l’application, télécharger DobotStudio (DOBOT Magician) v1.9.4 – Jan 10, 2022 sur le site Search for the Right Manual | Dobot Download Center.
-Sa documentation est sur le lien suivant :  DOBOT MAGICIAN RO-BOTICS USER MANUAL | ManualsLib
-La documentation de l’API se trouve sur celui-ci : dobot-api-en.pdf
+Pour contrôler le robot en dehors de l’application, télécharger DobotStudio (DOBOT Magician) v1.9.4 – Jan 10, 2022 sur le site [Search for the Right Manual | Dobot Download Center.](https://www.dobot-robots.com/service/download-center)
+Sa documentation est sur le lien suivant : [DOBOT MAGICIAN ROBOTICS USER MANUAL | ManualsLib](https://www.manualslib.com/manual/1554643/Dobot-Dobot-Magician.html)
+La documentation de l’API se trouve sur celui-ci : [dobot-api-en.pdf](https://ecksteinimg.de/Datasheet/Dobot/dobot-api-en.pdf)
 
 ## 2.	Utilisation ##
 
